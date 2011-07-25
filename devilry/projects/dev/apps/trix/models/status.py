@@ -21,6 +21,7 @@ class Status(models.Model):
     class Meta:
         app_label = 'trix'
 
+    name = models.SlugField()
     active = models.BooleanField(default=True)
     percentage = models.DecimalField(max_digits=3, decimal_places=2)
 

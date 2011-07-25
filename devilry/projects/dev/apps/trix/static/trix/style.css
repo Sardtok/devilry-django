@@ -1,0 +1,16 @@
+h3    { font-weight: bold;
+        margin: 0.5em 0; }
+i     { font-style: italic; }
+b     { font-weight: bold; }
+table { width: 80%; margin: 1em 0; }
+caption { font-size: 120%; font-weight: bold; }
+th    { font-weight: bold; font-size: 110%; padding: 0.25em 0; }
+tr    { border-bottom: 1px solid #246; }
+td    { padding: 0.25em 0; }
+pre   { border-color: #CCC;
+        border-style: dashed dashed dashed solid;
+        border-width: 1px 1px 1px 4px; }
+.maincol { width: 75%; max-width: 75%; }
+#bq   { background-color: #EEE;
+        margin: 0.5em 0.5em 0.5em 0;
+        padding: 1em; }

@@ -1,7 +1,71 @@
 {% extends "theme/base.django.html" %}
 
-{% block title %}TRIX0Rz{% endblock %}
+{% load i18n %}
+
+{% block title %}Ukesoppgaver{% endblock %}
+
+{% block headextra %}
+  <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
+{% endblock %}
 
 {% block main %}
-    <div>Testifying the trix</div>
+
+{% for x, s in exc_stats.items %}
+{{x.id}} — {{s.id}}<br />
+{% endfor %}
+
+{% for p, p_excs in exercises.items %}
+  <form>
+  <table>
+    <caption>{% trans "Exercises" %} —
+      {{ p.parentnode.long_name }} —
+      {{ p.long_name }}</caption>
+    <thead>
+      <tr>
+        <th
+           {% if statuses %}class="maincol"{% endif %}
+           >{% trans "Exercise" noop %}</th>
+        {% if statuses %}
+          {% for status in statuses %}
+            <th>{{ status.name }}</th>
+          {% endfor %}
+          <th>{% trans "Unsolved" noop %}</th>
+        {% endif %}
+      </tr>
+    </thead
+    <tbody>
+        
+      {% for id, e in p_excs.items %}
+      <tr>
+        <td
+           {% if statuses %}class="maincol"{% endif %}
+           >
+          <h3>{{ e.title }}</h3>
+          {% autoescape off %}
+          <div>{{ e.text }}</div>
+          {% endautoescape %}
+        </td>
+        {% if statuses %}
+          {% for status in statuses %}
+            <td>
+              <input type="radio" name="{{ id }}" value="{{ status.id }}"
+                     {% if e.status == status.id %}
+                     checked
+                     {% endif %}
+                     />
+            </td>
+          {% endfor %}
+          <td><input type="radio" name="{{ id }}" value="-1"
+                     {% if e.status == -1 %}
+                     checked
+                     {% endif %}
+                     />
+          </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </form>
+{% endfor %}
 {% endblock %}

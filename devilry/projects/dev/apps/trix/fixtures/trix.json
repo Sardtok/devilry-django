@@ -1,0 +1,140 @@
+[
+  {
+    "pk": 1,
+    "model": "trix.topic",
+    "fields": {
+      "name": "Koding"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "trix.status",
+    "fields": {
+      "name": "Løst selv",
+      "percentage": 1.00      
+    }
+  },
+  {
+    "pk": 2,
+    "model": "trix.status",
+    "fields": {
+      "name": "Tulleløsning",
+      "percentage": 0.31,
+      "active": false
+    }
+  },
+  {
+    "pk": 1, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "forste_prg",
+      "long_name": "Det første programmet",
+      "points": 5, 
+      "text": "<i>kap. 1, oppg. 1 (side 23 i læreboken)</i><br>Lag et program som skriver følgende tekst på skjermen:<pre id=\"bq\">Rachmaninovs 3. klaverkonsert har et vakkert åpningstema </pre>Velg selv hvilket navn du vil gi klassen.",
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 2, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "finn5synfeil",
+      "long_name": "Finn fem syntaksfeil",
+      "points": 3, 
+      "text": "Finn feilene i dette programmet:<pre id=\"bq\">\nclass Utskrift {\n    public stitac void main(String args) (\n        System.out.println(\"Beethoven skrev Skjebnesymfonien\")\n        System.out.println(\"og åtte andre symfonier.);\n    }\n}\n</pre>", 
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 3, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "enkelfmt",
+      "long_name": "Enkel formatering av utskrift",
+      "points": 4, 
+      "text": "Vi ønsker å skrive ut følgende tekst på skjermen (med samme pyramideformatering):<pre id=\"bq\">    a\n   a a\n  a b a\n a c c a\na d f d a</pre>Lag et Java-program som gjør dette, ved å bruke flere utskriftssetninger.<br /><br /><i>Tips:</i><br />Idéen her er å finne hvor og hvordan man kan legge inn mellomroms-tegn i programmet for å få til pyramideformateringen. Senere i kurset, i kapittel 3 (side 52) vil du lære en annen måte å løse denne oppgaven på hvor Java tar seg av pyramideformateringen.",
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 4, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "rektareal",
+      "long_name": "Areal av rektangler",
+      "points": 5,
+      "text": "<i>kap. 2, oppg. 1 (side 43)</i><br />Skriv et program som beregner arealet av rektanglene med disse sidestørrelsene: 3 og 5, 7 og 3, samt 4 og 9, og som skriver ut resultatet med en passende fortekst. Kompier og kjør programmet.<br /><br /><i>Tips:</i><br />Denne kan løses ved å følge oppskriften fra programmet på side 30 og skrive et lignende program, men med litt andre variabelnavn og beregninger.",
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 5, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "deklinit",
+      "long_name": "Deklarasjon og initialisering av variabler",
+      "points": 4, 
+      "text": "<i>kap. 2, oppg. 2 (side 43)</i><br />Finn feilene i dette programmet:<pre id=\"bq\">class Volum {\n    public static void main (String[] args) {\n        integer lengde, bredde, høyde; lengde = 3;\n        volum = lengde * bredde * høyde;\n        System.out.println(\"Volumet er: \" + volum);\n    }\n}</pre>",
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 1,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 1,
+      "period": 2,
+      "points": 7
+    }
+  },
+  {
+    "pk": 2,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 2,
+      "period": 2,
+      "points": 20
+    }
+  },
+  {
+    "pk": 3,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 3,
+      "period": 1,
+      "points": 20
+    }
+  },
+  {
+    "pk": 4,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 4,
+      "period": 2,
+      "points": 20
+    }
+  },
+  {
+    "pk": 5,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 5,
+      "period": 1,
+      "points": 5
+    }
+  },
+  {
+    "pk": 1,
+    "model": "trix.exercisestatus",
+    "fields": {
+      "student": 1,
+      "exercise": 4,
+      "status": 1
+    }
+  }
+]
