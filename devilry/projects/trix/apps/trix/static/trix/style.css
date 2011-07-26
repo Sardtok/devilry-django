@@ -11,6 +11,8 @@ pre   { border-color: #CCC;
         border-style: dashed dashed dashed solid;
         border-width: 1px 1px 1px 4px; }
 .maincol { width: 75%; max-width: 75%; }
+.statusbutton { text-align: center; }
+#dispexc { padding-right: 1em; font-size: 1em !important; }
 #bq   { background-color: #EEE;
         margin: 0.5em 0.5em 0.5em 0;
         padding: 1em; }
