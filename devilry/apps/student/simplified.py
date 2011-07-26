@@ -1,11 +1,16 @@
 from datetime import datetime
 
 from ...simplified import simplified_modelapi, SimplifiedModelApi, PermissionDenied
-from simplifiedmetabases import (SimplifiedSubjectMetaMixin, SimplifiedPeriodMetaMixin,
-                                 SimplifiedAssignmentMetaMixin, SimplifiedAssignmentGroupMetaMixin,
-                                 SimplifiedDeadlineMetaMixin, SimplifiedDeliveryMetaMixin,
-                                 SimplifiedStaticFeedbackMetaMixin, SimplifiedFileMetaMetaMixin)
-from restfulmetabases import DeadlineExtjsModelMeta
+from devilry.coreutils.simplified.metabases import (SimplifiedSubjectMetaMixin,
+                                                   SimplifiedPeriodMetaMixin,
+                                                   SimplifiedAssignmentMetaMixin,
+                                                   SimplifiedAssignmentGroupMetaMixin,
+                                                   SimplifiedDeadlineMetaMixin,
+                                                   SimplifiedDeliveryMetaMixin,
+                                                   SimplifiedStaticFeedbackMetaMixin,
+                                                   SimplifiedFileMetaMetaMixin)
+
+
 
 class PublishedWhereIsCandidateMixin(SimplifiedModelApi):
     """ Mixin class extended by all classes in the Simplified API for Student using the Simplified API """
@@ -67,7 +72,7 @@ class SimplifiedDelivery(PublishedWhereIsCandidateMixin):
         editablefields = ['successful']
 
     @classmethod
-    def post_full_clean(cls, user, obj):
+    def pre_full_clean(cls, user, obj):
         if not obj.id == None:
             raise ValueError('BUG: Students should only have create permission on Delivery')
         obj.time_of_delivery = datetime.now()

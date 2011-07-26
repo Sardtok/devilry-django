@@ -1,9 +1,14 @@
 from ...simplified import SimplifiedModelApi, simplified_modelapi, PermissionDenied, FieldSpec
 from ..core import models
-from ..student.simplifiedmetabases import (SimplifiedSubjectMetaMixin, SimplifiedFileMetaMetaMixin,
-                                           SimplifiedPeriodMetaMixin, SimplifiedAssignmentMetaMixin,
-                                           SimplifiedAssignmentGroupMetaMixin, SimplifiedDeadlineMetaMixin,
-                                           SimplifiedDeliveryMetaMixin, SimplifiedStaticFeedbackMetaMixin,)
+from devilry.coreutils.simplified.metabases import (SimplifiedSubjectMetaMixin,
+                                                   SimplifiedFileMetaMetaMixin,
+                                                   SimplifiedPeriodMetaMixin,
+                                                   SimplifiedAssignmentMetaMixin,
+                                                   SimplifiedAssignmentGroupMetaMixin,
+                                                   SimplifiedDeadlineMetaMixin,
+                                                   SimplifiedDeliveryMetaMixin,
+                                                   SimplifiedStaticFeedbackMetaMixin,)
+
 
 
 class PublishedWhereIsExaminerMixin(SimplifiedModelApi):
@@ -108,7 +113,7 @@ class SimplifiedStaticFeedback(PublishedWhereIsExaminerMixin):
                           'rendered_view', 'delivery']
 
     @classmethod
-    def post_full_clean(cls, user, obj):
+    def pre_full_clean(cls, user, obj):
         if not obj.id == None:
             raise ValueError('BUG: Examiners should only have create permission on StaticFeedback.')
         obj.saved_by = user
