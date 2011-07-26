@@ -6,6 +6,21 @@
 
 {% block headextra %}
   <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
+  <script type="text/javascript">
+    function toggleExcVisibility() {
+      elem = this;
+      while (elem && elem.id != 'exctext') {
+        elem = elem.nextSibling;
+      }
+      if (elem) {
+        if (elem.style.display == 'none') {
+          elem.style.display = 'none';
+        } else {
+          elem.style.display = 'block';
+        }
+      }
+    }
+  </script>
 {% endblock %}
 
 {% block main %}
@@ -40,6 +55,11 @@
         <td
            {% if statuses %}class="maincol"{% endif %}
            >
+          {% if statuses %}
+          <a href="javascript:void(0)" style="float: right;">
+            Vis oppgaveteksten
+          </a>
+          {% endif %}
           <h3>{{ e.title }}</h3>
           {% autoescape off %}
           <div>{{ e.text }}</div>

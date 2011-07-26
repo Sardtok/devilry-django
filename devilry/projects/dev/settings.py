@@ -24,7 +24,6 @@ DATABASES = {
 
 INSTALLED_APPS += [
                    'devilry.projects.dev.apps.tutorialstats',
-                   'devilry.projects.dev.apps.trix',
                    'devilry.projects.dev.apps.restfulexample',
 
                    # Not apps, but here for the Django test system to discover them:
@@ -58,37 +57,26 @@ DEVILRY_DELIVERY_STORE_BACKEND = 'devilry.apps.core.deliverystore.FsDeliveryStor
 DELIVERY_STORE_ROOT = join(this_dir, 'deliverystore')
 
 
-#
-# The if's below is just to make it easy to toggle these settings on and off during development
-#
 
-profiler_middleware = False
-if profiler_middleware:
-    MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [
-        'devilry.utils.profile.ProfilerMiddleware' # Enable profiling. Just add ?prof=yes to any url to see a profile report
-    ]
-
-terminal_logging = True
-if terminal_logging:
-    MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [
-        'devilry.projects.dev.logexceptionsmiddleware.TracebackLoggingMiddleware',
-        #'devilry.utils.profile.ProfilerMiddleware' # Enable profiling. Just add ?prof=yes to any url to see a profile report
-    ]
+MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [
+    'devilry.projects.dev.logexceptionsmiddleware.TracebackLoggingMiddleware',
+    #'devilry.utils.profile.ProfilerMiddleware' # Enable profiling. Just add ?prof=yes to any url to see a profile report
+]
 
 
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'level':'DEBUG',
-                'class':'logging.StreamHandler'
-            }
-        },
-        'loggers': {
-            'devilry.projects.dev.logexceptionsmiddleware': {
-                'handlers': ['console'],
-                'level': 'DEBUG'
-            }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler'
+        }
+    },
+    'loggers': {
+        'devilry.projects.dev.logexceptionsmiddleware': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
         }
     }
+}
