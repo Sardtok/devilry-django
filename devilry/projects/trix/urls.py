@@ -15,7 +15,7 @@ class RedirectToFrontpage(View):
 
 urlpatterns = patterns('',
                        # Custom urls for this project
-                       (r'^trix/', include('devilry.projects.dev.apps.trix.urls')),
+                       (r'^trix/', include('devilry.projects.trix.apps.trix.urls')),
                        (r'^$', RedirectToFrontpage.as_view()),
 
                        # Add the default Devilry urls

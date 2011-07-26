@@ -4,31 +4,31 @@ from devilry.defaults.settings import *
 this_dir = dirname(abspath(__file__))
 
 DATABASES = {
-             "default": {
-                         'ENGINE': 'django.db.backends.sqlite3',  # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-                         'NAME': join(this_dir, 'db.sqlite3'),    # Or path to database file if using sqlite3.
-                         'USER': '',             # Not used with sqlite3.
-                         'PASSWORD': '',         # Not used with sqlite3.
-                         'HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
-                         'PORT': '',             # Set to empty string for default. Not used with sqlite3.
-                        },
-             #"postgres": {
-                          #'ENGINE': 'postgresql_psycopg2',  # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-                          #'NAME': 'devilry',
-                          #'USER': 'devilrydev',
-                          #'PASSWORD': 'secret',
-                          #'HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
-                          #'PORT': '',             # Set to empty string for default. Not used with sqlite3.
-                         #}
-}
+    "default": {
+        'ENGINE': 'django.db.backends.sqlite3',  # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': join(this_dir, 'db.sqlite3'),    # Or path to database file if using sqlite3.
+        'USER': '',             # Not used with sqlite3.
+        'PASSWORD': '',         # Not used with sqlite3.
+        'HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',             # Set to empty string for default. Not used with sqlite3.
+        },
+    #"postgres": {
+    #'ENGINE': 'postgresql_psycopg2',  # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+    #'NAME': 'devilry',
+    #'USER': 'devilrydev',
+    #'PASSWORD': 'secret',
+    #'HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
+    #'PORT': '',             # Set to empty string for default. Not used with sqlite3.
+    #}
+    }
 
 INSTALLED_APPS += [
-                   'devilry.projects.dev.apps.trix',
-
-                   # Not apps, but here for the Django test system to discover them:
-                   'devilry.utils',
-                   'devilry.restful',
-                   'devilry.simplified']
+    'devilry.projects.trix.apps.trix',
+    
+    # Not apps, but here for the Django test system to discover them:
+        'devilry.utils',
+    'devilry.restful',
+    'devilry.simplified']
 
 
 INTERNAL_IPS = ["127.0.0.1"]
@@ -40,11 +40,11 @@ SECRET_KEY = '+g$%**q(w78xqa_2)(_+%v8d)he-b_^@d*pqhq!#2p*a7*9e9h'
 
 # If no admins are set, no emails are sent to admins
 ADMINS = (
-     ('Devilry admin', 'admin@example.com'),
-)
+    ('Devilry admin', 'admin@example.com'),
+    )
 MANAGERS = ADMINS
 MEDIA_ROOT = join(this_dir, "filestore")
-ROOT_URLCONF = 'devilry.projects.dev.urls'
+ROOT_URLCONF = 'devilry.projects.trix.urls'
 
 DEVILRY_SEND_EMAIL_TO_USERS = False
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
@@ -58,9 +58,9 @@ DELIVERY_STORE_ROOT = join(this_dir, 'deliverystore')
 
 
 MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [
-    'devilry.projects.dev.logexceptionsmiddleware.TracebackLoggingMiddleware',
+    'devilry.projects.trix.logexceptionsmiddleware.TracebackLoggingMiddleware',
     #'devilry.utils.profile.ProfilerMiddleware' # Enable profiling. Just add ?prof=yes to any url to see a profile report
-]
+    ]
 
 
 LOGGING = {
@@ -70,12 +70,12 @@ LOGGING = {
         'console': {
             'level':'DEBUG',
             'class':'logging.StreamHandler'
-        }
-    },
+            }
+        },
     'loggers': {
-        'devilry.projects.dev.logexceptionsmiddleware': {
+        'devilry.projects.trix.logexceptionsmiddleware': {
             'handlers': ['console'],
             'level': 'DEBUG'
+            }
         }
     }
-}
