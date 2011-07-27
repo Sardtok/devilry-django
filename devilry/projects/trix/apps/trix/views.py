@@ -9,8 +9,21 @@ def main(request):
     periods = [p for p in list(Period.objects.all()) if p.is_active()]
     exercises = {}
     exc_stats = {}
+    student_periods = []
 
     for period in periods:
+
+        try:
+            if period.relatedstudents.get(user__id=request.user.id):
+                student_periods.append(period.id)
+                print "Student in period:", period.short_name
+        except:
+            print "Not a student in period:", period.short_name
+            pass
+
+        for student in period.relatedstudents.all():
+            print student.user.username
+
         p_excs = period.exercises.all()
         if p_excs:
             add = {}
@@ -34,6 +47,7 @@ def main(request):
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'exc_stats': exc_stats,
-                   'statuses': statuses})
+                   'statuses': statuses,
+                   'student_periods': student_periods})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
