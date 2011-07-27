@@ -10,9 +10,22 @@ td    { padding: 0.25em 0; }
 pre   { border-color: #CCC;
         border-style: dashed dashed dashed solid;
         border-width: 1px 1px 1px 4px; }
-.maincol { width: 75%; max-width: 75%; }
+.maincol { min-width: 50%; max-width: 100%; }
 .statusbutton { text-align: center; }
-#dispexc { padding-right: 1em; font-size: 1em !important; }
+#dispexc { margin: 0.5em; font-size: 1em !important; }
 #bq   { background-color: #EEE;
         margin: 0.5em 0.5em 0.5em 0;
         padding: 1em; }
+
+header > nav.trix {
+    border-bottom: 10px solid #B340B3;
+}
+
+header > nav li.trix-navitem a {
+    background-color: #B340B3;
+    color: #F7FFE5;
+}
+
+header > nav li.trix-navitem a:hover {
+    background-color: #CC50CC;
+}

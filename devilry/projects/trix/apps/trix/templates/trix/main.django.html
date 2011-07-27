@@ -1,11 +1,15 @@
-{% extends "theme/base.django.html" %}
+{% extends "trix/base.django.html" %}
 
 {% load i18n %}
 
 {% block title %}Ukesoppgaver{% endblock %}
 
+{% block nav-class %}trix{% endblock %}
+
 {% block headextra %}
   <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
+  <link rel="stylesheet" media="print"
+        href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
   <script type="text/javascript">
     toggleExc = function(link) {
       elem = link;
@@ -16,10 +20,10 @@
       if (elem) {
         if (elem.style.display == 'none') {
           elem.style.display = 'block';
-          link.innerHTML = "{% trans "Hide exercise" noop %}";
+          link.innerHTML = "{% trans "Hide exercise" %}";
         } else {
           elem.style.display = 'none';
-          link.innerHTML = "{% trans "Show exercise" noop %}";
+          link.innerHTML = "{% trans "Show exercise" %}";
         }
       }
     }
@@ -27,13 +31,11 @@
 {% endblock %}
 
 {% block main %}
-
-{% for x, s in exc_stats.items %}
-{{x.id}} — {{s.id}}<br />
-{% endfor %}
+LEVEL: {{ level_info.level }}<br />
+POINTS: {{ level_info.points }} / {{ level_info.next }}
 
 {% for p, p_excs in exercises.items %}
-  <form>
+  <form autocomplete="off">
   <table>
     <caption>{% trans "Exercises" %} —
       {{ p.parentnode.long_name }} —
@@ -42,15 +44,15 @@
       <tr>
         <th
            {% if statuses %}class="maincol"{% endif %}
-           >{% trans "Exercise" noop %}</th>
+           >{% trans "Exercise" %}</th>
         {% if statuses %}
           {% for status in statuses %}
             <th class="statusbutton">{{ status.name }}</th>
           {% endfor %}
-          <th class="statusbutton">{% trans "Unsolved" noop %}</th>
+          <th class="statusbutton">{% trans "Unsolved" %}</th>
         {% endif %}
       </tr>
-    </thead
+    </thead>
     <tbody>
         
       {% for id, e in p_excs.items %}
@@ -61,7 +63,7 @@
           {% if statuses %}
           <a id="dispexc" href="javascript:void(0)"
              onClick="toggleExc(this)" style="float: right;">
-            {% trans "Show exercise" noop %}
+            {% trans "Show exercise" %}
           </a>
           {% endif %}
           <h3>{{ e.title }}</h3>
@@ -76,7 +78,7 @@
             <td class="statusbutton">
               <input type="radio" name="{{ id }}" value="{{ status.id }}"
                      {% if e.status == status.id %}
-                     checked
+                     checked="checked"
                      {% endif %}
                      />
             </td>
@@ -84,7 +86,7 @@
           <td class="statusbutton">
             <input type="radio" name="{{ id }}" value="-1"
                      {% if e.status == -1 %}
-                     checked
+                     checked="checked"
                      {% endif %}
                      />
           </td>
