@@ -17,12 +17,13 @@ def main(request):
             for exc in p_excs:
                 e = {'title': exc.exercise.long_name,
                      'text': exc.exercise.text, 'status': -1}
-                print e
-                try:
-                    stats = exc.student_results.get(student=request.user)
-                    e.update([['status', stats.id]]);
-                except ExerciseStatus.DoesNotExist, exception:
-                    pass
+
+                if request.user.is_authenticated():
+                    try:
+                        stats = exc.student_results.get(student=request.user)
+                        e.update([['status', stats.id]]);
+                    except ExerciseStatus.DoesNotExist, exception:
+                        pass
                 add.update( [[exc.id, e]] )
             exercises.update([[period, add]])
 

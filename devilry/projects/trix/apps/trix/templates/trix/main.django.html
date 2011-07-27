@@ -7,16 +7,19 @@
 {% block headextra %}
   <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
   <script type="text/javascript">
-    function toggleExcVisibility() {
-      elem = this;
+    toggleExc = function(link) {
+      elem = link;
       while (elem && elem.id != 'exctext') {
         elem = elem.nextSibling;
       }
+
       if (elem) {
         if (elem.style.display == 'none') {
-          elem.style.display = 'none';
-        } else {
           elem.style.display = 'block';
+          link.innerHTML = "{% trans "Hide exercise" noop %}";
+        } else {
+          elem.style.display = 'none';
+          link.innerHTML = "{% trans "Show exercise" noop %}";
         }
       }
     }
@@ -42,9 +45,9 @@
            >{% trans "Exercise" noop %}</th>
         {% if statuses %}
           {% for status in statuses %}
-            <th>{{ status.name }}</th>
+            <th class="statusbutton">{{ status.name }}</th>
           {% endfor %}
-          <th>{% trans "Unsolved" noop %}</th>
+          <th class="statusbutton">{% trans "Unsolved" noop %}</th>
         {% endif %}
       </tr>
     </thead
@@ -56,18 +59,21 @@
            {% if statuses %}class="maincol"{% endif %}
            >
           {% if statuses %}
-          <a href="javascript:void(0)" style="float: right;">
-            Vis oppgaveteksten
+          <a id="dispexc" href="javascript:void(0)"
+             onClick="toggleExc(this)" style="float: right;">
+            {% trans "Show exercise" noop %}
           </a>
           {% endif %}
           <h3>{{ e.title }}</h3>
           {% autoescape off %}
-          <div>{{ e.text }}</div>
+          <div id="exctext"
+               {% if statuses %}style="display: none"{% endif %}
+               >{{ e.text }}</div>
           {% endautoescape %}
         </td>
         {% if statuses %}
           {% for status in statuses %}
-            <td>
+            <td class="statusbutton">
               <input type="radio" name="{{ id }}" value="{{ status.id }}"
                      {% if e.status == status.id %}
                      checked
@@ -75,7 +81,8 @@
                      />
             </td>
           {% endfor %}
-          <td><input type="radio" name="{{ id }}" value="-1"
+          <td class="statusbutton">
+            <input type="radio" name="{{ id }}" value="-1"
                      {% if e.status == -1 %}
                      checked
                      {% endif %}
