@@ -1,0 +1,6 @@
+header { display: none; }
+table { width: 100%; }
+thead { display: none; }
+.statusbutton { display: none; }
+#dispexc { display: none; }
+#exctext { display: block !important; }
