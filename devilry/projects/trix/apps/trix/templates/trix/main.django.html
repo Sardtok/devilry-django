@@ -31,13 +31,11 @@
 {% endblock %}
 
 {% block main %}
-
-{% for x, s in exc_stats.items %}
-{{x.id}} — {{s.id}}<br />
-{% endfor %}
+LEVEL: {{ level_info.level }}<br />
+POINTS: {{ level_info.points }} / {{ level_info.next }}
 
 {% for p, p_excs in exercises.items %}
-  <form>
+  <form autocomplete="off">
   <table>
     <caption>{% trans "Exercises" %} —
       {{ p.parentnode.long_name }} —
@@ -54,7 +52,7 @@
           <th class="statusbutton">{% trans "Unsolved" %}</th>
         {% endif %}
       </tr>
-    </thead
+    </thead>
     <tbody>
         
       {% for id, e in p_excs.items %}
@@ -80,7 +78,7 @@
             <td class="statusbutton">
               <input type="radio" name="{{ id }}" value="{{ status.id }}"
                      {% if e.status == status.id %}
-                     checked
+                     checked="checked"
                      {% endif %}
                      />
             </td>
@@ -88,7 +86,7 @@
           <td class="statusbutton">
             <input type="radio" name="{{ id }}" value="-1"
                      {% if e.status == -1 %}
-                     checked
+                     checked="checked"
                      {% endif %}
                      />
           </td>

@@ -24,6 +24,14 @@
     }
   },
   {
+    "pk": 3,
+    "model": "trix.status",
+    "fields": {
+      "name": "Løst m/hjelp",
+      "percentage": 0.5
+    }
+  },
+  {
     "pk": 1, 
     "model": "trix.exercise", 
     "fields": {
@@ -107,7 +115,7 @@
     "fields": {
       "exercise": 3,
       "period": 1,
-      "points": 20
+      "points": 12
     }
   },
   {
@@ -116,7 +124,7 @@
     "fields": {
       "exercise": 4,
       "period": 2,
-      "points": 20
+      "points": 10
     }
   },
   {
@@ -133,8 +141,53 @@
     "model": "trix.exercisestatus",
     "fields": {
       "student": 1,
+      "exercise": 1,
+      "status": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "trix.exercisestatus",
+    "fields": {
+      "student": 1,
+      "exercise": 2,
+      "status": 1
+    }
+  },
+  {
+    "pk": 3,
+    "model": "trix.exercisestatus",
+    "fields": {
+      "student": 1,
+      "exercise": 3,
+      "status": 1
+    }
+  },
+  {
+    "pk": 4,
+    "model": "trix.exercisestatus",
+    "fields": {
+      "student": 1,
       "exercise": 4,
       "status": 1
+    }
+  },
+  {
+    "pk": 5,
+    "model": "trix.exercisestatus",
+    "fields": {
+      "student": 1,
+      "exercise": 5,
+      "status": 1
+    }
+  },
+  {
+    "pk": 6,
+    "model": "trix.exercisestatus",
+    "fields": {
+      "student": 22,
+      "exercise": 5,
+      "status": 3
     }
   }
 ]

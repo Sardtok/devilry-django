@@ -1,15 +1,32 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+from decimal import *
+
 from devilry.apps.core.models import Period
 from models.status import Status
 from models.exercisestatus import ExerciseStatus
+
+def get_level(points=0):
+    level = 1
+    add = Decimal(10, 2)
+    total = Decimal(add, 2)
+    while points > total:
+        print total, "(", add, ")"
+        add *= 1.5
+        total += add
+        level += 1
+    return {'level': level,
+            'next': add,
+            'points': points-(total-add),
+            'total': total}
 
 def main(request):
     periods = [p for p in list(Period.objects.all()) if p.is_active()]
     exercises = {}
     exc_stats = {}
     student_periods = []
+    points_total = 0
 
     for period in periods:
 
@@ -34,7 +51,8 @@ def main(request):
                 if request.user.is_authenticated():
                     try:
                         stats = exc.student_results.get(student=request.user)
-                        e.update([['status', stats.id]]);
+                        points_total += stats.status.percentage * exc.points
+                        e.update([['status', stats.status.id]]);
                     except ExerciseStatus.DoesNotExist, exception:
                         pass
                 add.update( [[exc.id, e]] )
@@ -48,6 +66,8 @@ def main(request):
                   {'exercises': exercises,
                    'exc_stats': exc_stats,
                    'statuses': statuses,
-                   'student_periods': student_periods})
+                   'student_periods': student_periods,
+                   'points': points_total,
+                   'level_info': get_level(points_total)})
 #                  {'exercises': Period.objects.all().exercises.all()})
 

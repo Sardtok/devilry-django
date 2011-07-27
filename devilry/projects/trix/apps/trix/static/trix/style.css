@@ -10,7 +10,7 @@ td    { padding: 0.25em 0; }
 pre   { border-color: #CCC;
         border-style: dashed dashed dashed solid;
         border-width: 1px 1px 1px 4px; }
-.maincol { width: 75%; max-width: 75%; }
+.maincol { min-width: 50%; max-width: 100%; }
 .statusbutton { text-align: center; }
 #dispexc { margin: 0.5em; font-size: 1em !important; }
 #bq   { background-color: #EEE;
