@@ -1,0 +1,26 @@
+{% extends "trix/base.django.html" %}
+
+{% load i18n %}
+
+{% block title %}Profile{% endblock %}
+
+{% block nav-class %}student{% endblock %}
+
+{% block headextra %}
+  <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
+  <link rel="stylesheet" media="print"
+        href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
+
+{% endblock %}
+
+{% block main %}
+last login: {{ user.last_login }}<br /><br />
+Name: {{ user.first_name }} {{ user.last_name }}<br />
+Username: {{ user.username }}<br />
+email: {{ user.email }} <br /><br />
+Level: {{ level.level }}<br />
+Points needed to reach level {{level.next_level }}: {{ level.points }} <br />
+Total points : {{ points }} <br />
+
+
+{% endblock %}
