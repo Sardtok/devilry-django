@@ -24,7 +24,7 @@ pre   { border-color: #CCC;
 .xpbar > div { background-color: #8f8; height: 100%; position: absolute; left: 0; top: 0; z-index: 2; text-indent: 1em;}
 .xpbar + * { clear: left; }
 
-.portrait { position: relative; float: left;  #77b300; margin-right: 2em }
+.portrait { position: relative; float: left;  border: 10px dashed #77B300; margin-right: 2em }
 .userinfo { position: relative; top: 15px; font-size:15px; }
 .levelinfo { clear: left; }
 

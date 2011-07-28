@@ -69,12 +69,12 @@ def main(request):
 
 def get_portrait(level):
     #user should be able to choose the portrait type at some point. Currently only ifitar is available
-    portrait_type = 'ifitar'
+    portrait_class = 'ifitar'
     image_type = 'png'
     if level > 10:
-        return ''.join([portrait_type, '10', '.', image_type])
+        return ''.join([portrait_class, '10', '.', image_type])
 
-    return ''.join([portrait_type, (str(level)), '.', image_type])
+    return ''.join([portrait_class, (str(level)), '.', image_type])
 
 @login_required
 def profile(request):
