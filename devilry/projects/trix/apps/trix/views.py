@@ -67,7 +67,18 @@ def main(request):
                    'level': get_level(get_points(request.user))})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
+def get_portrait(level):
+    #user should be able to choose the portrait type at some point. Currently only ifitar is available
+    portrait_type = 'ifitar'
+    image_type = 'png'
+    if level > 10:
+        return ''.join([portrait_type, '10', '.', image_type])
+
+    return ''.join([portrait_type, (str(level)), '.', image_type])
+
 @login_required
 def profile(request):
+    level = get_level(get_points(request.user))
     return render(request, 'trix/profile.django.html',
-                  {'level': get_level(get_points(request.user))})
+                  {'level': level,
+                   'portrait': get_portrait(level['level'])})
