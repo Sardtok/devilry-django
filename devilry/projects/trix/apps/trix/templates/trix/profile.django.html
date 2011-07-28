@@ -19,8 +19,8 @@ Name: {{ user.first_name }} {{ user.last_name }}<br />
 Username: {{ user.username }}<br />
 email: {{ user.email }} <br /><br />
 Level: {{ level.level }}<br />
-Points needed to reach level {{level.next_level }}: {{ level.points }} <br />
-Total points : {{ points }} <br />
+Points needed to reach level {{level.next_level }}: {{ level.points_needed }} <br />
+Total points : {{ level.total_points }} <br />
 
 
 {% endblock %}

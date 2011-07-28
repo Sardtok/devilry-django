@@ -20,10 +20,11 @@ def get_level(points=0):
     print levelpoints, "/", add
     print levelpoints * 100 / add
     return {'level': level,
-            'next': add,
             'next_level': level+1,
+            'level_points': add,
             'total_next': total,
-            'points': levelpoints,
+            'points_on_level': levelpoints,
+            'points_needed': add-levelpoints,
             'total_points': points,
             'percentage': levelpoints * 100 / add}
 
@@ -84,7 +85,5 @@ def main(request):
 #                  {'exercises': Period.objects.all().exercises.all()})
 
 def profile(request):
-    points = get_points(request.user)
     return render(request, 'trix/profile.django.html',
-                  {'points': points,
-                   'level': get_level(points),})
+                  {'level': get_level(get_points(request.user))})
