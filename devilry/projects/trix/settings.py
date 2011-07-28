@@ -26,7 +26,7 @@ INSTALLED_APPS += [
     'devilry.projects.trix.apps.trix',
     
     # Not apps, but here for the Django test system to discover them:
-        'devilry.utils',
+    'devilry.utils',
     'devilry.restful',
     'devilry.simplified']
 
