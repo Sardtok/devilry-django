@@ -32,6 +32,8 @@ def get_level(points=0):
             'percentage': levelpoints * 100 / add}
 
 def get_points(user):
+    if not user.is_authenticated():
+        return 0
     points_total = 0;
     for stats in user.exercise_results.all():
         points_total += stats.exercise.points
@@ -54,8 +56,7 @@ def main(request):
                 e.update([['status', stats.status.id]])
             except ExerciseStatus.DoesNotExist:
                 pass
-            exercises.setdefault(exercise.period, {}).update([[exercise.id,
-                                                                  e]])
+        exercises.setdefault(exercise.period, {}).update([[exercise.id, e]])
 
     statuses = []
     if request.user.is_authenticated():
