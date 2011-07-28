@@ -13,13 +13,20 @@ def get_level(points=0):
     total = Decimal(add, 2)
     while points > total:
         print total, "(", add, ")"
-        add *= 1.5
+        add *= Decimal(1.5)
         total += add
         level += 1
     return {'level': level,
             'next': add,
+            'next_level': level+1,
             'points': points-(total-add),
             'total': total}
+
+def get_points(user):
+    points_total = 0;
+    for stats in user.exercise_results.all():
+        points_total += stats.exercise.points
+    return points_total
 
 def main(request):
     periods = [p for p in list(Period.objects.all()) if p.is_active()]
@@ -71,3 +78,8 @@ def main(request):
                    'level_info': get_level(points_total)})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
+def profile(request):
+    points = get_points(request.user)
+    return render(request, 'trix/profile.django.html',
+                  {'points': points,
+                   'level': get_level(points),})
