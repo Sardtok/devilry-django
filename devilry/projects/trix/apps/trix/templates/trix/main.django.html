@@ -31,12 +31,17 @@
 {% endblock %}
 
 {% block main %}
-LEVEL: {{ level_info.level }}<br />
-POINTS: {{ level_info.points }} / {{ level_info.next }}
+<div class="xptopic">Level: {{ level_info.level }}</div>
+<div class="xpbar" style="width: 25%;">
+  <div style="width: {{level_info.percentage}}%;">
+    {{ level_info.points }}/{{ level_info.next }}
+  </div>
+  &nbsp;</div>
+<div style="clear: left;">Points: {{ level_info.total_points }}</div>
 
 {% for p, p_excs in exercises.items %}
   <form autocomplete="off">
-  <table>
+  <table class="exercises">
     <caption>{% trans "Exercises" %} —
       {{ p.parentnode.long_name }} —
       {{ p.long_name }}</caption>

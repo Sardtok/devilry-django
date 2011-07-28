@@ -1,26 +1,31 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from decimal import *
-
 from devilry.apps.core.models import Period
 from models.status import Status
 from models.exercisestatus import ExerciseStatus
 
+
 def get_level(points=0):
     level = 1
-    add = Decimal(10, 2)
-    total = Decimal(add, 2)
+    add = 10
+    total = add
     while points > total:
         print total, "(", add, ")"
-        add *= Decimal(1.5)
+        add = int(add * 1.5)
         total += add
         level += 1
+
+    levelpoints = points-(total-add)
+    print levelpoints, "/", add
+    print levelpoints * 100 / add
     return {'level': level,
             'next': add,
             'next_level': level+1,
-            'points': points-(total-add),
-            'total': total}
+            'total_next': total,
+            'points': levelpoints,
+            'total_points': points,
+            'percentage': levelpoints * 100 / add}
 
 def get_points(user):
     points_total = 0;
@@ -75,7 +80,7 @@ def main(request):
                    'statuses': statuses,
                    'student_periods': student_periods,
                    'points': points_total,
-                   'level_info': get_level(points_total)})
+                   'level_info': get_level(int(points_total))})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
 def profile(request):
