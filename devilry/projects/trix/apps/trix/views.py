@@ -8,7 +8,6 @@ from models.status import Status
 from models.exercisestatus import ExerciseStatus
 from models.periodexercise import PeriodExercise
 
-
 def get_level(points=0):
     level = 1
     add = 10
@@ -65,9 +64,10 @@ def main(request):
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'statuses': statuses,
-                   'level_info': get_level(get_points(request.user))})
+                   'level': get_level(get_points(request.user))})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
+@login_required
 def profile(request):
     return render(request, 'trix/profile.django.html',
                   {'level': get_level(get_points(request.user))})

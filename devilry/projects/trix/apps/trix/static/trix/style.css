@@ -10,9 +10,9 @@ td    { padding: 0.25em 0; }
 pre   { border-color: #CCC;
         border-style: dashed dashed dashed solid;
         border-width: 1px 1px 1px 4px; }
-.maincol { min-width: 50%; max-width: 100%; }
+.maincol { min-width: 70%; max-width: 100%; }
 .statusbutton { text-align: center; }
-#dispexc { margin: 0.5em; font-size: 1em !important; }
+.dispexc { margin: 0.5em; font-size: 1em !important; }
 #bq   { background-color: #EEE;
         margin: 0.5em 0.5em 0.5em 0;
         padding: 1em; }
@@ -22,6 +22,7 @@ pre   { border-color: #CCC;
 .xptopic { float: left; margin-right: 1em; }
 .xpbar { background-color: #f88; position: relative; float: left; z-index: 1; border: 1px solid #844; }
 .xpbar > div { background-color: #8f8; height: 100%; position: absolute; left: 0; top: 0; z-index: 2; text-indent: 1em;}
+.xpbar + * { clear: left; }
 
 header > nav.trix {
     border-bottom: 10px solid #B340B3;

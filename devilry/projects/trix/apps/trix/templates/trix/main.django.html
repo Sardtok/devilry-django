@@ -13,8 +13,10 @@
   <script type="text/javascript">
     toggleExc = function(link) {
       elem = link;
-      while (elem && elem.id != 'exctext') {
-        elem = elem.nextSibling;
+      while (elem && elem.getAttribute("class") != "exctext") {
+        do {
+            elem = elem.nextSibling;
+        } while (elem.nodeType !== 1);
       }
 
       if (elem) {
@@ -31,13 +33,8 @@
 {% endblock %}
 
 {% block main %}
-<div class="xptopic">Level: {{ level_info.level }}</div>
-<div class="xpbar" style="width: 25%;">
-  <div style="width: {{level_info.percentage}}%;">
-    {{ level_info.points_on_level }}/{{ level_info.level_points }}
-  </div>
-  &nbsp;</div>
-<div style="clear: left;">Points: {{ level_info.total_points }}</div>
+{% include "trix/xpbar.django.html" %}
+<div>Points: {{ level.total_points }}</div>
 
 {% for p, p_excs in exercises.items %}
   <form autocomplete="off">
@@ -66,14 +63,14 @@
            {% if statuses %}class="maincol"{% endif %}
            >
           {% if statuses %}
-          <a id="dispexc" href="javascript:void(0)"
+          <a class="dispexc" href="javascript:void(0)"
              onClick="toggleExc(this)" style="float: right;">
             {% trans "Show exercise" %}
           </a>
           {% endif %}
           <h3>{{ e.title }}</h3>
           {% autoescape off %}
-          <div id="exctext"
+          <div class="exctext"
                {% if statuses %}style="display: none"{% endif %}
                >{{ e.text }}</div>
           {% endautoescape %}
@@ -102,4 +99,6 @@
   </table>
   </form>
 {% endfor %}
+
 {% endblock %}
+
