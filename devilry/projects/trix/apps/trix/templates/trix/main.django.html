@@ -30,6 +30,7 @@
       }
     }
   </script>
+  <script src="{{DEVILRY_STATIC_URL}}/trix/setstatus.js"></script>
 {% endblock %}
 
 {% block main %}
@@ -82,7 +83,7 @@
                      {% if e.status == status.id %}
                      checked="checked"
                      {% endif %}
-                     />
+                     onChange="setStatus(this.name, this.value)"/>
             </td>
           {% endfor %}
           <td class="statusbutton">
@@ -90,7 +91,7 @@
                      {% if e.status == -1 %}
                      checked="checked"
                      {% endif %}
-                     />
+                     onChange="setStatus(this.name, this.value)"/>
           </td>
         {% endif %}
       </tr>

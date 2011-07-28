@@ -5,4 +5,6 @@ import views
 
 urlpatterns = patterns('devilry.projects.dev.apps.trix',
     url(r'^$', views.main, name='trix'),
-    url(r'^profile$', views.profile, name='profile'),)
+    url(r'^profile$', views.profile, name='profile'),
+    url(r'^exercise/(?P<exercise>\d+)/status$',
+        views.exercisestatus, name='exercisestatus'),)

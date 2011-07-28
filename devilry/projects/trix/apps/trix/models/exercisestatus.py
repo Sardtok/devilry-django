@@ -47,10 +47,10 @@ class ExerciseStatus(models.Model):
         Raises ValidationError if the user isn't a student in that period,
         or if the status is not an active status.
         """
-        if not status.rel.to.active:
+        if not self.status.active:
             raise ValidationError(_("The status that was set is not active: %b"
                                     % (status.rel.to.active)))
 
-        student_check = exercise.period.relatedstudents.get(id=student.rel.to.id)
-        if student_check is None:
-            raise ValidationError(_('You\'re not a student for this period.'))
+        #student_check = exercise.period.relatedstudents.get(id=student.rel.to.id)
+        #if student_check is None:
+        #    raise ValidationError(_('You\'re not a student for this period.'))
