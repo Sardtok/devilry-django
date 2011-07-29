@@ -14,14 +14,12 @@ def get_level(points=0):
     add = 10
     total = add
     while points >= total:
-        print total, "(", add, ")"
         add = int(add * 1.5)
         total += add
         level += 1
 
     levelpoints = points-(total-add)
-    print levelpoints, "/", add
-    print levelpoints * 100 / add
+
     return {'level': level,
             'next_level': level+1,
             'level_points': add,
@@ -31,6 +29,20 @@ def get_level(points=0):
             'total_points': points,
             'percentage': levelpoints * 100 / add}
 
+def get_topic_points(topic, user):
+    if not user.is_authenticated():
+        return 0
+    exercises = topic.exercises.all()
+    stats = []
+    for e in exercises:
+        stats.extend(ExerciseStatus.objects.filter(student=user,
+                                                        exercise__in=e.periods.all()))
+
+    points = 0
+    for stat in stats:
+        points += int(stat.exercise.points * stat.status.percentage)
+    return points
+    
 def get_points(user):
     if not user.is_authenticated():
         return 0
@@ -45,10 +57,21 @@ def main(request):
                                                   period__end_time__gte
                                                   =datetime.now())
     exercises = {}
+    topics = {}
+    prerequisites = {}
     for exercise in all_exercises:
         e = {'title': exercise.exercise.long_name,
              'text': exercise.exercise.text,
              'status': -1}
+
+        ts = exercise.exercise.topics.exclude(id__in=topics.keys)
+        for t in ts:
+            topics.setdefault(t.id, t)
+
+        ps = exercise.exercise.prerequisites.exclude(id__in=prerequisites.keys)
+        for p in ps:
+            prerequisites.setdefault(p.id, p)
+        
 
         if request.user.is_authenticated():
             try:
@@ -62,9 +85,15 @@ def main(request):
     if request.user.is_authenticated():
         statuses = Status.objects.filter(active=True)
 
+    if topics:
+        print "Testing points for topic (" + topics[3].name + ")"
+        print get_topic_points(topics[3], request.user);
+
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'statuses': statuses,
+                   'topics': topics,
+                   'prerequisites': prerequisites,
                    'level': get_level(get_points(request.user))})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
@@ -107,9 +136,21 @@ def exercisestatus(request, exercise=-1):
         if exc_status is None:
             raise Http404
         exc_status.delete()
-        return HttpResponse("-1", mimetype="text/plain")
+        points = get_level(get_points(request.user))
+        return HttpResponse("-1, " + str(points['level']) + ", "
+                            + str(points['percentage']) + ", "
+                            + str(points['points_on_level']) + ", "
+                            + str(points['level_points']) + ", "
+                            + str(points['total_points']),
+                            mimetype="text/plain")
 
     exc_status.status = status
     exc_status.full_clean()
     exc_status.save()
-    return HttpResponse(str(exc_status.status.id), mimetype="text/plain")
+    points = get_level(get_points(request.user))
+    return HttpResponse(str(exc_status.status.id) + ", "
+                        + str(points['level']) + ", "
+                        + str(points['percentage']) + ", "
+                        + str(points['points_on_level']) + ", "
+                        + str(points['level_points']) + ", "
+                        + str(points['total_points']), mimetype="text/plain")

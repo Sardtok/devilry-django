@@ -2,9 +2,11 @@
 
 {% block xpbar %}
 {% if user.is_authenticated %}
-<div class="xptopic">{% trans "Level" %}: {{ level.level }}</div>
+<div class="xptopic">{% trans "Level" %}:
+  <span id="level">{{ level.level }}</span>
+</div>
 <div class="xpbar" style="width: 25%;">
-  <div style="width: {{level.percentage}}%;">
+  <div id="xpbardone" style="width: {{level.percentage}}%;">
     {{ level.points_on_level }}/{{ level.level_points }}
   </div>
   &nbsp;

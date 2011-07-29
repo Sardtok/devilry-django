@@ -35,7 +35,25 @@
 
 {% block main %}
 {% include "trix/xpbar.django.html" %}
-<div>Points: {{ level.total_points }}</div>
+{% if user.is_authenticated %}
+<div>{% trans "Total points" %}:
+  <span id="total_points">{{ level.total_points }}</span>
+</div>
+{% endif %}
+
+{% if topics %}
+<div>{% trans "Topics" %}:
+  {% for topic in topics.values %}
+  {{ topic.name }}
+  {% endfor %}</div>
+{% endif %}
+
+{% if prerequisites %}
+<div>{% trans "Prerequisites" %}:
+  {% for prerequisite in prerequisites.values %}
+  {{ prerequisite.name }}
+  {% endfor %}</div>
+{% endif %}
 
 {% for p, p_excs in exercises.items %}
   <form autocomplete="off">
