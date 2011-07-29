@@ -20,15 +20,32 @@ setStatus = function(exercise, status) {
                     return;
                 }
 
-                var actualstate = status_exercise_request.responseText;
+                settings = status_exercise_request.responseText.split(", ");
                 radiobuttons = document.getElementsByName(exercise);
 
-                for (button in radiobuttons) {
-                    if (button.getAttribute("value") != actualstate) {
+                for (i = 0; i < radiobuttons.length; i++) {
+                    button = radiobuttons[i];
+                    if (button.getAttribute("value") != settings[0]) {
                         button.removeAttribute("checked");
                     } else {
                         button.setAttribute("checked", "checked");
                     }
+                }
+
+                level = document.getElementById("level");
+                if (level != null) {
+                    level.innerHTML = settings[1];
+                }
+
+                bar = document.getElementById("xpbardone");
+                if (bar != null) {
+                    bar.style.width = settings[2] + "%";
+                    bar.innerHTML = settings[3] + "/" + settings[4]
+                }
+
+                points = document.getElementById("total_points");
+                if (points != null) {
+                    points.innerHTML = settings[5];
                 }
             }
         }
