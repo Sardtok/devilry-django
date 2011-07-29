@@ -43,8 +43,13 @@
 
 {% if topics %}
 <div>{% trans "Topics" %}:
-  {% for topic in topics.values %}
+  {% for id, topic in topics.items %}
   {{ topic.name }}
+  {% for statid, points in topicstats.items %}
+  {% if statid == id %}
+  ({{points}})
+  {% endif %}
+  {% endfor %}
   {% endfor %}</div>
 {% endif %}
 

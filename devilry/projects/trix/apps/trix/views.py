@@ -10,6 +10,13 @@ from models.exercisestatus import ExerciseStatus
 from models.periodexercise import PeriodExercise
 
 def get_level(points=0):
+    """
+    Calculates a user's level based on points.
+    For each level you need 1.5x the points needed to reach the previous level,
+    starting with 10 points for level 2.
+
+    Returns a dictionary with stats related to levelling.
+    """
     level = 1
     add = 10
     total = add
@@ -30,6 +37,9 @@ def get_level(points=0):
             'percentage': levelpoints * 100 / add}
 
 def get_topic_points(topic, user):
+    """
+    Gets the number of points a user has acquired for a given topic.
+    """
     if not user.is_authenticated():
         return 0
     exercises = topic.exercises.all()
@@ -44,6 +54,9 @@ def get_topic_points(topic, user):
     return points
     
 def get_points(user):
+    """
+    Gets the total number of points a user has acquired.
+    """
     if not user.is_authenticated():
         return 0
     points_total = 0;
@@ -52,6 +65,9 @@ def get_points(user):
     return points_total
 
 def main(request):
+    """
+    Main page showing current exercises.
+    """
     all_exercises = PeriodExercise.objects.filter(period__start_time__lte
                                                   =datetime.now(),
                                                   period__end_time__gte
@@ -59,6 +75,7 @@ def main(request):
     exercises = {}
     topics = {}
     prerequisites = {}
+    topicstats = {}
     for exercise in all_exercises:
         e = {'title': exercise.exercise.long_name,
              'text': exercise.exercise.text,
@@ -85,19 +102,28 @@ def main(request):
     if request.user.is_authenticated():
         statuses = Status.objects.filter(active=True)
 
-    if topics:
-        print "Testing points for topic (" + topics[3].name + ")"
-        print get_topic_points(topics[3], request.user);
+    for topic in topics.values():
+        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
+    for topic in prerequisites.values():
+        if (topicstats.has_key(topic.id)):
+            continue
+        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
+
+    print topicstats
 
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'statuses': statuses,
                    'topics': topics,
                    'prerequisites': prerequisites,
+                   'topicstats': topicstats,
                    'level': get_level(get_points(request.user))})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
 def get_portrait(level):
+    """
+    Gets the avatar portrait URL for a given level.
+    """
     #user should be able to choose the portrait type at some point. Currently only ifitar is available
     portrait_class = 'ifitar'
     image_type = 'png'
@@ -108,6 +134,9 @@ def get_portrait(level):
 
 @login_required
 def profile(request):
+    """
+    Profile page showing user stats.
+    """
     level = get_level(get_points(request.user))
     return render(request, 'trix/profile.django.html',
                   {'level': level,
@@ -115,6 +144,10 @@ def profile(request):
 
 @login_required
 def exercisestatus(request, exercise=-1):
+    """
+    Sets the status for an exercise.
+    This is made for AJAX
+    """
     exc = get_object_or_404(PeriodExercise, pk=exercise)
     
     status = None
@@ -137,20 +170,21 @@ def exercisestatus(request, exercise=-1):
             raise Http404
         exc_status.delete()
         points = get_level(get_points(request.user))
-        return HttpResponse("-1, " + str(points['level']) + ", "
-                            + str(points['percentage']) + ", "
-                            + str(points['points_on_level']) + ", "
-                            + str(points['level_points']) + ", "
-                            + str(points['total_points']),
+        return HttpResponse("%d, %d, %d, %d, %d, %d"
+                            % (-1, points['level'], points['percentage'],
+                                points['points_on_level'],
+                                points['level_points'],
+                                points['total_points']),
                             mimetype="text/plain")
 
     exc_status.status = status
     exc_status.full_clean()
     exc_status.save()
     points = get_level(get_points(request.user))
-    return HttpResponse(str(exc_status.status.id) + ", "
-                        + str(points['level']) + ", "
-                        + str(points['percentage']) + ", "
-                        + str(points['points_on_level']) + ", "
-                        + str(points['level_points']) + ", "
-                        + str(points['total_points']), mimetype="text/plain")
+    return HttpResponse("%d, %d, %d, %d, %d, %d" % (exc_status.status.id,
+                                                    points['level'],
+                                                    points['percentage'],
+                                                    points['points_on_level'],
+                                                    points['level_points'],
+                                                    points['total_points']),
+                        mimetype="text/plain")
