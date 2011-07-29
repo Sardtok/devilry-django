@@ -1,81 +1,56 @@
 /**
- * Combines {@link devilry.extjshelpers.assignmentgroup.AssignmentGroupInfo} and
- * {@link devilry.extjshelpers.assignmentgroup.DeliveryInfo}
- * into a complete AssignmentGroup reader and manager
- * (if {@link #canExamine} is enabled).
  *
- *      -----------------------------------------------------------------
- *      |                     |                                         |
- *      |                     |                                         |
- *      |                     |                                         |
- *      | AssignmentGroupInfo | DeliveryInfo                            |
- *      |                     |                                         |
- *      |                     |                                         |
- *      |                     |                                         |
- *      |                     |                                         |
- *      -----------------------------------------------------------------
+ * Requires the following definitions in the django template:
+ *
+ *     {{ restfulapi.RestfulSimplifiedAssignmentGroup|extjs_model:"subject,period,assignment,users" }};
+ *    
+ *     {{ restfulapi.RestfulSimplifiedDelivery|extjs_model:"deadline,assignment_group" }};
+ *     {{ restfulapi.RestfulSimplifiedDelivery|extjs_store }};
+ *    
+ *     {{ restfulapi.RestfulSimplifiedStaticFeedback|extjs_model }};
+ *     {{ restfulapi.RestfulSimplifiedStaticFeedback|extjs_store }};
+ *    
+ *     {{ restfulapi.RestfulSimplifiedFileMeta|extjs_model }};
+ *     {{ restfulapi.RestfulSimplifiedFileMeta|extjs_store }};
+ *    
+ *     {# These are used by the grade editor and only required is canExamine is true #}
+ *     {{ gradeeditors.RestfulSimplifiedConfig|extjs_model }};
+ *     {{ gradeeditors.RestfulSimplifiedFeedbackDraft|extjs_model }};
+ *     {{ gradeeditors.RestfulSimplifiedFeedbackDraft|extjs_store }};
+ *
+ * The ones from ``restfulapi`` are for core classes, while the ones from
+ * ``gradeeditors`` is from ``devilry.apps.gradeeditors``. You can dump this
+ * code into the django template using:
+ *
+ *     {% include "extjshelpers/AssignmentGroupOverviewExtjsClasses.django.html" %}
  */
 Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
     extend: 'Ext.panel.Panel',
-    width: 1000,
-    height: 800,
-    layout: 'border',
     alias: 'widget.assignmentgroupoverview',
+    cls: 'widget-assignmentgroupoverview',
     requires: [
         'devilry.extjshelpers.assignmentgroup.DeliveryInfo',
-        'devilry.extjshelpers.assignmentgroup.AssignmentGroupInfo'
+        'devilry.extjshelpers.assignmentgroup.AssignmentGroupDetailsPanel',
+        'devilry.extjshelpers.assignmentgroup.DeadlineListing',
+        'devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo',
+        'devilry.extjshelpers.assignmentgroup.StaticFeedbackEditor',
+        'devilry.extjshelpers.assignmentgroup.AssignmentGroupTitle',
+        'devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList',
+        'devilry.extjshelpers.SingleRecordContainer'
     ],
-
-    headingTpl: Ext.create('Ext.XTemplate',
-        '<div class="treeheader">',
-        '   <div class="level1">{parentnode__parentnode__parentnode__long_name}</div>',
-        '   <div class="level2">{parentnode__parentnode__long_name}</div>',
-        '   <div class="level3">{parentnode__long_name}</div>',
-        '<div>'
-    ),
 
     config: {
         /**
-        * @cfg
-        * AssignmentGroup id. (Required).
+         * @cfg
+        * ID of the div to render title to. Defaults to 'content-heading'.
         */
-        assignmentgroupid: undefined,
+        renderTitleTo: 'content-heading',
 
         /**
          * @cfg
-         * AssignmentGroup ``Ext.data.Model``. (Required).
-         */
-        assignmentgroupmodel: undefined,
-
-        /**
-         * @cfg 
-         * Delivery  ``Ext.data.Model``. (Required).
-         */
-        deliverymodel: undefined,
-
-        /**
-         * @cfg
-         * Deadline ``Ext.data.Store``. (Required).
-         * _Note_ that ``deadlinestore.proxy.extraParams`` is changed by
-         * {@link devilry.extjshelpers.assignmentgroup.DeadlineListing}.
-         */
-        deadlinestore: undefined,
-
-        /**
-         * @cfg
-         * FileMeta ``Ext.data.Store``. (Required).
-         * _Note_ that ``filemetastore.proxy.extraParams`` is changed by
-         * {@link devilry.extjshelpers.assignmentgroup.DeliveryInfo}.
-         */
-        filemetastore: undefined,
-
-        /**
-         * @cfg
-         * FileMeta ``Ext.data.Store``. (Required).
-         * _Note_ that ``filemetastore.proxy.extraParams`` is changed by
-         * {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo}.
-         */
-        staticfeedbackstore: undefined,
+        * ID of the div to render the body to. Defaults to 'content-main'.
+        */
+        renderTo: 'content-main',
 
         /**
          * @cfg
@@ -85,97 +60,253 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
          * When this is ``true``, the authenticated user still needs to have
          * permission to POST new feedbacks for the view to work.
          */
-        canExamine: false
+        canExamine: false,
+
+        /**
+         * @cfg
+         * AssignmentGroup ID.
+         */
+        assignmentgroupid: undefined,
+
+        /**
+         * @cfg
+         * Use the administrator RESTful interface to store drafts? If this is
+         * ``false``, we use the examiner RESTful interface.
+         */
+        isAdministrator: false
+    },
+
+    constructor: function(config) {
+        this.initConfig(config);
+        this.callParent([config]);
     },
 
 
     initComponent: function() {
-        var me = this;
-        this.mainHeader = Ext.create('Ext.Component');
-        this.centerArea = Ext.create('Ext.container.Container');
-        this.sidebar = Ext.create('Ext.container.Container');
-
-        Ext.apply(this, {
-            items: [{
-                region: 'north',
-                height: 66,
-                xtype: 'container',
-                layout: 'fit',
-                items: [this.mainHeader]
-            }, {
-                region: 'west',
-                layout: 'fit',
-                width: 220,
-                xtype: 'panel',
-                collapsible: true,   // make collapsible
-                //titleCollapse: true, // click anywhere on title to collapse.
-                split: true,
-                items: [this.sidebar]
-            }, {
-                region: 'center',
-                layout: 'fit',
-                items: [this.centerArea]
-            }],
-        });
+        this.createAttributes();
+        this.createLayout();
         this.callParent(arguments);
-
-        console.log(this.assignmentgroupmodel);
-        console.log(this.deliverymodel);
-        console.log(this.assignmentgroupid);
-        
-        this.assignmentgroupmodel.load(this.assignmentgroupid, {
-            scope: me,
-            success: me.onLoadAssignmentGroup
-        });
+        this.loadAssignmentgroupRecord();
+        this.selectDeliveryIfInQueryString();
     },
 
-    onLoadAssignmentGroup: function(assignmentgrouprecord) {
-        assignmentgroup = assignmentgrouprecord.data;
-        this.mainHeader.update(this.headingTpl.apply(assignmentgroup));
-        this.assignmentid = assignmentgroup.parentnode;
+    /**
+     * @private
+     */
+    createAttributes: function() {
+        this.assignmentgroup_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
+        this.delivery_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
+        this.gradeeditor_config_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
 
-        var query = Ext.Object.fromQueryString(window.location.search);
-        this.sidebar.add({
-            xtype: 'assignmentgroupinfo',
-            assignmentgroup: assignmentgroup,
-            deliverymodel: this.deliverymodel,
-            deadlinestore: this.deadlinestore,
-            canExamine: this.canExamine,
-            layout: 'fit',
-            selectedDeliveryId: parseInt(query.deliveryid)
+        Ext.create('devilry.extjshelpers.assignmentgroup.AssignmentGroupTitle', {
+            renderTo: this.renderTitleTo,
+            singlerecordontainer: this.assignmentgroup_recordcontainer
+        });
+
+        this.role = !this.canExamine? 'student': this.isAdministrator? 'administrator': 'examiner';
+        this.assignmentgroupmodel = Ext.ModelManager.getModel(this.getSimplifiedClassName('SimplifiedAssignmentGroup'));
+        this.deliverymodel = Ext.ModelManager.getModel(this.getSimplifiedClassName('SimplifiedDelivery'));
+        this.filemetastore = Ext.data.StoreManager.lookup(this.getSimplifiedClassName('SimplifiedFileMetaStore'));
+        this.staticfeedbackstore = Ext.data.StoreManager.lookup(this.getSimplifiedClassName('SimplifiedStaticFeedbackStore'));
+
+        if(this.canExamine) {
+            this.gradeeditor_config_model = Ext.ModelManager.getModel(Ext.String.format(
+                'devilry.apps.gradeeditors.simplified.{0}.SimplifiedConfig',
+                this.role
+            ));
+
+            this.assignmentgroupstore = Ext.data.StoreManager.lookup(this.getSimplifiedClassName('SimplifiedAssignmentGroupStore'));
+        }
+    },
+
+    /**
+     * @private
+     */
+    loadAssignmentgroupRecord: function() {
+        this.assignmentgroupmodel.load(this.assignmentgroupid, {
+            scope: this,
+            success: function(record) {
+                this.assignmentgroup_recordcontainer.setRecord(record);
+                this.loadGradeEditorConfigModel();
+            },
+            failure: function() {
+                // TODO: Handle errors
+            }
         });
     },
 
     /**
-     * Create a {@link devilry.extjshelpers.assignmentgroup.DeliveryInfo}
-     * containing the given delivery and place it in the center area.
-     *
-     * @param {Ext.model.Model} deliveryrecord A Delivery record.
-     *
-     * Used by {@link devilry.extjshelpers.assignmentgroup.DeliveryGrid} and
-     * internally in this class.
+     * @private
      */
-    setDelivery: function(deliveryrecord) {
-        if(deliveryrecord.data.deadline__assignment_group == this.assignmentgroupid) { // Note that this is not for security (that is handled on the server, however it is to prevent us from showing a delivery within the wrong assignment group (which is a bug))
-            this.centerArea.removeAll();
-            this.centerArea.add({
-                xtype: 'deliveryinfo',
-                assignmentid: this.assignmentid,
-                delivery: deliveryrecord.data,
-                filemetastore: this.filemetastore,
-                staticfeedbackstore: this.staticfeedbackstore,
-                canExamine: this.canExamine
+    loadGradeEditorConfigModel: function() {
+        if(this.canExamine) {
+            this.gradeeditor_config_model.load(this.assignmentgroup_recordcontainer.record.data.parentnode, {
+                scope: this,
+                success: function(record) {
+                    this.gradeeditor_config_recordcontainer.setRecord(record);
+                },
+                failure: function() {
+                    // TODO: Handle errors
+                }
             });
-        } else {
-            var errormsg = Ext.String.format(
-                'Invalid deliveryid: {0}. Must be a delivery made by AssignmentGroup: {1}',
-                deliveryrecord.id,
-                this.assignmentgroupid);
-            console.error(errormsg);
         }
     },
 
-    handleNoDeliveryInQuerystring: function() {
-        console.log('no delivery selected');
+    /**
+     * @private
+     */
+    getSimplifiedClassName: function(name) {
+        var classname = Ext.String.format(
+            'devilry.apps.{0}.simplified.{1}',
+            this.role, name
+        );
+        return classname;
+
+    },
+
+    /**
+     * @private
+     */
+    createLayout: function() {
+        this.onOtherDeliveriesBtn = Ext.ComponentManager.create({
+            xtype: 'button',
+            menu: [], // To get an arrow
+            id: 'tooltip-other-deliveries',
+            text: 'Other deliveries/deadlines',
+            scale: 'large',
+            enableToggle: true,
+            listeners: {
+                scope: this,
+                click: this.onOtherDeliveries
+            }
+        });
+        var tbarItems = [this.onOtherDeliveriesBtn,'->', {
+            xtype: 'deliveryinfo',
+            delivery_recordcontainer: this.delivery_recordcontainer,
+            filemetastore: this.filemetastore
+        }];
+
+        if(this.canExamine) {
+            var onUncorrectedGroupsBtn = Ext.ComponentManager.create({
+                xtype: 'button',
+                menu: [], // To get an arrow
+                id: 'tooltip-uncorrected-groups',
+                text: 'Uncorrected groups',
+                scale: 'large',
+                enableToggle: true,
+                listeners: {
+                    scope: this,
+                    click: this.onUncorrectedGroups
+                }
+            });
+            Ext.Array.insert(tbarItems, 0, [onUncorrectedGroupsBtn]);
+        }
+
+
+        Ext.apply(this, {
+            xtype: 'panel',
+            frame: false,
+            layout: 'fit',
+            tbar: tbarItems,
+            items: [{
+                xtype: this.canExamine? 'staticfeedbackeditor': 'staticfeedbackinfo',
+                id: 'tooltip-feedback-window',
+                staticfeedbackstore: this.staticfeedbackstore,
+                delivery_recordcontainer: this.delivery_recordcontainer,
+                isAdministrator: this.isAdministrator, // Only required by staticfeedbackeditor
+                gradeeditor_config_recordcontainer: this.gradeeditor_config_recordcontainer // Only required by staticfeedbackeditor
+            }]
+        });
+    },
+
+
+    /**
+     * @private
+     */
+    onUncorrectedGroups: function(button) {
+        this.groupsWindow = Ext.create('Ext.window.Window', {
+            title: 'Open assignment groups',
+            height: 500,
+            width: 400,
+            modal: true,
+            layout: 'fit',
+            items: {
+                xtype: 'assignmentgrouptodolist',
+                assignmentgroup_recordcontainer: this.assignmentgroup_recordcontainer,
+                store: this.assignmentgroupstore
+            },
+            listeners: {
+                scope: this,
+                close: function() {
+                    button.toggle(false);
+                }
+            }
+        });
+        this.groupsWindow.show();
+        if(button) {
+            this.groupsWindow.alignTo(button, 'bl', [0, 0]);
+        }
+    },
+
+    /**
+     * @private
+     */
+    onOtherDeliveries: function(button) {
+        if(!this.deliveriesWindow) {
+            this.deliveriesWindow = Ext.create('Ext.window.Window', {
+                title: 'Deliveries grouped by deadline',
+                height: 500,
+                width: 400,
+                modal: true,
+                layout: 'fit',
+                closeAction: 'hide',
+                items: {
+                    xtype: 'deadlinelisting',
+                    assignmentgroup_recordcontainer: this.assignmentgroup_recordcontainer,
+                    delivery_recordcontainer: this.delivery_recordcontainer,
+                    deliverymodel: this.deliverymodel,
+                    enableDeadlineCreation: this.canExamine
+                },
+                listeners: {
+                    scope: this,
+                    close: function() {
+                        this.onOtherDeliveriesBtn.toggle(false);
+                    }
+                }
+            });
+        }
+        this.deliveriesWindow.show();
+        if(button) {
+            this.deliveriesWindow.alignTo(button, 'bl', [0, 0]);
+        }
+    },
+
+    /**
+     * @private
+     */
+    selectDeliveryIfInQueryString: function() {
+        var query = Ext.Object.fromQueryString(window.location.search);
+        if(query.deliveryid) {
+            var deliveryid = parseInt(query.deliveryid);
+            this.deliverymodel.load(deliveryid, {
+                scope: this,
+                success: function(record) {
+                    if(this.assignmentgroupid == record.data.deadline__assignment_group) {
+                        this.delivery_recordcontainer.setRecord(record);
+                    } else {
+                        throw Ext.String.format(
+                            'Delivery {0} is not in AssignmentGroup {1}',
+                            deliveryid,
+                            this.assignmentgroupid
+                        );
+                    }
+                },
+                failure: function() {
+                    // TODO: Handle errors
+                }
+            });
+        } else {
+            this.onOtherDeliveries();
+        }
     }
 });

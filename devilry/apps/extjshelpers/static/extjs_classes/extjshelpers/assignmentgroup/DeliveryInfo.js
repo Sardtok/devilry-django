@@ -1,68 +1,20 @@
 
 /**
  * Panel to show Delivery info.
- * Uses {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo}
- * or {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackEditor}
- * to show and manage StaticFeedback (see {@link #canExamine})
- *
- *      -------------------------------------------
- *      | Info about the delivery                 |
- *      |                                         |
- *      |                                         |
- *      -------------------------------------------
- *      | StaticFeedbackInfo                      |
- *      | or                                      |
- *      | StaticFeedbackEditor              |
- *      |                                         |
- *      |                                         |
- *      |                                         |
- *      |                                         |
- *      -------------------------------------------
  */
 Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.deliveryinfo',
-    title: 'Delivery',
     cls: 'widget-deliveryinfo',
     html: '',
     requires: [
-        'devilry.extjshelpers.assignmentgroup.StaticFeedbackEditor',
-        'devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo',
         'devilry.extjshelpers.assignmentgroup.FileMetaBrowserPanel'
     ],
 
+    width: 500,
+    style: {border: 'none'},
+
     config: {
-        /**
-         * @cfg
-         * A delivery object, such as ``data`` attribute of a
-         * record loaded from a Delivery store or model.
-         */
-        delivery: undefined,
-
-        /**
-         * @cfg
-         * Enable creation of new feedbacks? Defaults to ``false``.
-         *
-         * If this is ``true``, 
-         * {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackEditor}
-         * is used instead of
-         * {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo}.
-         *
-         * If this is ``true``, the ``assignmentid`` config is _required_.
-         *
-         * When this is ``true``, the authenticated user still needs to have
-         * permission to POST new feedbacks for the view to work.
-         */
-        canExamine: false,
-
-        /**
-        * @cfg
-        * Assignment id. Required for 
-        * {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackEditor},
-        * which is used if the ``canExamine`` config is ``true``.
-        */
-        assignmentid: undefined,
-
         /**
          * @cfg
          * FileMeta ``Ext.data.Store``. (Required).
@@ -73,53 +25,70 @@ Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
 
         /**
          * @cfg
-         * FileMeta ``Ext.data.Store``. (Required).
-         * _Note_ that ``filemetastore.proxy.extraParams`` is changed by
-         * {@link devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo}.
+         * A {@link devilry.extjshelpers.SingleRecordContainer} for Delivery.
          */
-        staticfeedbackstore: undefined
+        delivery_recordcontainer: undefined
     },
 
-    tpl: Ext.create('Ext.XTemplate',
-        'Time of delivery: <em>{time_of_delivery:date}</em>'
+    timeOfDeliveryTpl: Ext.create('Ext.XTemplate',
+        '<span class="time_of_delivery">',
+        '   Time of delivery: <em>{time_of_delivery:date}</em>',
+        '   <tpl if="time_of_delivery &gt; deadline__deadline">',
+        '       <span class="after-deadline">(After deadline)</span>',
+        '   </tpl>',
+        '</span>'
     ),
 
     initComponent: function() {
-        var clsname = this.canExamine? 'StaticFeedbackEditor': 'StaticFeedbackInfo';
-        this.feedbackInfo = Ext.create('devilry.extjshelpers.assignmentgroup.' + clsname, {
-            deliveryid: this.delivery.id,
-            staticfeedbackstore: this.staticfeedbackstore,
-            assignmentid: this.assignmentid
-        });
-
-        var me = this;
         Ext.apply(this, {
-            items: [this.feedbackInfo],
-            tbar: [{
-                xtype: 'button',
-                text: 'Browse files',
-                listeners: {
-                    scope: me,
-                    click: me.showFileMetaBrowserWindow
-                }
-            }, '->', this.tpl.apply(this.delivery)]
+            hidden: true,
         });
         this.callParent(arguments);
+        if(this.delivery_recordcontainer.record) {
+            this.onLoadDelivery();
+        }
+        this.delivery_recordcontainer.addListener('setRecord', this.onLoadDelivery, this);
     },
 
-    showFileMetaBrowserWindow: function() {
+    /**
+     * @private
+     */
+    onLoadDelivery: function() {
+        var delivery = this.delivery_recordcontainer.record.data;
+        this.show();
+        this.removeAll();
+        this.add('->');
+        this.add(this.timeOfDeliveryTpl.apply(delivery));
+        this.add('-');
+        this.add({
+            xtype: 'button',
+            text: 'Browse files',
+            id: 'tooltip-browse-files',
+            scale: 'large',
+            listeners: {
+                scope: this,
+                click: this.showFileMetaBrowserWindow
+            }
+        });
+    },
+
+    /**
+     * @private
+     */
+    showFileMetaBrowserWindow: function(button) {
         Ext.create('Ext.window.Window', {
             title: 'Files',
             height: 400,
             width: 600,
+            modal: true,
+            animateTarget: button,
             layout: 'fit',
             items: [{
                 xtype: 'filemetabrowserpanel',
                 border: false,
                 filemetastore: this.filemetastore,
-                deliveryid: this.delivery.id
+                deliveryid: this.delivery_recordcontainer.record.data.id
             }]
         }).show();
-
     }
 });

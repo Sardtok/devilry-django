@@ -294,19 +294,18 @@ class TestTestHelper(TestCase):
         self.assertEquals(self.ti.inf1000_first_oblig1_g1_d1.deadline.date(), today + timedelta(days=10))
         self.assertEquals(self.ti.inf1000_first_oblig1_g1_d1.text, 'First deadline')
 
-        # and that there as many deadlines as there are groups, + the
-        # default deadlines. There should be 8 assignment groups
-        # created by having 1 subject, 2 periods, 2 assignments and 2
-        # groups in each, and we create 8 more deadlines that end in
-        # 10 days
-        self.assertEquals(Deadline.objects.all().count(), 16)
+        # and that there as many deadlines as there are groups. There
+        # should be 8 assignment groups created by having 1 subject, 2
+        # periods, 2 assignments and 2 groups in each, and we create 8
+        # more deadlines that end in 10 days
+        self.assertEquals(Deadline.objects.all().count(), 8)
 
         # add a new deadline for g1. This should overwrite the
         # previous d1 deadline
         self.ti.add_to_path('uio.ifi;inf1000.first.oblig1.g1.d1:text(Third deadline)')
         # assert that the texts are set correctly
         self.assertEquals(self.ti.inf1000_first_oblig1_g1_d1.text, 'Third deadline')
-        self.assertEquals(Deadline.objects.all().count(), 17)
+        self.assertEquals(Deadline.objects.all().count(), 9)
 
         # check the deadlines list of g1
         self.assertEquals(len(self.ti.inf1000_first_oblig1_g1_deadlines), 2)
@@ -384,12 +383,12 @@ class TestTestHelper(TestCase):
         self.assertTrue(d5.after_deadline)
 
         # check that all the created deliveries have the status
-        # Delivery.NOT_CORRECTED
-        self.assertEquals(d1.get_status_number(), Delivery.NOT_CORRECTED)
-        self.assertEquals(d2.get_status_number(), Delivery.NOT_CORRECTED)
-        self.assertEquals(d3.get_status_number(), Delivery.NOT_CORRECTED)
-        self.assertEquals(d4.get_status_number(), Delivery.NOT_CORRECTED)
-        self.assertEquals(d5.get_status_number(), Delivery.NOT_CORRECTED)
+        # Delivery.DELIVERY_NOT_CORRECTED
+        self.assertEquals(d1._get_status_number(), Delivery.DELIVERY_NOT_CORRECTED)
+        self.assertEquals(d2._get_status_number(), Delivery.DELIVERY_NOT_CORRECTED)
+        self.assertEquals(d3._get_status_number(), Delivery.DELIVERY_NOT_CORRECTED)
+        self.assertEquals(d4._get_status_number(), Delivery.DELIVERY_NOT_CORRECTED)
+        self.assertEquals(d5._get_status_number(), Delivery.DELIVERY_NOT_CORRECTED)
 
     def test_feedback(self):
         self.ti.add(nodes='uio.ifi',
@@ -557,9 +556,3 @@ class TestTestHelper(TestCase):
         # add a new deadline, and a delivery to that
         self.ti.add_to_path('uio.ifi;inf1000.first.oblig1.g1.d2:ends(12)')
         self.ti.add_delivery(self.ti.inf1000_first_oblig1_g1)
-
-        # whats interesting here is that the variable:
-        #   self.ti.inf1000_first_oblig1_g1_deadline2_delivery1
-        # exists. Note that its the first delivery on the second deadline
-        self.assertEquals(self.ti.inf1000_first_oblig1_g1_deliveries[2],
-                          self.ti.inf1000_first_oblig1_g1_deadline2_delivery1)

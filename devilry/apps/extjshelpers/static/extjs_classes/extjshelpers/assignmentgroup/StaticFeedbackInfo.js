@@ -4,133 +4,139 @@ Ext.define('devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.staticfeedbackinfo',
     cls: 'widget-staticfeedbackinfo',
-    title: 'Feedback',
     requires: [
-        'devilry.extjshelpers.Pager'
+        'devilry.extjshelpers.Pager',
+        'devilry.extjshelpers.SingleRecordContainer',
+        'devilry.extjshelpers.assignmentgroup.StaticFeedbackView',
+        'devilry.extjshelpers.assignmentgroup.StaticFeedbackDetailsTable'
     ],
+    frame: false,
+    frameHeader: false,
+    border: 0,
+
 
     config: {
-        /**
-         * @cfg
-         * Delivery id. (Required).
-         */
-        deliveryid: undefined,
-
         /**
          * @cfg
          * FileMeta ``Ext.data.Store``. (Required).
          * _Note_ that ``filemetastore.proxy.extraParams`` is changed by this
          * class.
          */
-        staticfeedbackstore: undefined
+        staticfeedbackstore: undefined,
+
+        /**
+         * @cfg
+         * A {@link devilry.extjshelpers.SingleRecordContainer} for Delivery.
+         */
+        delivery_recordcontainer: undefined
     },
 
-    tpl: Ext.create('Ext.XTemplate',
-        '<table class="verticalinfotable">',
-        '   <tr>',
-        '       <th>Grade</th>',
-        '       <td>{grade}</td>',
-        '   </tr>',
-        '       <th>Points</th>',
-        '       <td>{points}</td>',
-        '   </tr>',
-        '       <th>Is passing grade?</th>',
-        '       <td>{is_passing_grade}</td>',
-        '   </tr>',
-        '   </tr>',
-        '       <th>Feedback save time</th>',
-        '       <td>{save_timestamp:date}</td>',
-        '   </tr>',
-        '</table>',
-        '<tpl if="!isactive">',
-        '   <div class="warning">',
-        '       <strong>This is not the active feedback.</strong>',
-        '       When an examiner publish a feedback, the feedback is ',
-        '       stored forever. When an examiner needs to modify a feedback, ',
-        '       they create a new feedback. Therefore, you see more than ',
-        '       one feedback in the menu above. Unless there is something ',
-        '       wrong with the latest feedback, you should not have to ',
-        '       read this feedback',
-        '   </div>',
-        '</tpl>',
-        '<div class="rendered_view">{rendered_view}<div>'
-    ),
 
     constructor: function(config) {
         this.addEvents('afterStoreLoadMoreThanZero');
-        return this.callParent([config]);
+        this.callParent([config]);
+        this.initConfig(config);
     },
     
     initComponent: function() {
+        this.staticfeedback_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
+        this.bodyContent = Ext.create('Ext.container.Container');
 
-        var me = this;
-        this.staticfeedbackstore.pageSize = 1;
-        this.staticfeedbackstore.proxy.extraParams.orderby = Ext.JSON.encode(['-save_timestamp']);
-        this.staticfeedbackstore.proxy.extraParams.filters = Ext.JSON.encode([{
-            field: 'delivery',
-            comp: 'exact',
-            value: this.deliveryid
-        }]);
+        this.infotableBottomToolbar = Ext.ComponentManager.create({
+            xtype: 'toolbar',
+            dock: 'bottom',
+            hidden: true
+        });
 
-        Ext.apply(this, {
-            tbar: [{
-                xtype: 'devilrypager',
-                store: this.staticfeedbackstore,
-                width: 200,
-                reverseDirection: true,
-                middleLabelTpl: Ext.create('Ext.XTemplate',
-                    '<tpl if="firstRecord">',
+        this.infotable = Ext.ComponentManager.create({
+            xtype: 'panel',
+            width: 350,
+            hidden: true,
+            cls: 'infotable',
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'top',
+                items: ['->', {
+                    xtype: 'devilrypager',
+                    store: this.staticfeedbackstore,
+                    width: 200,
+                    reverseDirection: true,
+                    middleLabelTpl: Ext.create('Ext.XTemplate',
+                        '<tpl if="firstRecord">',
                     '   {currentNegativePageOffset})&nbsp;&nbsp;',
                     '   {firstRecord.data.save_timestamp:date}',
                     '</tpl>'
-                )
-            }, '->']
+                    )
+                }, '->']
+            }, this.infotableBottomToolbar],
+            items: [{
+                xtype: 'staticfeedbackdetailstable',
+                singlerecordontainer: this.staticfeedback_recordcontainer
+            }]
         });
+
+        Ext.apply(this, {
+            items: [this.infotable, this.bodyContent]
+        });
+
         this.callParent(arguments);
 
-        this.staticfeedbackstore.addListener('load', function(store, records, successful) {
-            if(successful) {
-                if(records.length == 0) {
-                    me.bodyWithNoFeedback();
-                }
-                else {
-                    me.bodyWithFeedback(records[0]);
-                }
-            } else {
-                // TODO: handle failure
-            }
-        });
-        this.loadFeedbackViewer();
+        this.staticfeedbackstore.pageSize = 1;
+        this.staticfeedbackstore.proxy.extraParams.orderby = Ext.JSON.encode(['-save_timestamp']);
+
+        this.staticfeedback_recordcontainer.addListener('setRecord', this.onSetStaticFeedbackRecord, this);
+        this.staticfeedbackstore.addListener('load', this.onLoadStaticfeedbackstore, this);
+        if(this.delivery_recordcontainer.record) {
+            this.onLoadDelivery();
+        }
+        this.delivery_recordcontainer.addListener('setRecord', this.onLoadDelivery, this);
     },
 
-    loadFeedbackViewer: function() {
-        this.getToolbar().show();
+    /**
+     * @private
+     */
+    onLoadDelivery: function() {
+        this.staticfeedbackstore.proxy.extraParams.filters = Ext.JSON.encode([{
+            field: 'delivery',
+            comp: 'exact',
+            value: this.delivery_recordcontainer.record.data.id
+        }]);
         this.staticfeedbackstore.load();
     },
 
-    getHeader: function() {
-        return this.dockedItems.items[0];
-    },
 
-    setBody: function(content) {
-        this.removeAll();
-        this.add(content);
-    },
-
-    setStaticFeedback: function(feedback) {
-        var tpldata = {isactive: this.staticfeedbackstore.currentPage == 1};
-        Ext.apply(tpldata, feedback);
+    onSetStaticFeedbackRecord: function() {
+        var isactive = this.staticfeedbackstore.currentPage == 1;
         this.setBody({
-            xtype: 'component',
-            cls: this.cls + '-feedbackview',
-            html: this.tpl.apply(tpldata)
+            xtype: 'staticfeedbackview',
+            singlerecordontainer: this.staticfeedback_recordcontainer,
+            extradata: {
+                isactive: isactive
+            }
         });
     },
 
-    bodyWithFeedback: function(record) {
-        this.setStaticFeedback(record.data);
-        this.fireEvent('afterStoreLoadMoreThanZero');
+    onLoadStaticfeedbackstore: function(store, records, successful) {
+        if(successful) {
+            if(records.length == 0) {
+                this.infotable.hide();
+                this.bodyWithNoFeedback();
+            }
+            else {
+                this.infotable.show();
+                this.staticfeedback_recordcontainer.setRecord(records[0]);
+                this.fireEvent('afterStoreLoadMoreThanZero');
+            }
+        } else {
+            // TODO: handle failure
+        }
     },
+
+    setBody: function(content) {
+        this.bodyContent.removeAll();
+        this.bodyContent.add(content);
+    },
+
 
     bodyWithNoFeedback: function() {
         this.setBody({
@@ -138,10 +144,5 @@ Ext.define('devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo', {
             cls: 'no-feedback',
             html: 'No feedback yet'
         });
-    },
-
-    getToolbar: function() {
-        return this.down('toolbar');
     }
-
 });
