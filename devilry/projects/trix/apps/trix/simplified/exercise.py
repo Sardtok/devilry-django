@@ -1,8 +1,9 @@
 from trix.apps.trix.models import Exercise
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
+from authorization import AuthorizationMixin
 
 @simplified_modelapi
-class SimplifiedExercise(object):
+class SimplifiedExercise(AuthorizationMixin):
     """ Simplified wrapper for :class:`trix.apps.trix.models.Exercise`. """
     class Meta(object):
         model = Exercise

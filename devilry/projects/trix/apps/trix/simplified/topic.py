@@ -1,8 +1,9 @@
-from trix.apps.trix.models import Topic
-from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
+from ..models import Topic
+from devilry.simplified import FieldSpec, simplified_modelapi
+from authorization import AuthorizationMixin
 
 @simplified_modelapi
-class SimplifiedTopic(object):
+class SimplifiedTopic(AuthorizationMixin):
     """ Simplified wrapper for :class:`trix.apps.trix.models.Topic`. """
     class Meta(object):
         model = Topic
