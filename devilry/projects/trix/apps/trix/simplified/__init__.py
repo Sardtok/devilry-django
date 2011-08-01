@@ -1,0 +1,5 @@
+from topic import SimplifiedTopic
+from exercise import SimplifiedExercise
+from periodexercise import SimplifiedPeriodExercise
+from status import SimplifiedStatus
+from exercisestatus import SimplifiedExerciseStatus

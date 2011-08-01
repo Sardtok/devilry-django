@@ -21,6 +21,11 @@ class PeriodExercise(models.Model):
     .. attribute:: points
 
         The number of points given for the exercise this period.
+
+    .. attribute:: starred
+
+        Whether this exercise has been "starred" for this period.
+        This can be used to emphasize important exercises.
     """
 
     class Meta:
@@ -32,6 +37,7 @@ class PeriodExercise(models.Model):
     exercise = models.ForeignKey(Exercise, related_name="periods",
                                  verbose_name=_('Exercise'))
     points = models.PositiveIntegerField(blank=True)
+    starred = models.BooleanField(default=False)
 
     def clean(self, *args, **kwargs):
         if points.value is None:
