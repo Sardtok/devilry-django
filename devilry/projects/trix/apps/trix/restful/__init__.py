@@ -1,0 +1,5 @@
+from topic import RestfulSimplifiedTopic
+from exercise import RestfulSimplifiedExercise
+from periodexercise import RestfulSimplifiedPeriodExercise
+from status import RestfulSimplifiedStatus
+from exercisestatus import RestfulSimplifiedExerciseStatus
