@@ -1,26 +1,6 @@
 /**
  *
- * Requires the following definitions in the django template:
- *
- *     {{ restfulapi.RestfulSimplifiedAssignmentGroup|extjs_model:"subject,period,assignment,users" }};
- *    
- *     {{ restfulapi.RestfulSimplifiedDelivery|extjs_model:"deadline,assignment_group" }};
- *     {{ restfulapi.RestfulSimplifiedDelivery|extjs_store }};
- *    
- *     {{ restfulapi.RestfulSimplifiedStaticFeedback|extjs_model }};
- *     {{ restfulapi.RestfulSimplifiedStaticFeedback|extjs_store }};
- *    
- *     {{ restfulapi.RestfulSimplifiedFileMeta|extjs_model }};
- *     {{ restfulapi.RestfulSimplifiedFileMeta|extjs_store }};
- *    
- *     {# These are used by the grade editor and only required is canExamine is true #}
- *     {{ gradeeditors.RestfulSimplifiedConfig|extjs_model }};
- *     {{ gradeeditors.RestfulSimplifiedFeedbackDraft|extjs_model }};
- *     {{ gradeeditors.RestfulSimplifiedFeedbackDraft|extjs_store }};
- *
- * The ones from ``restfulapi`` are for core classes, while the ones from
- * ``gradeeditors`` is from ``devilry.apps.gradeeditors``. You can dump this
- * code into the django template using:
+ * Requires the following icnlude in the django template:
  *
  *     {% include "extjshelpers/AssignmentGroupOverviewExtjsClasses.django.html" %}
  */
@@ -31,7 +11,8 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
     requires: [
         'devilry.extjshelpers.assignmentgroup.DeliveryInfo',
         'devilry.extjshelpers.assignmentgroup.AssignmentGroupDetailsPanel',
-        'devilry.extjshelpers.assignmentgroup.DeadlineListing',
+        'devilry.extjshelpers.assignmentgroup.DeliveriesOnSingleGroupListing',
+        'devilry.extjshelpers.assignmentgroup.DeadlinesOnSingleGroupListing',
         'devilry.extjshelpers.assignmentgroup.StaticFeedbackInfo',
         'devilry.extjshelpers.assignmentgroup.StaticFeedbackEditor',
         'devilry.extjshelpers.assignmentgroup.AssignmentGroupTitle',
@@ -116,6 +97,7 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
             ));
 
             this.assignmentgroupstore = Ext.data.StoreManager.lookup(this.getSimplifiedClassName('SimplifiedAssignmentGroupStore'));
+            this.deadlinemodel = Ext.ModelManager.getModel(this.getSimplifiedClassName('SimplifiedDeadline'));
         }
     },
 
@@ -172,7 +154,7 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
             xtype: 'button',
             menu: [], // To get an arrow
             id: 'tooltip-other-deliveries',
-            text: 'Other deliveries/deadlines',
+            text: 'Deliveries',
             scale: 'large',
             enableToggle: true,
             listeners: {
@@ -180,7 +162,19 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
                 click: this.onOtherDeliveries
             }
         });
-        var tbarItems = [this.onOtherDeliveriesBtn,'->', {
+
+        var tbarItems = [{
+            xtype: 'button',
+            menu: [], // To get an arrow
+            id: 'tooltip-deliveries',
+            text: 'Deadlines',
+            scale: 'large',
+            enableToggle: true,
+            listeners: {
+                scope: this,
+                click: this.onDeadlines
+            }
+        }, this.onOtherDeliveriesBtn, '->', {
             xtype: 'deliveryinfo',
             delivery_recordcontainer: this.delivery_recordcontainer,
             filemetastore: this.filemetastore
@@ -191,7 +185,7 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
                 xtype: 'button',
                 menu: [], // To get an arrow
                 id: 'tooltip-uncorrected-groups',
-                text: 'Uncorrected groups',
+                text: 'Open groups',
                 scale: 'large',
                 enableToggle: true,
                 listeners: {
@@ -224,7 +218,7 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
      * @private
      */
     onUncorrectedGroups: function(button) {
-        this.groupsWindow = Ext.create('Ext.window.Window', {
+        var groupsWindow = Ext.create('Ext.window.Window', {
             title: 'Open assignment groups',
             height: 500,
             width: 400,
@@ -242,10 +236,8 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
                 }
             }
         });
-        this.groupsWindow.show();
-        if(button) {
-            this.groupsWindow.alignTo(button, 'bl', [0, 0]);
-        }
+        groupsWindow.show();
+        groupsWindow.alignTo(button, 'bl', [0, 0]);
     },
 
     /**
@@ -254,17 +246,18 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
     onOtherDeliveries: function(button) {
         if(!this.deliveriesWindow) {
             this.deliveriesWindow = Ext.create('Ext.window.Window', {
-                title: 'Deliveries grouped by deadline',
+                title: 'Deliveries',
                 height: 500,
                 width: 400,
                 modal: true,
                 layout: 'fit',
                 closeAction: 'hide',
                 items: {
-                    xtype: 'deadlinelisting',
+                    xtype: 'deliveriesonsinglegrouplisting',
                     assignmentgroup_recordcontainer: this.assignmentgroup_recordcontainer,
                     delivery_recordcontainer: this.delivery_recordcontainer,
                     deliverymodel: this.deliverymodel,
+                    deadlinemodel: this.deadlinemodel,
                     enableDeadlineCreation: this.canExamine
                 },
                 listeners: {
@@ -279,6 +272,36 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupOverview', {
         if(button) {
             this.deliveriesWindow.alignTo(button, 'bl', [0, 0]);
         }
+    },
+
+    /**
+     * @private
+     */
+    onDeadlines: function(button) {
+        var deadlinesWindow = Ext.create('Ext.window.Window', {
+            title: 'Deadlines',
+            width: 600,
+            height: 400,
+            modal: true,
+            layout: 'fit',
+            closeAction: 'hide',
+            items: {
+                xtype: 'deadlinesonsinglegrouplisting',
+                assignmentgroup_recordcontainer: this.assignmentgroup_recordcontainer,
+                delivery_recordcontainer: this.delivery_recordcontainer,
+                deliverymodel: this.deliverymodel,
+                deadlinemodel: this.deadlinemodel,
+                enableDeadlineCreation: this.canExamine
+            },
+            listeners: {
+                scope: this,
+                close: function() {
+                    button.toggle(false);
+                }
+            }
+        });
+        deadlinesWindow.show();
+        deadlinesWindow.alignTo(button, 'bl', [0, 0]);
     },
 
     /**

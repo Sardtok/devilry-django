@@ -1,4 +1,4 @@
-from ...models import Status
+from trix.apps.trix.models import Status
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
 
 @simplified_modelapi
