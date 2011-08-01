@@ -1,8 +1,9 @@
 from trix.apps.trix.models import PeriodExercise
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
+from authorization import AuthorizationMixin
 
 @simplified_modelapi
-class SimplifiedPeriodExercise(object):
+class SimplifiedPeriodExercise(AuthorizationMixin):
     """ Simplified wrapper for :class:`trix.apps.trix.models.PeriodExercise`. """
     class Meta(object):
         model = PeriodExercise

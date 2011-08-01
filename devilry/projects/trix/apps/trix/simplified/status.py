@@ -1,8 +1,9 @@
 from trix.apps.trix.models import Status
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
+from authorization import AuthorizationMixin
 
 @simplified_modelapi
-class SimplifiedStatus(object):
+class SimplifiedStatus(AuthorizationMixin):
     """ Simplified wrapper for :class:`trix.apps.trix.models.Status`. """
     class Meta(object):
         model = Status

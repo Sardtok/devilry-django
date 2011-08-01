@@ -23,5 +23,6 @@ class Status(models.Model):
 
     name = models.SlugField()
     active = models.BooleanField(default=True)
-    percentage = models.DecimalField(max_digits=3, decimal_places=2)
-
+#    DecimalField requires a fix to the JSON serializer
+#    percentage = models.DecimalField(max_digits=3, decimal_places=2)
+    percentage = models.FloatField()

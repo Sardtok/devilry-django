@@ -1,3 +1,4 @@
+from authorization import AuthorizationMixin
 from topic import SimplifiedTopic
 from exercise import SimplifiedExercise
 from periodexercise import SimplifiedPeriodExercise
