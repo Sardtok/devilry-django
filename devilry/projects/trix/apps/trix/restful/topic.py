@@ -3,11 +3,12 @@ from devilry.apps.extjshelpers import extjs_restful_modelapi
 
 from trix.apps.trix.simplified import SimplifiedTopic
 from manager import trix_manager
+from authorization import AuthorizationMixin
 
 @trix_manager.register
 @extjs_restful_modelapi
 @restful_modelapi
-class RestfulSimplifiedTopic(ModelRestfulView):
+class RestfulSimplifiedTopic(AuthorizationMixin):
     class Meta:
         simplified = SimplifiedTopic
 

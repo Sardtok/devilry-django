@@ -5,11 +5,12 @@ from devilry.apps.student.restful import RestfulSimplifiedPeriod
 from trix.apps.trix.simplified import SimplifiedPeriodExercise
 from exercise import RestfulSimplifiedExercise
 from manager import trix_manager
+from authorization import AuthorizationMixin
 
 @trix_manager.register
 @extjs_restful_modelapi
 @restful_modelapi
-class RestfulSimplifiedPeriodExercise(ModelRestfulView):
+class RestfulSimplifiedPeriodExercise(AuthorizationMixin):
     class Meta:
         simplified = SimplifiedPeriodExercise
         foreignkey_fields = {'exercise': RestfulSimplifiedExercise,
@@ -19,4 +20,3 @@ class RestfulSimplifiedPeriodExercise(ModelRestfulView):
         combobox_displayfield = 'exercise__long_name'
         combobox_tpl = ('<div class="important">{exercise__short_name}</div>'
                         '<div class="unimportant">{exercise__long_name}</div>')
-
