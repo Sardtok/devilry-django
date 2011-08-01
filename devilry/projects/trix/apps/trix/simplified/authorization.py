@@ -1,11 +1,12 @@
-from devilry.simplified import SimplifiedModelApi
+from devilry.simplified import SimplifiedModelApi, PermissionDenied
 
 class AuthorizationMixin(SimplifiedModelApi):
 
     @classmethod
     def read_authorize(cls, user, obj):
-        return True
+        pass
 
     @classmethod
     def write_authorize(cls, user, obj):
-        return user.is_superuser()
+        if not user.is_superuser():
+            raise PermissionDenied()

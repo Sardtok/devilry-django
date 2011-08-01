@@ -5,11 +5,12 @@ from trix.apps.trix.simplified import SimplifiedExerciseStatus
 from periodexercise import RestfulSimplifiedPeriodExercise
 from status import RestfulSimplifiedStatus
 from manager import trix_manager
+from authorization import AuthorizationMixin
 
 @trix_manager.register
 @extjs_restful_modelapi
 @restful_modelapi
-class RestfulSimplifiedExerciseStatus(ModelRestfulView):
+class RestfulSimplifiedExerciseStatus(AuthorizationMixin):
     class Meta:
         simplified = SimplifiedExerciseStatus
         foreignkey_fields = {'exercise': RestfulSimplifiedPeriodExercise,

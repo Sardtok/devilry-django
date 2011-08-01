@@ -1,3 +1,4 @@
+from authorization import AuthorizationMixin
 from manager import trix_manager
 from topic import RestfulSimplifiedTopic
 from exercise import RestfulSimplifiedExercise
