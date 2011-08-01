@@ -5,9 +5,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from devilry.apps.core.models import Period
-from models.status import Status
-from models.exercisestatus import ExerciseStatus
-from models.periodexercise import PeriodExercise
+from models import Status, ExerciseStatus, PeriodExercise
+
+from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise
 
 def get_level(points=0):
     """
@@ -117,7 +117,9 @@ def main(request):
                    'topics': topics,
                    'prerequisites': prerequisites,
                    'topicstats': topicstats,
-                   'level': get_level(get_points(request.user))})
+                   'level': get_level(get_points(request.user)),
+                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
+                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise})
 #                  {'exercises': Period.objects.all().exercises.all()})
 
 def get_portrait(level):
