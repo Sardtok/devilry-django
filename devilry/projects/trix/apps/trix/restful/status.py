@@ -1,15 +1,15 @@
 from devilry.restful import restful_modelapi, ModelRestfulView, RestfulManager
 from devilry.apps.extjshelpers import extjs_restful_modelapi
 
-from trix.apps.trix.simplified import SimplifiedTopic
+from trix.apps.trix.simplified import SimplifiedStatus
 from manager import trix_manager
 
 @trix_manager.register
 @extjs_restful_modelapi
 @restful_modelapi
-class RestfulSimplifiedTopic(ModelRestfulView):
+class RestfulSimplifiedStatus(ModelRestfulView):
     class Meta:
-        simplified = SimplifiedTopic
+        simplified = SimplifiedStatus
 
     class ExtjsModelMeta:
         combobox_displayfield = 'name'

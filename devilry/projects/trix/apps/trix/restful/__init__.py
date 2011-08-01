@@ -1,3 +1,4 @@
+from manager import trix_manager
 from topic import RestfulSimplifiedTopic
 from exercise import RestfulSimplifiedExercise
 from periodexercise import RestfulSimplifiedPeriodExercise

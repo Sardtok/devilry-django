@@ -1,4 +1,4 @@
-from ...models import PeriodExercise
+from trix.apps.trix.models import PeriodExercise
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
 
 @simplified_modelapi

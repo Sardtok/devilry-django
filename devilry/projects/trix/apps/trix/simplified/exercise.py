@@ -1,4 +1,4 @@
-from ...models import Exercise
+from trix.apps.trix.models import Exercise
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
 
 @simplified_modelapi
