@@ -2,7 +2,7 @@
 {% load extjs %}
 {% load i18n %}
 
-{% block title %}Ukesoppgaver{% endblock %}
+{% block title %}{% trans "Exercises" %}{% endblock %}
 
 {% block nav-class %}trix{% endblock %}
 
@@ -33,8 +33,20 @@
   <script src="{{DEVILRY_STATIC_URL}}/trix/setstatus.js"></script>
 
   <script type="text/javascript">
+    // Models
+    {{ RestfulSimplifiedPeriod|extjs_model }};
+    {{ RestfulSimplifiedTopic|extjs_model }};
     {{ RestfulSimplifiedExercise|extjs_model }};
+    {{ RestfulSimplifiedPeriodExercise|extjs_model }};
+    {{ RestfulSimplifiedStatus|extjs_model }};
+    {{ RestfulSimplifiedExerciseStatus|extjs_model }};
+
+    // Test extjs_store
     {{ RestfulSimplifiedPeriodExercise|extjs_store }};
+    // Test extjs_form_items
+    {{ RestfulSimplifiedPeriodExercise|extjs_form_items }};
+    // Test foreignkeys
+    {{ RestfulSimplifiedPeriodExercise|extjs_foreignkeys }};
   </script>
 {% endblock %}
 
