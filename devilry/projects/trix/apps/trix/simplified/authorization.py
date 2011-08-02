@@ -10,3 +10,8 @@ class AuthorizationMixin(SimplifiedModelApi):
     def write_authorize(cls, user, obj):
         if not user.is_superuser():
             raise PermissionDenied()
+
+    @classmethod
+    def create_searchqryset(cls, user, **kwargs):
+        return cls._meta.model.objects.all()
+        
