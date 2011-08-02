@@ -12,8 +12,8 @@ class SimplifiedExercise(AuthorizationMixin):
                                  'long_name',
                                  'text',
                                  'points',
-                                 'topics',
-                                 'prerequisites',
+                                 'topics__id',
+                                 'prerequisites__id'
                                  )
         searchfields = FieldSpec('short_name',
                                  'long_name')
