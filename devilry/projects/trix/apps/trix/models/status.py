@@ -20,6 +20,8 @@ class Status(models.Model):
 
     class Meta:
         app_label = 'trix'
+        verbose_name = _('Status')
+        verbose_name_plural = _('Statuses')
 
     name = models.SlugField()
     active = models.BooleanField(default=True)

@@ -7,7 +7,8 @@ from django.http import HttpResponse
 from devilry.apps.core.models import Period
 from models import Status, ExerciseStatus, PeriodExercise
 
-from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise
+from devilry.apps.student.restful import RestfulSimplifiedPeriod
+from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic
 
 def get_level(points=0):
     """
@@ -119,7 +120,12 @@ def main(request):
                    'topicstats': topicstats,
                    'level': get_level(get_points(request.user)),
                    'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
-                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise})
+                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
+                   'RestfulSimplifiedStatus': RestfulSimplifiedStatus,
+                   'RestfulSimplifiedExerciseStatus': RestfulSimplifiedExerciseStatus,
+                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
+                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod})
+
 #                  {'exercises': Period.objects.all().exercises.all()})
 
 def get_portrait(level):
