@@ -16,8 +16,8 @@ class Topic(models.Model):
 
     class Meta:
         app_label = 'trix'
-        verbose_name = 'Topic'
-        verbose_name_plural = 'Topics'
+        verbose_name = _('Topic')
+        verbose_name_plural = _('Topics')
         ordering = ['name']
     
     name = models.SlugField();
