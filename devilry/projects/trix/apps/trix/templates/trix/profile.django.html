@@ -2,6 +2,8 @@
 
 {% load i18n %}
 
+{% load extjs %}
+
 {% block title %}Profile{% endblock %}
 
 {% block nav-class %}student{% endblock %}
@@ -10,7 +12,6 @@
   <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
   <link rel="stylesheet" media="print"
         href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
-
 {% endblock %}
 
 {% block main %}
@@ -31,4 +32,6 @@
 </div>
 
 last login: {{ user.last_login }}<br /><br />
+
+<script src="{{DEVILRY_STATIC_URL}}/extjstrix/test.js"</script>
 {% endblock %}
