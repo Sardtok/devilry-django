@@ -8,7 +8,7 @@ from devilry.apps.core.models import Period
 from models import Status, ExerciseStatus, PeriodExercise
 
 from devilry.apps.student.restful import RestfulSimplifiedPeriod
-from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic
+from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulPeriodStatistics, RestfulTopicStatistics
 
 def get_level(points=0):
     """
@@ -110,8 +110,6 @@ def main(request):
             continue
         topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
 
-    print topicstats
-
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'statuses': statuses,
@@ -124,7 +122,8 @@ def main(request):
                    'RestfulSimplifiedStatus': RestfulSimplifiedStatus,
                    'RestfulSimplifiedExerciseStatus': RestfulSimplifiedExerciseStatus,
                    'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
-                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod})
+                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod,
+                   'RestfulPeriodStatistics': RestfulPeriodStatistics})
 
 #                  {'exercises': Period.objects.all().exercises.all()})
 

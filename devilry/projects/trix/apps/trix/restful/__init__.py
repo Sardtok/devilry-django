@@ -5,3 +5,5 @@ from exercise import RestfulSimplifiedExercise
 from periodexercise import RestfulSimplifiedPeriodExercise
 from status import RestfulSimplifiedStatus
 from exercisestatus import RestfulSimplifiedExerciseStatus
+from periodstats import RestfulPeriodStatistics
+from topicstats import RestfulTopicStatistics

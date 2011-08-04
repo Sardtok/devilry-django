@@ -42,11 +42,12 @@
     {{ RestfulSimplifiedExerciseStatus|extjs_model }};
 
     // Test extjs_store
+    {{ RestfulSimplifiedPeriod|extjs_store }};
+    {{ RestfulSimplifiedTopic|extjs_store }};
+    {{ RestfulSimplifiedStatus|extjs_store }};
+    {{ RestfulSimplifiedExercise|extjs_store }};
     {{ RestfulSimplifiedPeriodExercise|extjs_store }};
-    // Test extjs_form_items
-    {{ RestfulSimplifiedPeriodExercise|extjs_form_items }};
-    // Test foreignkeys
-    {{ RestfulSimplifiedPeriodExercise|extjs_foreignkeys }};
+    {{ RestfulSimplifiedExerciseStatus|extjs_store }};
   </script>
 {% endblock %}
 
@@ -141,5 +142,19 @@
   </form>
 {% endfor %}
 
+
+  <script type="text/javascript">
+    Ext.create('Ext.grid.Panel', {
+      title: 'Test',
+      store: Ext.data.StoreManager.lookup('trix.apps.trix.simplified.exercise.SimplifiedExerciseStore'),
+      columns: [
+        {header: 'Name', dataIndex: 'long_name'},
+        {header: 'Text', dataIndex: 'text', flex: 1},
+      ],
+      width: '80%',
+      renderTo: Ext.getBody()
+    });
+    Ext.data.StoreManager.lookup('trix.apps.trix.simplified.exercise.SimplifiedExerciseStore').load();
+  </script>
 {% endblock %}
 
