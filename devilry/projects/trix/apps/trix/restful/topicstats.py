@@ -16,6 +16,7 @@ class RestfulTopicStatistics(RestfulView):
         all_exc = topic.exercises.filter(periods__isnull=False)
         exercises = PeriodExercise.objects.filter(exercise__in=all_exc)
         t_data = {}
+        t_data['id'] = topic.id
         t_data['name'] = topic.name
         t_data['exercises'] = topic.exercisecount
         if topic.totalpoints is None:

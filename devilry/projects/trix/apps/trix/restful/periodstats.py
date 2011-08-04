@@ -16,6 +16,7 @@ class RestfulPeriodStatistics(RestfulView):
 
     def process_period(self, period, user):
         p_data = {}
+        p_data['id'] = period.id
         p_data['short_name'] = period.short_name
         p_data['long_name'] = period.long_name
         p_data['exercises'] = period.exercisecount

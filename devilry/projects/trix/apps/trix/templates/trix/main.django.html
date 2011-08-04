@@ -7,7 +7,6 @@
 {% block nav-class %}trix{% endblock %}
 
 {% block headextra %}
-  <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
   <link rel="stylesheet" media="print"
         href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
   <script type="text/javascript">
@@ -31,6 +30,7 @@
     }
   </script>
   <script src="{{DEVILRY_STATIC_URL}}/trix/setstatus.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
 
   <script type="text/javascript">
     // Models
@@ -142,19 +142,25 @@
   </form>
 {% endfor %}
 
-
   <script type="text/javascript">
     Ext.create('Ext.grid.Panel', {
       title: 'Test',
-      store: Ext.data.StoreManager.lookup('trix.apps.trix.simplified.exercise.SimplifiedExerciseStore'),
+      store: Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore'),
       columns: [
-        {header: 'Name', dataIndex: 'long_name'},
-        {header: 'Text', dataIndex: 'text', flex: 1},
+        {header: 'Name', dataIndex: 'name'},
+        {header: 'Points', dataIndex: 'points',
+             renderer: function(val) {return '<div style="white-space: normal !important;">' + val + '</div>'}
+        },
+        {header: 'Total', dataIndex: 'total_points'},
+        {header: 'Completed', dataIndex: 'exercises_done'},
+        {header: 'Exercises', dataIndex: 'exercises'},
+        {header: 'Starred completed', dataIndex: 'starred_done'},
+        {header: 'Starred', dataIndex: 'starred'}
       ],
       width: '80%',
       renderTo: Ext.getBody()
     });
-    Ext.data.StoreManager.lookup('trix.apps.trix.simplified.exercise.SimplifiedExerciseStore').load();
+    Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
   </script>
 {% endblock %}
 
