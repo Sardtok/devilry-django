@@ -149,7 +149,7 @@ def profile(request):
     return render(request, 'trix/profile.django.html',
                   {'level': level,
                    'portrait': get_portrait(level['level'])})
-
+@login_required
 def administrator(request):
     """
     Administrator page showing the administrator interface
