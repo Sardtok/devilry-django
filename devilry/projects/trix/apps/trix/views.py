@@ -149,6 +149,13 @@ def profile(request):
                   {'level': level,
                    'portrait': get_portrait(level['level'])})
 
+def administrator(request):
+    """
+    Administrator page showing the administrator interface
+    """
+    return render(request, 'trix/administrator.django.html',
+                  {'data': 1,})
+
 @login_required
 def exercisestatus(request, exercise=-1):
     """
