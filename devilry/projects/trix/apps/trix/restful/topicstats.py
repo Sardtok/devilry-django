@@ -18,10 +18,10 @@ class RestfulTopicStatistics(RestfulView):
         t_data = {}
         t_data['id'] = topic.id
         t_data['name'] = topic.name
-        t_data['exercises'] = topic.exercisecount
-        if topic.totalpoints is None:
-            topic.totalpoints = 0
-        t_data['total_points'] = topic.totalpoints
+        t_data['exercises'] = exercises.count()
+        t_data['total_points'] = exercises.aggregate(total_points=Sum('points'))['total_points']
+        if t_data['total_points'] is None:
+            t_data['total_points'] = 0
         t_data['starred'] = exercises.filter(starred=True).count()
         exercises = exercises.filter(student_results__student=user)
         results = ExerciseStatus.objects.filter(student=user, exercise__in=exercises)
@@ -47,13 +47,13 @@ class RestfulTopicStatistics(RestfulView):
                                           httpresponsecls=HttpResponseBadRequest)
 
     def crud_read(self, request, id):
-        topic = Topic.objects.annotate(exercisecount=Count('exercises__periods'), totalpoints=Sum('exercises__periods__points')).get(id=id)
+        topic = Topic.objects.get(id=id)
         data = [self.process_topic(topic, request.user)]
         result = extjswrap(data, True, total=1)
         return SerializableResult(result)
 
     def crud_search(self, request):
-        topics = Topic.objects.filter(exercises__isnull=False).filter(exercises__periods__isnull=False).annotate(exercisecount=Count('exercises__periods'), totalpoints=Sum('exercises__periods__points'))
+        topics = Topic.objects.filter(exercises__isnull=False).filter(exercises__periods__isnull=False)
 
         data = []
         for topic in topics:
