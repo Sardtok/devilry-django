@@ -53,7 +53,15 @@ class RestfulTopicStatistics(RestfulView):
         return SerializableResult(result)
 
     def crud_search(self, request):
-        topics = Topic.objects.filter(exercises__isnull=False).filter(exercises__periods__isnull=False)
+        start = 0
+        limit = 25
+        if 'getdata_in_qrystring' in request.GET:
+            if 'start' in request.GET:
+                start = request.GET['start']
+            if 'limit' in request.GET:
+                limit = request.GET['limit']
+        
+        topics = Topic.objects.filter(exercises__isnull=False).filter(exercises__periods__isnull=False)[start:start+limit]
 
         data = []
         for topic in topics:

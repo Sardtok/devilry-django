@@ -54,7 +54,15 @@ class RestfulPeriodStatistics(RestfulView):
         return SerializableResult(result)
 
     def crud_search(self, request):
-        periods = Period.objects.filter(exercises__isnull=False).annotate(exercisecount=Count('exercises'), totalpoints=Sum('exercises__points'))
+        start = 0
+        limit = 25
+        if 'getdata_in_qrystring' in request.GET:
+            if 'start' in request.GET:
+                start = request.GET['start']
+            if 'limit' in request.GET:
+                limit = request.GET['limit']
+        
+        periods = Period.objects.filter(exercises__isnull=False).annotate(exercisecount=Count('exercises'), totalpoints=Sum('exercises__points'))[start:start+limit]
 
         data = []
         for period in periods:
