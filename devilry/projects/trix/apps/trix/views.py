@@ -153,7 +153,7 @@ def administrator(request):
     """
     Administrator page showing the administrator interface
     """
-    return render(request, 'trix/administrator.django.html',
+    return render(request, 'trix/trixadmin/main.django.html',
                   {'data': 1,})
 
 @login_required
