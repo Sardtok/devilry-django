@@ -21,23 +21,24 @@ pre   { border-color: #CCC;
 .exercises { clear: both; }
 
 .xptopic { float: left; margin-right: 1em; }
-.xpbar { background-color: #B340B3; position: relative; float: left; z-index: 1; border: 1px solid #844; }
+.xpbar { background-color: #0077B3; position: relative; float: left; z-index: 1; border: 1px solid #844; }
 .xpbar > div { background-color: #8f8; height: 100%; position: absolute; left: 0; top: 0; z-index: 2; text-indent: 1em;}
 .xpbar + * { clear: left; }
 
 .portrait { position: relative; float: left;  border: 10px dashed #77B300; margin-right: 2em }
 .userinfo { position: relative; top: 15px; font-size:15px; }
 .levelinfo { clear: left; }
+.stats { position: relative; float: right }
 
 header > nav.trix {
-    border-bottom: 10px solid #B340B3;
+    border-bottom: 10px solid #0077B3;
 }
 
 header > nav li.trix-navitem a {
-    background-color: #B340B3;
+    background-color: #0077B3;
     color: #F7FFE5;
 }
 
 header > nav li.trix-navitem a:hover {
-    background-color: #CC50CC;
+    background-color: #0088CC;
 }

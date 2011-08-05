@@ -1,49 +1,18 @@
 Ext.require('Ext.chart.*');
-Ext.require(['Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
+Ext.require(['Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
 
 Ext.onReady(function() {
 
-	Ext.define('trix.apps.trix.simplified.periodexercise.SimplifiedPeriodExercise', {
-		extend: 'Ext.data.Model',
-		    requires: ['devilry.extjshelpers.RestProxy'],
-		    fields: [{"type": "int", "name": "id"}, {"type": "auto", "name": "period"}, {"type": "auto", "name": "exercise"}, {"type": "int", "name": "points"}, {"type": "bool", "name": "starred"}],
-		    idProperty: 'id',
-		    proxy: Ext.create('devilry.extjshelpers.RestProxy', {
-			    url: '/trix/restfulsimplifiedperiodexercise/',
-				extraParams: {
-				getdata_in_qrystring: true,
-				    result_fieldgroups: '[]'
-				    },
-				reader: {
-				type: 'json',
-				    root: 'items',
-				    totalProperty: 'total'
-				    },
-				writer: {
-				type: 'json'
-				    }
-			})
-		    });
-
-    var store = Ext.create('Ext.data.Store', {
-	    model: 'trix.apps.trix.simplified.periodexercise.SimplifiedPeriodExercise',
-	    id: 'trix.apps.trix.simplified.periodexercise.SimplifiedPeriodExerciseStore',
-	    remoteFilter: true,
-	    remoteSort: true,
-	    autoSync: true 
-	});
-
-    store.load();
-
-    var colors = ['url(#v-1)',
-                  'url(#v-2)',
-                  'url(#v-3)',
-                  'url(#v-4)',
-                  'url(#v-5)'];
+    var topicstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
+    var periodstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulPeriodStatisticsStore');
+    
+    var colors = ['#0077B3',
+                  '#77B300',
+                  '#CC4400',];
     
     var baseColor = '#eee';
     
-    Ext.define('Ext.chart.theme.Fancy', {
+        Ext.define('Ext.chart.theme.Fancy', {
         extend: 'Ext.chart.theme.Base',
         
         constructor: function(config) {
@@ -68,34 +37,40 @@ Ext.onReady(function() {
             }, config)]);
         }
     });
+    
 
-
-    var win = Ext.create('Ext.Window', {
+    var topics = Ext.create('Ext.tab.Panel', {
         width: 800,
         height: 600,
         hidden: false,
-        maximizable: true,
-        title: 'Bar Renderer',
-        renderTo: Ext.getBody(),
+        title: 'Statistics',
+        renderTo: 'stats',
         layout: 'fit',
 
         items: {
+            id: 'chartCmp',
             xtype: 'chart',
-            animate: true,
-            style: 'background:#fff',
-            shadow: false,
-            store: store,
+            theme: 'Fancy',
+            animate: {
+                easing: 'bounceOut',
+                duration: 750
+            },
+            store: topicstore,
+            background: {
+                fill: 'rgb(17, 17, 17)'
+            },
             axes: [{
                 type: 'Category',
                 position: 'bottom',
-                fields: ['period'],
-                title: 'Period',
+                fields: ['name'],
+                title: 'Topic',
             }, {
                 type: 'Numeric',
                 position: 'left',
                 fields: ['points'],
                 title: 'Points',
 		minimum: 0,
+
             }],
             series: [{
 		type: 'column',
@@ -123,4 +98,3 @@ Ext.onReady(function() {
         }
     });
 });
-

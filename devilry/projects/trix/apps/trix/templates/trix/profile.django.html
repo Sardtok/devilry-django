@@ -12,12 +12,17 @@
   <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
   <link rel="stylesheet" media="print"
         href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
+
+  <script type="text/javascript"src="{{DEVILRY_STATIC_URL}}/extjstrix/profilestats.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
 {% endblock %}
 
 {% block main %}
 <div class="portrait">
   <img src="{{DEVILRY_STATIC_URL }}/trix/Portraits/{{ portrait }}" />
 </div>
+
+<div id="stats" class="stats"></div>
 
 <div class="userinfo">
   Name: {{ user.first_name }} {{ user.last_name }}<br />
@@ -33,5 +38,4 @@
 
 last login: {{ user.last_login }}<br /><br />
 
-<script src="{{DEVILRY_STATIC_URL}}/extjstrix/test.js"</script>
 {% endblock %}
