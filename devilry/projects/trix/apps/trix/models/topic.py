@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.db import models
+from devilry.apps.core.models.custom_db_fields import LongNameField
 
 class Topic(models.Model):
     """
@@ -20,5 +21,5 @@ class Topic(models.Model):
         verbose_name_plural = _('Topics')
         ordering = ['name']
     
-    name = models.SlugField();
+    name = LongNameField()
     
