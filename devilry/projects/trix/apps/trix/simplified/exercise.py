@@ -17,4 +17,5 @@ class SimplifiedExercise(AuthorizationMixin):
                                  )
         searchfields = FieldSpec('short_name',
                                  'long_name')
-        methods = ['read', 'search']
+        methods = ['create', 'read', 'update', 'delete', 'search']
+

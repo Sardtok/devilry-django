@@ -11,4 +11,5 @@ class SimplifiedTopic(AuthorizationMixin):
                                  'name',
                                  )
         searchfields = FieldSpec('name')
-        methods = ['read', 'search']
+        methods = ['create', 'read', 'update', 'delete', 'search']
+
