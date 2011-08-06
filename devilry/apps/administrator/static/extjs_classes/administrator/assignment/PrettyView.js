@@ -114,14 +114,13 @@ Ext.define('devilry.administrator.assignment.PrettyView', {
         Ext.ModelManager.getModel('devilry.apps.gradeeditors.simplified.administrator.SimplifiedConfig').load(this.record.data.id, {
             scope: this,
             success: function(record) {
-                console.log(record);
-                console.log('success');
                 this.onLoadGradeEditorRecord(record, button);
             },
             failure: function() {
                 var record = Ext.create('devilry.apps.gradeeditors.simplified.administrator.SimplifiedConfig', {
                     assignment: this.record.data.id
                 });
+                this.onLoadGradeEditorRecord(record, button);
             }
         });
 
@@ -131,11 +130,14 @@ Ext.define('devilry.administrator.assignment.PrettyView', {
         var editpanel = Ext.ComponentManager.create({
             xtype: 'restfulsimplified_editpanel',
             model: 'devilry.apps.gradeeditors.simplified.administrator.SimplifiedConfig',
-            editform: Ext.widget('gradeeditorselectform')
+            editform: Ext.widget('gradeeditorselectform'),
+            record: record
         });
-        var editwindow = Ext.create('devilry.administrator.DefaultEditWindow', {
+        var editwindow = Ext.create('devilry.extjshelpers.RestfulSimplifiedEditWindowBase', {
             editpanel: editpanel,
-            prettyview: this
+            onSaveSuccess: function() {
+                this.close();
+            }
         });
         editwindow.show();
         editwindow.alignTo(button, 'br', [-editwindow.getWidth(), 0]);
