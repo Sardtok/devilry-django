@@ -1,8 +1,8 @@
-Ext.define('trix.forms.Exercise', {
+Ext.define('trix.forms.PeriodExercise', {
     extend: 'Ext.form.Panel',
-    alias: 'widget.administrator_exerciseform',
-    cls: 'widget-exerciseform',
-//    requires: ['trix.formfields.ForeignKeyToListSelector', 'devilry.extjshelpers.formfields.ForeignKeySelector'],
+    alias: 'widget.administrator_periodexerciseform',
+    cls: 'widget-periodexerciseform',
+    requires: 'devilry.extjshelpers.formfields.ForeignKeySelector',
 
     suggested_windowsize: {
         width: 600,
@@ -23,30 +23,30 @@ Ext.define('trix.forms.Exercise', {
     },
 
     items: [{
-        xtype: 'container',
-        anchor: '100%',
-        layout: 'column',
-        items: [{
-            name: "short_name",
-            fieldLabel: "Short name",
-            xtype: 'textfield',
-            emptyText: 'Example: output1'
-        }, {
-            name: "long_name",
-            fieldLabel: "Long name",
-            xtype: 'textfield',
-            emptyText: 'Example: Hello World'
-        }, {
-            name: "points",
-            fieldLabel: "Points",
-            xtype: 'numberfield'
-        }]
+        name: "period",
+        fieldLabel: "Period",
+        xtype: 'foreignkeyselector',
+        model: 'devilry.apps.administrator.simplified.SimplifiedPeriod',
+        emptyText: 'Select a period',
+        displayTpl: '{long_name}',
+        dropdownTpl: '<div class="important">{short_name}</div> <div>{long_name}</div>'
     }, {
-        name: "text",
-        fieldLabel: "Exercise text",
-        xtype: 'htmleditor',
-        height: 200,
-        anchor: '100%'
+        name: "exercise",
+        fieldLabel: "Exercise",
+        xtype: 'foreignkeyselector',
+        model: 'trix.apps.trix.simplified.exercise.SimplifiedExercise',
+        emptyText: 'Select an exercise',
+        displayTpl: '{short_name}',
+        dropdownTpl: '<div class="important">{short_name}</div> <div>{long_name}</div>'
+    }, {
+        name: "points",
+        fieldLabel: "Points",
+        xtype: 'numberfield'
+    }, {
+        name: "starred",
+        fieldLabel: "Starred",
+        xtype: 'checkbox',
+        inputValue: true,
 /*    }, {
         name: "topics__id",
         fieldLabel: "Topic",
