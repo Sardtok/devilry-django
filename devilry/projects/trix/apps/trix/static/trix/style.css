@@ -1,4 +1,4 @@
-#main { font-size: 12pt; }
+#main { font-size: 12pt; margin: 1em; }
 h3    { font-weight: bold;
         margin: 0.5em 0; }
 i     { font-style: italic; }
@@ -21,7 +21,7 @@ pre   { border-color: #CCC;
 .exercises { clear: both; }
 
 .xptopic { float: left; margin-right: 1em; }
-.xpbar { background-color: #0077B3; position: relative; float: left; z-index: 1; border: 1px solid #844; }
+.xpbar { background-color: #0077B3; position: relative; float: left; z-index: 1; border: 1px solid #0077B3; }
 .xpbar > div { background-color: #8f8; height: 100%; position: absolute; left: 0; top: 0; z-index: 2; text-indent: 1em;}
 .xpbar + * { clear: left; }
 
