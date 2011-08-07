@@ -40,6 +40,6 @@ class PeriodExercise(models.Model):
     starred = models.BooleanField(default=False)
 
     def clean(self, *args, **kwargs):
-        if points.value is None:
-            points.value = exercise.rel.to.points.value
+        if self.points <= 0:
+            self.points = self.exercise.rel.to.points
 

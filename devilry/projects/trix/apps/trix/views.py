@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from devilry.apps.core.models import Period
 from models import Status, ExerciseStatus, PeriodExercise
 
-from devilry.apps.student.restful import RestfulSimplifiedPeriod
+from devilry.apps.administrator.restful import RestfulSimplifiedPeriod
 from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulPeriodStatistics, RestfulTopicStatistics
 
 def get_level(points=0):
@@ -80,7 +80,8 @@ def main(request):
     for exercise in all_exercises:
         e = {'title': exercise.exercise.long_name,
              'text': exercise.exercise.text,
-             'status': -1}
+             'status': -1,
+             'starred': exercise.starred}
 
         ts = exercise.exercise.topics.exclude(id__in=topics.keys)
         for t in ts:
@@ -127,6 +128,66 @@ def main(request):
 
 #                  {'exercises': Period.objects.all().exercises.all()})
 
+def period(request, period_id=-1):
+    """
+    Main page showing current exercises.
+    """
+    period = Period.objects.get(id=period_id)
+    all_exercises = PeriodExercise.objects.filter(period=period)
+    exercises = {}
+    topics = {}
+    prerequisites = {}
+    topicstats = {}
+    for exercise in all_exercises:
+        e = {'title': exercise.exercise.long_name,
+             'text': exercise.exercise.text,
+             'status': -1,
+             'starred': exercise.starred}
+
+        ts = exercise.exercise.topics.exclude(id__in=topics.keys)
+        for t in ts:
+            topics.setdefault(t.id, t)
+
+        ps = exercise.exercise.prerequisites.exclude(id__in=prerequisites.keys)
+        for p in ps:
+            prerequisites.setdefault(p.id, p)
+        
+
+        if request.user.is_authenticated():
+            try:
+                stats = exercise.student_results.get(student=request.user)
+                e.update([['status', stats.status.id]])
+            except ExerciseStatus.DoesNotExist:
+                pass
+        exercises.setdefault(exercise.period, {}).update([[exercise.id, e]])
+
+    statuses = []
+    if request.user.is_authenticated():
+        statuses = Status.objects.filter(active=True)
+
+    for topic in topics.values():
+        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
+    for topic in prerequisites.values():
+        if (topicstats.has_key(topic.id)):
+            continue
+        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
+
+    return render(request,'trix/main.django.html',
+                  {'exercises': exercises,
+                   'statuses': statuses,
+                   'topics': topics,
+                   'prerequisites': prerequisites,
+                   'topicstats': topicstats,
+                   'level': get_level(get_points(request.user)),
+                   'period': period.long_name,
+                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
+                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
+                   'RestfulSimplifiedStatus': RestfulSimplifiedStatus,
+                   'RestfulSimplifiedExerciseStatus': RestfulSimplifiedExerciseStatus,
+                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
+                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod,
+                   'RestfulPeriodStatistics': RestfulPeriodStatistics})
+
 def get_portrait(level):
     """
     Gets the avatar portrait URL for a given level.
@@ -156,7 +217,9 @@ def administrator(request):
     return render(request, 'trix/trixadmin/main.django.html',
                   {'data': 1,
                    'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
-                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic})
+                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
+                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
+                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod })
 
 @login_required
 def exercisestatus(request, exercise=-1):

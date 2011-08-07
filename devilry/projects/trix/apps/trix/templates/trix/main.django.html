@@ -68,7 +68,8 @@
   ({{points}})
   {% endif %}
   {% endfor %}
-  {% endfor %}</div>
+  {% endfor %}
+</div>
 {% endif %}
 
 {% if prerequisites %}
@@ -78,6 +79,8 @@
 
   {% endfor %}</div>
 {% endif %}
+
+<div style="float: left">View period: <div id="perioddropdown" style="float: right;"></div></div>
 
 {% for p, p_excs in exercises.items %}
   <form autocomplete="off">
@@ -111,7 +114,10 @@
             {% trans "Show exercise" %}
           </a>
           {% endif %}
-          <h3>{{ e.title }}</h3>
+          <h3>{% if e.starred %}
+            <img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />
+            {% endif %}
+            {{ e.title }}</h3>
           {% autoescape off %}
           <div class="exctext"
                {% if statuses %}style="display: none"{% endif %}
@@ -144,24 +150,16 @@
 {% endfor %}
 
   <script type="text/javascript">
-    Ext.create('Ext.grid.Panel', {
-      title: 'Test',
-      store: Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore'),
-      columns: [
-        {header: 'Name', dataIndex: 'name'},
-        {header: 'Points', dataIndex: 'points',
-             renderer: function(val) {return '<div style="white-space: normal !important;">' + val + '</div>'}
-        },
-        {header: 'Total', dataIndex: 'total_points'},
-        {header: 'Completed', dataIndex: 'exercises_done'},
-        {header: 'Exercises', dataIndex: 'exercises'},
-        {header: 'Starred completed', dataIndex: 'starred_done'},
-        {header: 'Starred', dataIndex: 'starred'}
-      ],
-      width: '80%',
-      renderTo: Ext.getBody()
+    Ext.create('devilry.extjshelpers.formfields.ForeignKeySelector', {
+      title: 'Show period',
+      model: {{ RestfulSimplifiedPeriod|extjs_modelname }},
+      renderTo: 'perioddropdown',
+      displayTpl: '{long_name}',
+      dropdownTpl: '{long_name}',
+      setRecordValue: function(record) {
+        document.location.href=("/trix/period/" + record.data.id);
+      }
     });
     Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
   </script>
 {% endblock %}
-
