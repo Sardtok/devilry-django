@@ -32,6 +32,11 @@ class RestfulPeriodStatistics(RestfulView):
             p_data['points'] += int(result.exercise.points * result.status.percentage)
         exercises = exercises.filter(starred=True)
         p_data['starred_done'] = exercises.count()
+        p_data['points_percent'] = int(p_data['points'] * 100 / p_data['total_points'])
+        p_data['done_percent'] = int(p_data['exercises_done'] * 100 / p_data['exercises'])
+        p_data['starred_percent'] = 0
+        if p_data['starred'] > 0:
+            int(p_data['starred_done'] * 100 / p_data['starred'])
         return p_data
 
 

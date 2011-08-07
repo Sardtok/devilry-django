@@ -31,6 +31,11 @@ class RestfulTopicStatistics(RestfulView):
             t_data['points'] += int(result.exercise.points * result.status.percentage)
         exercises = exercises.filter(starred=True)
         t_data['starred_done'] = exercises.count()
+        t_data['points_percent'] = int(t_data['points'] * 100 / t_data['total_points'])
+        t_data['done_percent'] = int(t_data['exercises_done'] * 100 / t_data['exercises'])
+        t_data['starred_percent'] = 0
+        if t_data['starred'] > 0:
+            int(t_data['starred_done'] * 100 / t_data['starred'])
         return t_data
 
 
