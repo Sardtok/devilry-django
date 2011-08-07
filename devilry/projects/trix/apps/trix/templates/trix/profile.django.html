@@ -18,11 +18,17 @@
 {% endblock %}
 
 {% block main %}
+<div id="stats" class="stats"></div>
+
+<div class="levelinfo">
+  {% include "trix/xpbar.django.html" %}<br />
+  <!--Points needed to reach level {{level.next_level }}: {{ level.points_needed }}<br />-->
+  Total points : {{ level.total_points }} <br /><br />
+</div> 
+<br /><br />
 <div class="portrait">
   <img src="{{DEVILRY_STATIC_URL }}/trix/Portraits/{{ portrait }}" />
 </div>
-
-<div id="stats" class="stats"></div>
 
 <div class="userinfo">
   Name: {{ user.first_name }} {{ user.last_name }}<br />
@@ -30,12 +36,5 @@
   email: {{ user.email }} <br /><br />
 </div>
 
-<div class="levelinfo">
-  <br /><br />{% include "trix/xpbar.django.html" %}<br /><br />
-  Points needed to reach level {{level.next_level }}: {{ level.points_needed }}<br />
-  Total points : {{ level.total_points }} <br /><br />
-</div>
-
 last login: {{ user.last_login }}<br /><br />
-
 {% endblock %}
