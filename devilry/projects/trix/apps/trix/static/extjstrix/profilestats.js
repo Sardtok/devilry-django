@@ -120,7 +120,68 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
             store: store,
             background: {
                 fill: 'rgb(17, 17, 17)'
-            }	    
+            },
+	    /*gradients: [
+            {
+                'id': 'gradientId',
+                'angle': 0,
+                stops: {
+                    0: {
+                        color: 'rgb(212, 40, 40)'
+                    },
+                    100: {
+                        color: 'rgb(117, 14, 14)'
+                    }
+                }
+            },
+            {
+                'id': 'gradientId2',
+                'angle': 0,
+                stops: {
+                    0: {
+                        color: 'rgb(180, 216, 42)'
+                    },
+                    100: {
+                        color: 'rgb(94, 114, 13)'
+                    }
+                }
+            },
+            {
+                'id': 'gradientId3',
+                'angle': 0,
+                stops: {
+                    0: {
+                        color: 'rgb(43, 221, 115)'
+                    },
+                    100: {
+                        color: 'rgb(14, 117, 56)'
+                    }
+                }
+            },
+            {
+                'id': 'gradientId4',
+                'angle': 0,
+                stops: {
+                    0: {
+                        color: 'rgb(45, 117, 226)'
+                    },
+                    100: {
+                        color: 'rgb(14, 56, 117)'
+                    }
+                }
+            },
+            {
+                'id': 'gradientId5',
+                'angle': 0,
+                stops: {
+                    0: {
+                        color: 'rgb(187, 45, 222)'
+                    },
+                    100: {
+                        color: 'rgb(85, 10, 103)'
+                    }
+                }
+		}],*/
             axes: [{
                 type: 'Category',
                 position: 'bottom',
@@ -152,6 +213,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 },
                 style: {
                     opacity: 0.95
+			//fill: 'url(#gradientId)',
                 },
 		tips: {
                     trackMouse: true,
