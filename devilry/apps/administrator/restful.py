@@ -6,6 +6,7 @@ from simplified import (SimplifiedNode, SimplifiedSubject, SimplifiedPeriod,
                         SimplifiedStaticFeedback, SimplifiedFileMeta)
 from ..extjshelpers import extjs_restful_modelapi
 from devilry.coreutils.restful import metabases as restfulmetabases
+from devilry.restful.fields import JsonListWithFallbackField
 
 
 __all__ = ('RestfulSimplifiedNode', 'RestfulSimplifiedSubject',

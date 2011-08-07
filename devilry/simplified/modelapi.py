@@ -229,6 +229,7 @@ class SimplifiedModelApi(object):
         cls.pre_full_clean(user, obj)
         obj.full_clean()
         obj.save()
+        cls.post_save(user, obj)
         return obj.pk
 
     @classmethod
@@ -422,8 +423,10 @@ def simplified_modelapi(cls):
     _require_metaattr(cls, 'searchfields')
     _validate_fieldnameiterator(cls, 'Meta.searchfields', cls._meta.searchfields)
     if not hasattr(cls._meta, 'annotated_fields'):
-        cls._meta.annotated_fields = []
+        cls._meta.annotated_fields = tuple()
     _create_meta_ediablefields(cls)
+    if not hasattr(cls._meta, 'fake_editablefields'):
+        cls._meta.fake_editablefields = tuple()
     _create_meta_ediable_fieldgroups(cls)
     cls._meta.methods = set(cls._meta.methods)
 
