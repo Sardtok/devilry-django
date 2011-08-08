@@ -17,5 +17,12 @@ class SimplifiedExercise(AuthorizationMixin):
                                  )
         searchfields = FieldSpec('short_name',
                                  'long_name')
+
+#       editablefields = ('id', 'short_name', 'long_name', 'text', 'points')
+        fake_editablefields = ('fake_topics', 'fake_prerequisites')
+
         methods = ['create', 'read', 'update', 'delete', 'search']
 
+    @classmethod
+    def post_save(cls, user, obj):
+        pass
