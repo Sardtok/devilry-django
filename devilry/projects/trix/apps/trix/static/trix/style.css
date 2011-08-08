@@ -15,7 +15,7 @@ pre   { border-color: #CCC;
 .statusbutton { text-align: center; }
 .dispexc { margin: 0.5em; font-size: 1em !important; }
 #bq   { background-color: #EEE;
-        margin: 0.5em 0.5em 0.5em 0;
+        margin: 0.5em 0.5em 0.5em;
         padding: 1em; }
 
 .exercises { clear: both; }
@@ -28,7 +28,12 @@ pre   { border-color: #CCC;
 .portrait { position: relative; float: left;  border: 10px dashed #77B300; margin-right: 2em }
 .userinfo { position: relative; top: 15px; font-size:15px; }
 .levelinfo { clear: left; }
-.stats { position: relative; float: right }
+
+.userdata { float: left; width: 30%; }
+.activity { float: left; width: 27%; }
+.stats { float: left; width: 43%; margin-right: 2em; padding: 1em; }
+
+
 
 header > nav.trix {
     border-bottom: 10px solid #0077B3;

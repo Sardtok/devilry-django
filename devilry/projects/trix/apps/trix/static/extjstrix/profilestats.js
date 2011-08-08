@@ -4,6 +4,11 @@ Ext.require(['Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
 var colors = ['#0077B3',
                   '#77B300',
                   '#CC4400',];
+/*var colors = ['url(#v-1)',
+	      'url(#v-2)',
+	      'url(#v-3)',
+	      'url(#v-4)',
+	      'url(#v-5)',];*/
     
 var baseColor = '#eee';
     
@@ -54,6 +59,9 @@ Ext.onReady(function() {
     });
 });
 
+/***
+ * Returns a dictionary containing data to be displayed as values in a bar chart.
+ */
 function getValuesDict(id, title, x_title, x_field, y_title, y_field, store) {
     return {
             id: id,
@@ -107,6 +115,9 @@ function getValuesDict(id, title, x_title, x_field, y_title, y_field, store) {
         }
 }
 
+/***
+ * Returns a dictionary containing data to be displayed as percentage in a bar chart.
+ */
 function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store) {
     return {
             id: id,
@@ -123,7 +134,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
             },
 	    /*gradients: [
             {
-                'id': 'gradientId',
+                'id': 'v-1',
                 'angle': 0,
                 stops: {
                     0: {
@@ -135,7 +146,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 }
             },
             {
-                'id': 'gradientId2',
+                'id': 'v-2',
                 'angle': 0,
                 stops: {
                     0: {
@@ -147,7 +158,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 }
             },
             {
-                'id': 'gradientId3',
+                'id': 'v-3',
                 'angle': 0,
                 stops: {
                     0: {
@@ -159,7 +170,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 }
             },
             {
-                'id': 'gradientId4',
+                'id': 'v-4',
                 'angle': 0,
                 stops: {
                     0: {
@@ -171,7 +182,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 }
             },
             {
-                'id': 'gradientId5',
+                'id': 'v-5',
                 'angle': 0,
                 stops: {
                     0: {
@@ -212,8 +223,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                     return barAttr;
                 },
                 style: {
-                    opacity: 0.95
-			//fill: 'url(#gradientId)',
+                    opacity: 0.95,
                 },
 		tips: {
                     trackMouse: true,
