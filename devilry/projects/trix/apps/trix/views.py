@@ -7,8 +7,7 @@ from django.http import HttpResponse
 from devilry.apps.core.models import Period
 from models import Status, ExerciseStatus, PeriodExercise
 
-from devilry.apps.administrator.restful import RestfulSimplifiedPeriod
-from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulPeriodStatistics, RestfulTopicStatistics
+from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulSimplifiedPeriod, RestfulPeriodStatistics, RestfulTopicStatistics
 
 def get_level(points=0):
     """

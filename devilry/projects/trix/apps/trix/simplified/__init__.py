@@ -4,3 +4,4 @@ from exercise import SimplifiedExercise
 from periodexercise import SimplifiedPeriodExercise
 from status import SimplifiedStatus
 from exercisestatus import SimplifiedExerciseStatus
+from period import SimplifiedPeriod

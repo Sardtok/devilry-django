@@ -18,4 +18,4 @@ class SimplifiedPeriodExercise(AuthorizationMixin):
                                  'exercise__short_name',
                                  'exercise__long_name',
                                  'exercise__topics__name')
-        methods = ['read', 'search']
+        methods = ['create', 'read', 'update', 'delete', 'search']
