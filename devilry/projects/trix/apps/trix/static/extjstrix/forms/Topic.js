@@ -23,12 +23,12 @@ Ext.define('trix.forms.Topic', {
 
     items: [{
         name: "name",
-        fieldLabel: "Name",
+        fieldLabel: gettext("Name"),
         xtype: 'textfield',
-        emptyText: 'Example: Arrays'
+        emptyText: gettext('Example: Arrays')
     }],
 
     help: [
-        '<strong>Name</strong> the name of the topic.'
+        gettext('<strong>Name</strong> the name of the topic.')
     ]
 });

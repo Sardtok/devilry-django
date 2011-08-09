@@ -1,4 +1,4 @@
-from trix.apps.trix.models import Exercise
+from trix.apps.trix.models import Exercise, Topic
 from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
 from authorization import AuthorizationMixin
 
@@ -25,4 +25,8 @@ class SimplifiedExercise(AuthorizationMixin):
 
     @classmethod
     def post_save(cls, user, obj):
-        pass
+        if hasattr(obj, 'fake_topics') and isinstance(obj.fake_topics, int):
+            obj.topics.add(Topic.objects.get(id=obj.fake_topics))
+        if hasattr(obj, 'fake_prerequisites') and isinstance(obj.fake_prerequisites, int):
+            obj.prerequisites.add(Topic.objects.get(id=obj.fake_prerequisites))
+        
