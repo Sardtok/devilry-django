@@ -3,21 +3,28 @@
     "pk": 1,
     "model": "trix.topic",
     "fields": {
-      "name": "Kompilering"
+      "name": "Variabler og uttrykk"
     }
   },
   {
     "pk": 2,
     "model": "trix.topic",
     "fields": {
-      "name": "Koding"
+      "name": "Arrayer"
     }
   },
   {
     "pk": 3,
     "model": "trix.topic",
     "fields": {
-      "name": "Utskrift"
+      "name": "Løkker"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "trix.topic",
+    "fields": {
+      "name": "I/O"
     }
   },
   {
@@ -46,6 +53,14 @@
     }
   },
   {
+    "pk": 4,
+    "model": "trix.status",
+    "fields": {
+      "name": "Ikke fullført",
+      "percentage": 0.0
+    }
+  },
+  {
     "pk": 1, 
     "model": "trix.exercise", 
     "fields": {
@@ -53,8 +68,8 @@
       "long_name": "Det første programmet",
       "points": 5, 
       "text": "<i>kap. 1, oppg. 1 (side 23 i læreboken)</i><br>Lag et program som skriver følgende tekst på skjermen:<pre id=\"bq\">Rachmaninovs 3. klaverkonsert har et vakkert åpningstema </pre>Velg selv hvilket navn du vil gi klassen.",
-      "topics": [3],
-      "prerequisites": [1,2]
+      "topics": [1],
+      "prerequisites": []
     }
   },
   {
@@ -63,9 +78,9 @@
     "fields": {
       "short_name": "finn5synfeil",
       "long_name": "Finn fem syntaksfeil",
-      "points": 3, 
+      "points": 5, 
       "text": "Finn feilene i dette programmet:<pre id=\"bq\">\nclass Utskrift {\n    public stitac void main(String args) (\n        System.out.println(\"Beethoven skrev Skjebnesymfonien\")\n        System.out.println(\"og åtte andre symfonier.);\n    }\n}\n</pre>", 
-      "topics": [1,2],
+      "topics": [1],
       "prerequisites": []
     }
   },
@@ -75,10 +90,10 @@
     "fields": {
       "short_name": "enkelfmt",
       "long_name": "Enkel formatering av utskrift",
-      "points": 4, 
+      "points": 5, 
       "text": "Vi ønsker å skrive ut følgende tekst på skjermen (med samme pyramideformatering):<pre id=\"bq\">    a\n   a a\n  a b a\n a c c a\na d f d a</pre>Lag et Java-program som gjør dette, ved å bruke flere utskriftssetninger.<br /><br /><i>Tips:</i><br />Idéen her er å finne hvor og hvordan man kan legge inn mellomroms-tegn i programmet for å få til pyramideformateringen. Senere i kurset, i kapittel 3 (side 52) vil du lære en annen måte å løse denne oppgaven på hvor Java tar seg av pyramideformateringen.",
-      "topics": [3],
-      "prerequisites": [1,2]
+      "topics": [1],
+      "prerequisites": []
     }
   },
   {
@@ -89,8 +104,8 @@
       "long_name": "Areal av rektangler",
       "points": 5,
       "text": "<i>kap. 2, oppg. 1 (side 43)</i><br />Skriv et program som beregner arealet av rektanglene med disse sidestørrelsene: 3 og 5, 7 og 3, samt 4 og 9, og som skriver ut resultatet med en passende fortekst. Kompier og kjør programmet.<br /><br /><i>Tips:</i><br />Denne kan løses ved å følge oppskriften fra programmet på side 30 og skrive et lignende program, men med litt andre variabelnavn og beregninger.",
-      "topics": [3],
-      "prerequisites": [1,2]
+      "topics": [1],
+      "prerequisites": []
     }
   },
   {
@@ -99,10 +114,70 @@
     "fields": {
       "short_name": "deklinit",
       "long_name": "Deklarasjon og initialisering av variabler",
-      "points": 4, 
+      "points": 5, 
       "text": "<i>kap. 2, oppg. 2 (side 43)</i><br />Finn feilene i dette programmet:<pre id=\"bq\">class Volum {\n    public static void main (String[] args) {\n        integer lengde, bredde, høyde; lengde = 3;\n        volum = lengde * bredde * høyde;\n        System.out.println(\"Volumet er: \" + volum);\n    }\n}</pre>",
-      "topics": [3],
-      "prerequisites": [1,2]
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+    {
+    "pk": 6, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "presedens",
+      "long_name": "Presedensregler - i hvilken rekkefølge utføres regneoperasjonene?",
+      "points": 5, 
+      "text": "Avgjør i hvert av disse tilfellene, uten å bruke datamaskin, hvilken verdi som blir skrevet ut på skjermen.<br><br>For å svare på denne oppgaven må du kjenne reglene for evaluering (utregning) av numeriske uttrykk i Java. Kortversjonen av disse er at uttrykk beregnes fra venstre mot høyre, men multiplikasjoner og divisjoner utføres før addisjoner og subtraksjoner. Du kan lese mer om dette på side 37 i læreboka.<pre id=\"bq\"> 1. System.out.println(3 * 4 + 5);\n 2. System.out.println(3 + 4 * 5);\n 3. System.out.println((3 + 4) * 5);\n 4. System.out.println(1 / 2 * 5);\n 5. System.out.println(1 / 2 * 5.0);\n 6. System.out.println(1.0 / 2 * 5);\n 7. System.out.println(4 * 2 * 2 * 1);\n 8. System.out.println(4 / 2 / 2 / 1);\n 9. System.out.println(5 * 4 / 3 * 2 / 1);</pre>Hvis du ønsker mer info kan du se følgende oversikt med presedens for alle operatorene. Jo høyere oppe på denne lista operatoren står jo før blir den utført, mens de som står på samme nivå er likestilt og utføres fra venstre til høyre. Tabellen er tatt fra <a class=\"vrtx-link-check\" href=\"http://www.janeg.ca/scjp/oper/precedence.html\">www.janeg.ca/scjp/oper/precedence.html</a>, og er basert på side 378 i<i>The Java Programming Language</i>:<span align=\"center\"><table border=\"1\" align=\"center\"><tbody><tr><th>Operator type</th><th>Operators</th></tr><tr><td>Postfix</td><td><tt>[] . (</tt>params<tt>) </tt>expr<tt>++ </tt>expr<tt>--</tt></td></tr><tr><td>Unary</td><td><tt>++</tt>expr<tt> --</tt>expr<tt> +</tt>expr<tt> -</tt>expr<tt> ~ !</tt></td></tr><tr><td>Creation or Cast</td><td><tt>new (</tt>type<tt>)</tt>expr</td></tr><tr><td>Multiplicative</td><td><tt>* / %</tt></td></tr><tr><td>Additive</td><td><tt>+ -</tt></td></tr><tr><td>Shift</td><td><tt>&lt;&lt; &gt;&gt; &gt;&gt;&gt;</tt></td></tr><tr><td>Relational</td><td><tt>&lt; &gt; &gt;= &lt;= instanceof</tt></td></tr><tr><td>Equality</td><td><tt>== !=</tt></td></tr><tr><td>Bitwise AND</td><td><tt>&amp;</tt></td></tr><tr><td>Bitwise exclusive OR</td><td><tt>^</tt></td></tr><tr><td>Bitwise inclusive OR</td><td><tt>|</tt></td></tr><tr><td>Logical AND</td><td><tt>&amp;&amp;</tt></td></tr><tr><td>Logical OR</td><td><tt>||</tt></td></tr><tr><td>Ternary</td><td><tt>?:</tt></td></tr><tr><td>Assignment</td><td><tt>= += -= *= /= %= &gt;&gt;= &lt;&lt;= &gt;&gt;&gt;= &amp;= ^= |=</tt></td></tr></tbody></table>",
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 7, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "logisk",
+      "long_name": "Logiske uttrykk",
+      "points": 5, 
+      "text": "Avgjør hvilken verdi den boolske variabelen <i>b</i> får etter hver av disse tilordningssetningene, når vi antar at heltallsvariablene <i>x</i>, <i>y</i>, og <i>z</i> har fått verdier som følger:<tt>int x = 3, y = 4, z = 1;</tt><pre id=\"bq\">  1.  b = (x &lt; y) &amp;&amp; (y &lt; z);\n  2.  b = (x &lt; y) || (y &lt; z);\n  3.  b = ! (x &lt; y);\n  4.  b = x &lt; y;\n  5.  b = x &lt;= y;\n  6.  b = (x == y);\n  7.  b = (x != y);</pre><span style=\"font-size: 90%; line-height: 1.2em;\"><b><i>Hint:</i></b> Eksempel på hvordan man kan bruke slike boolske uttrykk i et program:</span><pre style=\"font-size: 90%; line-height: 1.2em;\">    int x = 3, y = 4, z = 1;\n    if ((x &lt; y) &amp;&amp; (y &lt; z)) {\n        System.out.println(\"Det stemmer at x &lt; y &lt; z.\"); <font color=\"#229944\"></font><i>// Blir dette skrevet ut?</i>\n    }</pre>",
+      "topics": [1],
+      "prerequisites": []
+    }
+  },
+  {
+    "pk": 8, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "innlesing",
+      "long_name": "Innlesing fra terminal",
+      "points": 5, 
+      "text": "Lag et program som ber om og leser inn to flyttall. Programmet skal deretter regne ut produktet av de to tallene og skrive ut svaret. Her er et eksempel på hvordan en kjøring av programmet kan se ut:<pre id=\"bq\"> Oppgi verdien til x: 9\n Oppgi verdien til y: 10\n Produktet av x og y er 90.0</pre><div style=\"font-size: 90%; line-height: 1.2em;\"><i><b>Hint:</b></i> Følg malen fra eksemplet på side 56.&nbsp; Innlesing fra terminal bør gjøres i to steg, først en utskrift som sier til bruker hva hun skal taste inn (det kalles for <i>ledetekst</i>), og så kommer selve setningen som henter input fra tastaturet.&nbsp; Bruk her <tt>tast.inDouble()</tt> og ikke <tt>tast.inInt()</tt>.&nbsp; Disse stopper kjøringen av programmet inntil bruker har tastet inn et svar.&nbsp; Når bruker har gjort det, blir tallet lagret i den angitte variabelen, og kjøringen av programmet fortsetter med neste setning.</div>",
+      "topics": [4],
+      "prerequisites": [1]
+    }
+  },
+  {
+    "pk": 9, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "desimaler",
+      "long_name": "Utskrift med 2 desimaler på to måter: easyIO og printf",
+      "points": 5, 
+      "text": "Ved utskrift av desimaltall er det ofte ønskelig å kontrollere hvor mange desimaler som skrives ut. Bruker vi <tt>System.out.println(tall)</tt> til å skrive ut en <b><tt>double</tt></b>-variabel <i>tall</i>, får vi med alle desimalene som er lagret i <i>tall</i> (med unntak av avsluttende nuller i desimalene). To måter å kontrollere antall desimaler som skrives ut er:<ul><li><b>printf:</b> I nyere versjoner av Java (5.0 og 6, også kalt 1.5 og 1.6) finnes en metode som gir oss god kontroll over utskriften. Hvis vi skriver:<br><tt> &nbsp; System.out.printf(<font color=\"#775522\" style=\"line-height: 2em;\">\"Tall: %.2f\n\"</font>, tall);</tt><br>så får vi skrevet ut verdien i variabelen <i>tall</i> med 2 desimaler, og hvis vi skriver:<br><tt> &nbsp; System.out.printf(<font color=\"#775522\" style=\"line-height: 2em;\">\"Tall: %7.2f\n\"</font>, tall);</tt><br>så får vi skrevet ut <i>tall</i> på 7 plasser (eller så mange som er nødvendig) og med 2 desimaler. Om nødvendig fyller Java på med blanke tegn til venstre slik at hele utskriften tar 7 plasser.&nbsp; Koden <tt>\\n</tt> (omvendt-skråstrek etterfulgt av n) gir et linjeskift, og kan tas bort i setningene over hvis du ikke ønsker linjeskift.&nbsp; <span style=\"font-size: 90%; line-height: 1.2em;\">Flere eksempler på bruk av <tt>printf</tt> kan du se <a class=\"vrtx-link-check\" href=\"http://josek.at.ifi.uio.no/inf1000/printf-liang5p64.pdf\">her <small>(PDF)</small></a> [Y.D. Liang <i>\"Introduction to Java Programming\"</i> 5.&nbsp;utg., side&nbsp;64], og <a class=\"vrtx-link-check\" href=\"http://en.wikipedia.org/wiki/Printf\">på Wikipedia</a></span>.<p></p></li><li><b>easyIO:</b> Pakken easyIO gir tilsvarende resultat med følgende setninger:<br><tt> &nbsp; skjerm.outln(tall, 2);</tt><br><tt> &nbsp; skjerm.outln(tall, 2, 7);</tt><br>For å kunne bruke dette må programmet ha setningen \"<tt>import easyIO.*;</tt>\" øverst, og setningen \"<tt>Out skjerm = new Out();</tt>\" plassert på et passende sted i programmet før de ovennevnte <tt>skjerm.outln()</tt>-linjene, se eksemplet på side 50 i læreboka.&nbsp; I tillegg må easyIO være installert på datamaskinen (mer om dette kommer på bloggen).<span style=\"font-size: 90%; line-height: 1.2em;\">For info om andre muligheter for formatert utskrift med easyIO se oversikten på side&nbsp;52.&nbsp; Ledeteksten <tt><font color=\"#775522\">\"Tall: \"</font></tt> kan skrives ut vha. en egen <tt>skjerm.out(<font color=\"#775522\">\"Tall: \"</font>)</tt>-setning som du kan plassere før de ovennevnte <tt>skjerm.outln</tt>-setningene.</span></li></ul><i><b>Oppgave:</b></i>Bruk dette til å endre programmet fra forrige oppgave (i <a class=\"vrtx-link-check\" href=\"#nr3\">punkt 3.</a> ovenfor) til å skrive ut produktet med 2 desimaler, og igjen med 3 desimaler på 10 plasser.",
+      "topics": [4],
+      "prerequisites": [1]
+    }
+  },
+  {
+    "pk": 10, 
+    "model": "trix.exercise", 
+    "fields": {
+      "short_name": "skatt",
+      "long_name": "Beregning av skatt i Ruritania",
+      "points": 5, 
+      "text": "I det fiktive landet Ruritania er skattereglene slik at hvis en person har inntekt &lt; 10 000, så betaler man 10% skatt på hele inntekten, og hvis inntekten ≥ 10 000, så betaler man 10% skatt på de første 10 000 kronene og 30% skatt på resten av inntekten.&nbsp; Lag et program som regner ut og skriver ut hvor mange kroner som skal betales i skatt.&nbsp; Programmet skal lese inntekten (som antas å være et desimaltall) fra terminal.",
+      "topics": [4],
+      "prerequisites": [1]
     }
   },
   {
@@ -110,8 +185,8 @@
     "model": "trix.periodexercise",
     "fields": {
       "exercise": 1,
-      "period": 2,
-      "points": 7
+      "period": 3,
+      "points": 8
     }
   },
   {
@@ -119,8 +194,8 @@
     "model": "trix.periodexercise",
     "fields": {
       "exercise": 2,
-      "period": 2,
-      "points": 20
+      "period": 3,
+      "points": 8
     }
   },
   {
@@ -128,8 +203,8 @@
     "model": "trix.periodexercise",
     "fields": {
       "exercise": 3,
-      "period": 1,
-      "points": 12
+      "period": 3,
+      "points": 8
     }
   },
   {
@@ -137,8 +212,8 @@
     "model": "trix.periodexercise",
     "fields": {
       "exercise": 4,
-      "period": 2,
-      "points": 10
+      "period": 3,
+      "points": 8
     }
   },
   {
@@ -146,8 +221,53 @@
     "model": "trix.periodexercise",
     "fields": {
       "exercise": 5,
+      "period": 3,
+      "points": 8
+    }
+  },
+  {
+    "pk": 6,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 6,
       "period": 1,
-      "points": 5
+      "points": 8
+    }
+  },
+  {
+    "pk": 7,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 7,
+      "period": 1,
+      "points": 8
+    }
+  },
+  {
+    "pk": 8,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 8,
+      "period": 1,
+      "points": 8
+    }
+  },
+  {
+    "pk": 9,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 9,
+      "period": 1,
+      "points": 8
+    }
+  },
+  {
+    "pk": 10,
+    "model": "trix.periodexercise",
+    "fields": {
+      "exercise": 10,
+      "period": 1,
+      "points": 8
     }
   }
 ]
