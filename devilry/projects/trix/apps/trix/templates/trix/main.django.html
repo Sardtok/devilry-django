@@ -35,19 +35,23 @@
   <script type="text/javascript">
     // Models
     {{ RestfulSimplifiedPeriod|extjs_model }};
+    {% comment %}
     {{ RestfulSimplifiedTopic|extjs_model }};
     {{ RestfulSimplifiedExercise|extjs_model }};
     {{ RestfulSimplifiedPeriodExercise|extjs_model }};
     {{ RestfulSimplifiedStatus|extjs_model }};
     {{ RestfulSimplifiedExerciseStatus|extjs_model }};
+    {% endcomment %}
 
     // Test extjs_store
     {{ RestfulSimplifiedPeriod|extjs_store }};
+    {% comment %}
     {{ RestfulSimplifiedTopic|extjs_store }};
     {{ RestfulSimplifiedStatus|extjs_store }};
     {{ RestfulSimplifiedExercise|extjs_store }};
     {{ RestfulSimplifiedPeriodExercise|extjs_store }};
     {{ RestfulSimplifiedExerciseStatus|extjs_store }};
+    {% endcomment %}
   </script>
 {% endblock %}
 
@@ -63,11 +67,6 @@
 <div>{% trans "Topics" %}:
   {% for id, topic in topics.items %}
   {{ topic.name }}
-  {% for statid, points in topicstats.items %}
-  {% if statid == id %}
-  ({{points}})
-  {% endif %}
-  {% endfor %}
   {% endfor %}
 </div>
 {% endif %}
