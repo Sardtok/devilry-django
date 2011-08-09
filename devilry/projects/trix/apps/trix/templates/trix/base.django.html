@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 {% load i18n %}
-<html>
+<html lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>
             {% block title %}{{ page_title|default:"Devilry" }}{% endblock %}
@@ -12,7 +12,7 @@
         {% if debug %}
         {% endif %}
 
-
+        <meta charset="utf-8" />
 
         <!-- ** ExtJS ** -->
         <link rel="stylesheet" type="text/css"

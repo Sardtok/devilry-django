@@ -61,8 +61,8 @@ Ext.define('trix.forms.Exercise', {
         name: "text",
         fieldLabel: gettext("Exercise text"),
         xtype: 'htmleditor',
-        anchor: '100% 100%',
-        layout: { type: 'fit', align: 'stretch' }
+        anchor: '100%',
+        flex: 1
     }],
 
     help: [
