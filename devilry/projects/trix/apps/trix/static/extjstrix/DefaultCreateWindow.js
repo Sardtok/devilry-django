@@ -4,7 +4,7 @@ Ext.require('Ext.window.MessageBox');
 
 Ext.define('trix.DefaultCreateWindow', {
     extend: 'devilry.administrator.DefaultEditWindow',
-    title: 'Create new',
+    title: gettext('Create new'),
 
     config: {
         /**
@@ -17,6 +17,6 @@ Ext.define('trix.DefaultCreateWindow', {
 
     onSaveSuccess: function(record) {
         this.close();
-        Ext.MessageBox.alert('Success', 'Data saved successfully!');
+        Ext.MessageBox.alert(gettext('Success'), gettext('Data saved successfully!'));
     }
 });

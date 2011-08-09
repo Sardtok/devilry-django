@@ -3,6 +3,8 @@ from devilry.defaults.settings import *
 
 this_dir = dirname(abspath(__file__))
 
+LANGUAGE_CODE = 'nb'
+
 DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.sqlite3',  # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
@@ -24,6 +26,7 @@ DATABASES = {
 
 INSTALLED_APPS += [
     'devilry.projects.trix.apps.trix',
+    'devilry.projects.trix',
     
     # Not apps, but here for the Django test system to discover them:
     'devilry.utils',

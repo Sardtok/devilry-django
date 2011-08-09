@@ -24,15 +24,15 @@ Ext.define('trix.forms.PeriodExercise', {
 
     items: [{
         name: "period",
-        fieldLabel: "Period",
+        fieldLabel: gettext("Period"),
         xtype: 'foreignkeyselector',
-        model: 'devilry.apps.administrator.simplified.SimplifiedPeriod',
-        emptyText: 'Select a period',
+        model: 'trix.apps.trix.simplified.period.SimplifiedPeriod',
+        emptyText: gettext('Select a period'),
         displayTpl: '{long_name}',
         dropdownTpl: '<div class="important">{short_name}</div> <div>{long_name}</div>'
     }, {
         name: "exercise",
-        fieldLabel: "Exercise",
+        fieldLabel: gettext("Exercise"),
         xtype: 'foreignkeyselector',
         model: 'trix.apps.trix.simplified.exercise.SimplifiedExercise',
         emptyText: 'Select an exercise',
@@ -40,28 +40,19 @@ Ext.define('trix.forms.PeriodExercise', {
         dropdownTpl: '<div class="important">{short_name}</div> <div>{long_name}</div>'
     }, {
         name: "points",
-        fieldLabel: "Points",
+        fieldLabel: gettext("Points"),
         xtype: 'numberfield'
     }, {
         name: "starred",
-        fieldLabel: "Starred",
+        fieldLabel: gettext("Key exercise"),
         xtype: 'checkbox',
         inputValue: true,
-/*    }, {
-        name: "topics__id",
-        fieldLabel: "Topic",
-        xtype: 'foreignkeytolistselector',
-        model: 'trix.apps.trix.simplified.topic.SimplifiedTopic',
-        emptyText: 'Select a topic',
-        displayTpl: '{name}',
-        dropdownTpl: '<div class="important">{name}</div>'
-*/
     }],
 
     help: [
-        '<strong>Short name</strong> is a short name used when the long name takes to much space. Short name can only contain english lower-case letters, numbers and underscore (_).',
-        '<strong>Long name</strong> is a longer descriptive exercise title.',
-        '<strong>Points</strong> is the default number of points for this exercise',
-        '<strong>Exercise text</strong> is the exercise itself.'
+        gettext('<strong>Period</strong> is the period in which an exercise should be given.'),
+        gettext('<strong>Exercise</strong> is the exercise to be given.'),
+        gettext('<strong>Points</strong> is the default number of points for this exercise'),
+        gettext('<strong>Key exercise</strong> marks exercises that are important.')
     ]
 });

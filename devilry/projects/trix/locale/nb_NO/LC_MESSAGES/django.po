@@ -1,0 +1,102 @@
+# translation of django.po to Norsk bokmål
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Sigmund Hansen <sigmunha@student.uio.no>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: django\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-09 11:38+0200\n"
+"PO-Revision-Date: 2011-08-09 11:43+0200\n"
+"Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
+"Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: apps/trix/models/exercise.py:27 apps/trix/models/exercisestatus.py:38
+#: apps/trix/models/periodexercise.py:38
+#: apps/trix/templates/trix/main.django.html:96
+msgid "Exercise"
+msgstr "Oppgave"
+
+#: apps/trix/models/exercise.py:28
+#: apps/trix/templates/trix/base.django.html:81
+#: apps/trix/templates/trix/main.django.html:5
+#: apps/trix/templates/trix/main.django.html:89
+msgid "Exercises"
+msgstr "Oppgaver"
+
+#: apps/trix/models/exercisestatus.py:36
+#: apps/trix/templates/trix/base.django.html:77
+msgid "Student"
+msgstr "Student"
+
+#: apps/trix/models/exercisestatus.py:40 apps/trix/models/status.py:23
+msgid "Status"
+msgstr "Status"
+
+#: apps/trix/models/exercisestatus.py:51
+msgid "The status that was set is not active: %b"
+msgstr "Den valgte statusen er ikke aktiv: %b"
+
+#: apps/trix/models/periodexercise.py:36
+msgid "Period"
+msgstr "Periode"
+
+#: apps/trix/models/status.py:24
+msgid "Statuses"
+msgstr "Statuser"
+
+#: apps/trix/models/topic.py:20
+msgid "Topic"
+msgstr "Tema"
+
+#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:69
+msgid "Topics"
+msgstr "Temaer"
+
+#: apps/trix/templates/trix/base.django.html:57
+msgid "Devilry"
+msgstr "Devilry"
+
+#: apps/trix/templates/trix/base.django.html:78
+msgid "Examiner"
+msgstr "Retter"
+
+#: apps/trix/templates/trix/base.django.html:79
+#: apps/trix/templates/trix/base.django.html:84
+msgid "Administrator"
+msgstr "Administrator"
+
+#: apps/trix/templates/trix/base.django.html:82
+msgid "Profile"
+msgstr "Profil"
+
+#: apps/trix/templates/trix/main.django.html:24
+msgid "Hide exercise"
+msgstr "Skjul oppgaven"
+
+#: apps/trix/templates/trix/main.django.html:27
+#: apps/trix/templates/trix/main.django.html:115
+msgid "Show exercise"
+msgstr "Vis oppgaven"
+
+#: apps/trix/templates/trix/main.django.html:63
+msgid "Total points"
+msgstr "Totalt antall poeng"
+
+#: apps/trix/templates/trix/main.django.html:77
+msgid "Prerequisites"
+msgstr "Nødvendige forkunnskaper"
+
+#: apps/trix/templates/trix/main.django.html:101
+msgid "Unsolved"
+msgstr "Ikke forsøkt"
+
+#: apps/trix/templates/trix/xpbar.django.html:5
+msgid "Level"
+msgstr "Nivå"
+

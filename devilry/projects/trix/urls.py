@@ -7,17 +7,21 @@ from django.views.generic import View
 from devilry.apps.core import pluginloader
 from devilry.defaults.urls import devilry_urls
 
+js_info_dict = {
+    'domain': 'djangojs',
+    'packages': ('devilry.projects.trix',),
+}
 
 class RedirectToFrontpage(View):
     def get(self, request):
-        return redirect(reverse('administrator'))
+        return redirect(reverse('trix'))
 
 
 urlpatterns = patterns('',
                        # Custom urls for this project
                        (r'^trix/', include('devilry.projects.trix.apps.trix.urls')),
                        (r'^$', RedirectToFrontpage.as_view()),
-
+                       (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
                        # Add the default Devilry urls
                        *devilry_urls
 ) + staticfiles_urlpatterns()
