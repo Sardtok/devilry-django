@@ -56,15 +56,17 @@
 {% endblock %}
 
 {% block main %}
-{% include "trix/xpbar.django.html" %}
 {% if user.is_authenticated %}
-<div>{% trans "Total points" %}:
-  <span id="total_points">{{ level.total_points }}</span>
-</div>
+  <div class="levelinfo">
+    {% include "trix/xpbar.django.html" %}
+    <div>{% trans "Total points" %}:
+      <span id="total_points">{{ level.total_points }}</span>
+    </div>
+  </div>
 {% endif %}
 
 {% if topics %}
-<div>{% trans "Topics" %}:
+<div class="topics">{% trans "Topics" %}:
   {% for id, topic in topics.items %}
   {{ topic.name }}
   {% endfor %}
@@ -72,14 +74,14 @@
 {% endif %}
 
 {% if prerequisites %}
-<div>{% trans "Prerequisites" %}:
+<div class="topics">{% trans "Prerequisites" %}:
   {% for prerequisite in prerequisites.values %}
   {{ prerequisite.name }}
 
   {% endfor %}</div>
 {% endif %}
 
-<div style="float: left">View period: <div id="perioddropdown" style="float: right;"></div></div>
+<div id="perioddropdown"></div>
 
 {% for p, p_excs in exercises.items %}
   <form autocomplete="off">
@@ -110,7 +112,11 @@
           {% if statuses %}
           <a class="dispexc" href="javascript:void(0)"
              onClick="toggleExc(this)" style="float: right;">
-            {% trans "Show exercise" %}
+            {% if e.status == -1 %}
+              {% trans "Hide exercise" %}
+            {% else %}
+              {% trans "Show exercise" %}
+            {% endif %}
           </a>
           {% endif %}
           <h3>{% if e.starred %}
@@ -119,7 +125,7 @@
             {{ e.title }}</h3>
           {% autoescape off %}
           <div class="exctext"
-               {% if statuses %}style="display: none"{% endif %}
+               {% if statuses and e.status != -1 %}style="display: none"{% endif %}
                >{{ e.text }}</div>
           {% endautoescape %}
         </td>
@@ -150,7 +156,7 @@
 
   <script type="text/javascript">
     Ext.create('devilry.extjshelpers.formfields.ForeignKeySelector', {
-      title: 'Show period',
+      fieldLabel: '{% trans "View period" %}',
       model: {{ RestfulSimplifiedPeriod|extjs_modelname }},
       renderTo: 'perioddropdown',
       displayTpl: '{long_name}',
