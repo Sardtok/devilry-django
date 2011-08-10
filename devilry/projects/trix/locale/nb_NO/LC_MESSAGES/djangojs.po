@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: djangojs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-09 12:29+0200\n"
-"PO-Revision-Date: 2011-08-09 12:05+0200\n"
+"POT-Creation-Date: 2011-08-10 08:10+0200\n"
+"PO-Revision-Date: 2011-08-10 11:06+0200\n"
 "Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -22,38 +22,38 @@ msgstr "Lag ny"
 
 #: apps/trix/static/extjstrix/DefaultCreateWindow.js:20
 msgid "Success"
-msgstr "Fullført "
+msgstr "Fullført"
 
 #: apps/trix/static/extjstrix/DefaultCreateWindow.js:20
 msgid "Data saved successfully!"
 msgstr "Dataene ble lagret!"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:31
+#: apps/trix/static/extjstrix/forms/Exercise.js:27
 msgid "Short name"
 msgstr "Kort navn"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:33
+#: apps/trix/static/extjstrix/forms/Exercise.js:29
 msgid "Example: output1"
 msgstr "Eksempel: utskrift1"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:36
+#: apps/trix/static/extjstrix/forms/Exercise.js:32
 msgid "Long name"
 msgstr "Fullt navn"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:38
+#: apps/trix/static/extjstrix/forms/Exercise.js:34
 msgid "Example: Hello World"
 msgstr "Eksempel: Hallo, verden!"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:41
+#: apps/trix/static/extjstrix/forms/Exercise.js:37
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:43
 msgid "Points"
 msgstr "Poeng"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:46
+#: apps/trix/static/extjstrix/forms/Exercise.js:62
 msgid "Exercise text"
 msgstr "Oppgavetekst"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:62
+#: apps/trix/static/extjstrix/forms/Exercise.js:69
 msgid ""
 "<strong>Short name</strong> is a short name used when the long name takes to "
 "much space. Short name can only contain english lower-case letters, numbers "
@@ -63,19 +63,18 @@ msgstr ""
 "tar for mye plass. Korte navn kan kun inneholde bokstaver fra det engelske "
 "alfabetet, tall og understrek (_)."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:63
+#: apps/trix/static/extjstrix/forms/Exercise.js:70
 msgid "<strong>Long name</strong> is a longer descriptive exercise title."
 msgstr "<strong>Fullt navn</strong> er en lengre beskrivende tittel."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:64
+#: apps/trix/static/extjstrix/forms/Exercise.js:71
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:55
-msgid ""
-"<strong>Points</strong> is the default number of points for this exercise"
+msgid "<strong>Points</strong> is the default number of points for this exercise"
 msgstr ""
 "<strong>Poeng</strong> er poengsummen som gis som standard for denne "
 "oppgaven."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:65
+#: apps/trix/static/extjstrix/forms/Exercise.js:72
 msgid "<strong>Exercise text</strong> is the exercise itself."
 msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
 
@@ -96,20 +95,16 @@ msgid "Key exercise"
 msgstr "Nøkkeloppgave"
 
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:53
-#, fuzzy
-msgid ""
-"<strong>Period</strong> is the period in which an exercise should be given."
-msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
+msgid "<strong>Period</strong> is the period in which an exercise should be given."
+msgstr "<strong>Periode</strong> er perioden oppgaven skal gis."
 
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:54
-#, fuzzy
 msgid "<strong>Exercise</strong> is the exercise to be given."
-msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
+msgstr "<strong>Oppgave</strong> er oppgaven som skal gis."
 
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:56
-#, fuzzy
 msgid "<strong>Key exercise</strong> marks exercises that are important."
-msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
+msgstr "<strong>Nøkkeloppgave</strong> merker oppgaven som viktig."
 
 #: apps/trix/static/extjstrix/forms/Topic.js:26
 msgid "Name"
@@ -122,3 +117,4 @@ msgstr "Eksempel: Rekker"
 #: apps/trix/static/extjstrix/forms/Topic.js:32
 msgid "<strong>Name</strong> the name of the topic."
 msgstr "<strong>Navn</strong> er temaets navn."
+

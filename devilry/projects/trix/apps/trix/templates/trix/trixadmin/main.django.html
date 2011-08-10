@@ -1,5 +1,6 @@
 {% extends "trix/trixadmin/base.django.html" %}
 {% load extjs %}
+{% load i18n %}
 {% block headextra %}
 {{ block.super }}
 
@@ -24,15 +25,15 @@
             width: 600,
             items: [{
                 xtype: 'buttonbarbutton',
-                text: 'Topic',
+                text: '{% trans "Topic" %}',
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: '<span class="tooltip-title-current-item">Topic</span> &rArr; Exercise &rArr; Link exercise and period',
-                    body: 'A topic for exercise\'s topics and prerequisites.'
+                    title: '<span class="tooltip-title-current-item">{% trans "Topic" %}</span> &rArr; {% trans "Exercise" %} &rArr; {% trans "Link exercise and period" %}',
+                    body: "{% trans "A topic for exercise's topics and prerequisites." %}"
                 },
                 handler: function() {
                     Ext.create('trix.DefaultCreateWindow', {
-                        title: 'Create new topic',
+                        title: '{% trans "Create new topic" %}',
                         editpanel: Ext.ComponentManager.create({
                             xtype: 'restfulsimplified_editpanel',
                             model: {{ RestfulSimplifiedTopic|extjs_modelname }},
@@ -43,15 +44,15 @@
                 }
             }, {
                 xtype: 'buttonbarbutton',
-                text: 'Exercise',
+                text: '{% trans "Exercise" %}',
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Topic &rArr; <span class="tooltip-title-current-item">Exercise</span> &rArr; Link exercise and period',
-                    body: 'An exercise that goes in the exercise database.'
+                    title: '{% trans "Topic" %} &rArr; <span class="tooltip-title-current-item">{% trans "Exercise" %}</span> &rArr; {% trans "Link exercise and period" %}',
+                    body: '{% trans "An exercise that goes in the exercise database." %}'
                 },
                 handler: function() {
                     Ext.create('trix.DefaultCreateWindow', {
-                        title: 'Create new exercise',
+                        title: '{% trans "Create new exercise" %}',
                         editpanel: Ext.ComponentManager.create({
                             xtype: 'restfulsimplified_editpanel',
                             model: {{ RestfulSimplifiedExercise|extjs_modelname }},
@@ -62,15 +63,15 @@
                 }
             },  {
                 xtype: 'buttonbarbutton',
-                text: 'Link exercise and period',
+                text: '{% trans "Link exercise and period" %}',
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Topic &rArr; Exercise &rArr; <span class="tooltip-title-current-item">Link exercise and period</span>',
-                    body: 'Link an exercise and a period.'
+                    title: '{% trans "Topic" %} &rArr; {% trans "Exercise" %} &rArr; <span class="tooltip-title-current-item">{% trans "Link exercise and period" %}</span>',
+                    body: '{% trans "Link an exercise and a period." %}'
                 },
                 handler: function() {
                     Ext.create('trix.DefaultCreateWindow', {
-                        title: 'Create new exercise',
+                        title: '{% trans "Add exercise to period" %}',
                         editpanel: Ext.ComponentManager.create({
                             xtype: 'restfulsimplified_editpanel',
                             model: {{ RestfulSimplifiedPeriodExercise|extjs_modelname }},
