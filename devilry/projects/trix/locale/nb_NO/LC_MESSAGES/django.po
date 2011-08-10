@@ -1,4 +1,4 @@
-# translation of django.po to Norsk bokmål
+# translation of django.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
@@ -108,6 +108,14 @@ msgstr "Ikke forsøkt"
 #: apps/trix/templates/trix/main.django.html:161
 msgid "View period"
 msgstr "Vis periode"
+
+#: apps/trix/templates/trix/profile.django.html:33
+msgid "Name"
+msgstr "Navn"
+
+#: apps/trix/templates/trix/profile.django.html:37
+msgid "last login"
+msgstr "Sist pålogget"
 
 #: apps/trix/templates/trix/xpbar.django.html:5
 msgid "Level"

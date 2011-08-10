@@ -21,7 +21,7 @@
 <div class="levelinfo">
   {% include "trix/xpbar.django.html" %}<br />
   <!--Points needed to reach level {{level.next_level }}: {{ level.points_needed }}<br />-->
-  Total points : {{ level.total_points }} <br /><br />
+  {% trans "Total points" %} : {{ level.total_points }} <br /><br />
 </div> 
 <div class="userdata">
 <br /><br />
@@ -30,32 +30,33 @@
 </div>
 
 <div class="userinfo">
-  Name: {{ user.first_name }} {{ user.last_name }}<br />
-  Username: {{ user.username }}<br />
+  {% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}<br />
+  {% trans "Username" %}: {{ user.username }}<br />
   email: {{ user.email }} <br /><br />
 </div>
-last login: {{ user.last_login }}<br /><br />
+{% trans "last login" %}: {{ user.last_login }}<br /><br />
 </div>
-<div>
 <div class="activity">
-  <br /><br />ACTIVITY FEED:<br /><br />
-  - Earned achievement "Logged in on demo testing day".<br /><br />
-  - You earned lvl 1 in inf1000!<br /><br />
-  - You earned lvl 2 in inf1000!<br /><br />
-  - You earned achievement "Oblig1 passed".<br /><br />
-  - You earned lvl 3 in inf1000!<br /><br />
-  - Earned achievement "If (toBe() || !toBe())"<br /><br />
-  - You earned lvl 4 in inf1000!<br /><br />
-  - You earned lvl 5 in inf1000!<br /><br />
-  - Earned achievement "King of arrays".<br /><br />
-  - You earned lvl 6 in inf1000!<br /><br />
-  - Earned achievement "There are only 10 types of people in the world:
-  those who understand binary and those who don't."<br /><br />
-  
-</div>
 </div>
 
 <div>
 <div id="stats" class="stats"></div>
 </div>
+
+<div>
+  <script>
+  Ext.onReady(function() {
+
+var panel = new Ext.panel.Panel({
+  renderTo: document.body,
+    dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'top',
+        items: [{
+            text: 'Docked to the top'
+        }]
+    }]
+});
+    });
+  </script>
 {% endblock %}
