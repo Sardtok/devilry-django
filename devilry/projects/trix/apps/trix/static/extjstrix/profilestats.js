@@ -44,20 +44,29 @@ Ext.onReady(function() {
     var topicstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
     var periodstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.periodstats.RestfulPeriodStatisticsStore').load();
 
-    var tabs = Ext.create('Ext.tab.Panel', {
+    var periodstats = Ext.create('Ext.tab.Panel', {
         width: 800,
         height: 600,
         title: gettext('Statistics'),
         renderTo: 'stats',
         layout: 'fit',
 	activeTab: 'points_topic',
-
+	preventHeader: 'true',
         items: [
-		getPercentageDict('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', topicstore),
-		getPercentageDict('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', topicstore), 
-		getPercentageDict('points_period', gettext('Points'), gettext('Week'), 'long_name', gettext('Points'), 'points_percent', periodstore),
-		getPercentageDict('exercise_period', gettext('Effort'), gettext('Week'), 'long_name', gettext('Exercises'), 'done_percent', periodstore),
-		]
+		Ext.create('Ext.tab.Panel', {
+			title: gettext('Periods'),
+			items: [
+				getPercentageDict('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', topicstore),
+				getPercentageDict('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', topicstore), 
+			]
+		    }),
+		Ext.create('Ext.tab.Panel', {
+			title: gettext('Topics'),
+			items: [
+				getPercentageDict('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', periodstore),
+				getPercentageDict('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', periodstore),
+				]
+		    }),]
     });
 });
 
@@ -232,6 +241,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
 		    width: 80,
 		    height: 28,
                     renderer: function(storeItem, item) {
+			console.log(item);
                         this.setTitle(String(item.value[1]) + ' % of max');
                     }
                 },
