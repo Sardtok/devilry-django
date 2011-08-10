@@ -243,7 +243,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
 		    height: 32,
                     renderer: function(storeItem, item) {
 			console.log(storeItem);
-                        this.setTitle(String(storeItem.data['exercises']) + ' av ' + String(storeItem.data['exercises_done']) + ' oppgaver gjort');
+                        this.setTitle(String(storeItem.data['exercises_done']) + ' av ' + String(storeItem.data['exercises']) + ' oppgaver gjort');
                     }
                 },
 
