@@ -1,3 +1,4 @@
+# translation of djangojs.po to Norsk bokmål
 # translation of djangojs.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -7,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: djangojs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-10 08:10+0200\n"
-"PO-Revision-Date: 2011-08-10 11:30+0200\n"
-"Last-Translator: Larsen vestad Erlend\n"
-"Language-Team:  <i18n-nb@lister.ping.uio.no>\n"
+"POT-Creation-Date: 2011-08-10 12:13+0200\n"
+"PO-Revision-Date: 2011-08-10 12:13+0200\n"
+"Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
+"Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,15 +35,16 @@ msgstr "Statistikk"
 
 #: apps/trix/static/extjstrix/profilestats.js:56
 #: apps/trix/static/extjstrix/profilestats.js:58
-#: apps/trix/static/extjstrix/forms/Exercise.js:37
+#: apps/trix/static/extjstrix/forms/Exercise.js:41
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:43
 msgid "Points"
 msgstr "Poeng"
 
 #: apps/trix/static/extjstrix/profilestats.js:56
 #: apps/trix/static/extjstrix/profilestats.js:57
+#: apps/trix/static/extjstrix/forms/Exercise.js:50
 msgid "Topic"
-msgstr "Emne"
+msgstr "Tema"
 
 #: apps/trix/static/extjstrix/profilestats.js:57
 #: apps/trix/static/extjstrix/profilestats.js:59
@@ -51,9 +53,8 @@ msgstr "Innsats"
 
 #: apps/trix/static/extjstrix/profilestats.js:57
 #: apps/trix/static/extjstrix/profilestats.js:59
-#, fuzzy
 msgid "Exercises"
-msgstr "Oppgave"
+msgstr "Oppgaver"
 
 #: apps/trix/static/extjstrix/profilestats.js:58
 #: apps/trix/static/extjstrix/profilestats.js:59
@@ -61,26 +62,39 @@ msgid "Week"
 msgstr "Uke"
 
 #: apps/trix/static/extjstrix/forms/Exercise.js:27
-msgid "Short name"
-msgstr "Kort navn"
-
-#: apps/trix/static/extjstrix/forms/Exercise.js:29
-msgid "Example: output1"
-msgstr "Eksempel: utskrift1"
-
-#: apps/trix/static/extjstrix/forms/Exercise.js:32
 msgid "Long name"
 msgstr "Fullt navn"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:34
+#: apps/trix/static/extjstrix/forms/Exercise.js:29
 msgid "Example: Hello World"
 msgstr "Eksempel: Hallo, verden!"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:62
+#: apps/trix/static/extjstrix/forms/Exercise.js:36
+msgid "Short name"
+msgstr "Kort navn"
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:38
+msgid "Example: output1"
+msgstr "Eksempel: utskrift1"
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:53
+#: apps/trix/static/extjstrix/forms/Exercise.js:61
+msgid "Select a topic"
+msgstr "Velg et tema"
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:58
+msgid "Prerequisite"
+msgstr "Forkunnskap"
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:67
 msgid "Exercise text"
 msgstr "Oppgavetekst"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:69
+#: apps/trix/static/extjstrix/forms/Exercise.js:74
+msgid "<strong>Long name</strong> is a longer descriptive exercise title."
+msgstr "<strong>Fullt navn</strong> er en lengre beskrivende tittel."
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:75
 msgid ""
 "<strong>Short name</strong> is a short name used when the long name takes to "
 "much space. Short name can only contain english lower-case letters, numbers "
@@ -90,18 +104,27 @@ msgstr ""
 "tar for mye plass. Korte navn kan kun inneholde bokstaver fra det engelske "
 "alfabetet, tall og understrek (_)."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:70
-msgid "<strong>Long name</strong> is a longer descriptive exercise title."
-msgstr "<strong>Fullt navn</strong> er en lengre beskrivende tittel."
-
-#: apps/trix/static/extjstrix/forms/Exercise.js:71
+#: apps/trix/static/extjstrix/forms/Exercise.js:76
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:55
-msgid "<strong>Points</strong> is the default number of points for this exercise"
+msgid ""
+"<strong>Points</strong> is the default number of points for this exercise"
 msgstr ""
 "<strong>Poeng</strong> er poengsummen som gis som standard for denne "
 "oppgaven."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:72
+#: apps/trix/static/extjstrix/forms/Exercise.js:77
+msgid "<strong>Topic</strong> is a topic for the exercise."
+msgstr "<strong>Tema</strong> er et oppgavetema."
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:78
+msgid ""
+"<strong>Prerequisite</strong> is a topic the student should know before "
+"doing the exercise."
+msgstr ""
+"<strong>Forkunnskap</strong> er et tema studenten bør kunne før han/hun gjør "
+"oppgaven."
+
+#: apps/trix/static/extjstrix/forms/Exercise.js:79
 msgid "<strong>Exercise text</strong> is the exercise itself."
 msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
 
@@ -122,7 +145,8 @@ msgid "Key exercise"
 msgstr "Nøkkeloppgave"
 
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:53
-msgid "<strong>Period</strong> is the period in which an exercise should be given."
+msgid ""
+"<strong>Period</strong> is the period in which an exercise should be given."
 msgstr "<strong>Periode</strong> er perioden oppgaven skal gis."
 
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:54
@@ -144,4 +168,3 @@ msgstr "Eksempel: Rekker"
 #: apps/trix/static/extjstrix/forms/Topic.js:32
 msgid "<strong>Name</strong> the name of the topic."
 msgstr "<strong>Navn</strong> er temaets navn."
-

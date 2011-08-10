@@ -23,37 +23,42 @@ Ext.define('trix.forms.Exercise', {
     },
 
     items: [{
-        name: "short_name",
-        fieldLabel: gettext("Short name"),
-        xtype: 'textfield',
-        emptyText: gettext('Example: output1')
-    }, {
         name: "long_name",
         fieldLabel: gettext("Long name"),
         xtype: 'textfield',
         emptyText: gettext('Example: Hello World')
     }, {
-        name: "points",
-        fieldLabel: gettext("Points"),
-        xtype: 'numberfield'
-    }, {
         xtype: 'container',
         anchor: '100%',
         layout: 'column',
         items: [{
-            name: "fake_topics",
-            fieldLabel: "Topic",
-            xtype: 'foreignkeyselector',
-            model: 'trix.apps.trix.simplified.topic.SimplifiedTopic',
-            emptyText: 'Select a topic',
+            name: "short_name",
+            fieldLabel: gettext("Short name"),
+            xtype: 'textfield',
+            emptyText: gettext('Example: output1')
+        }, {
+            name: "points",
+            fieldLabel: gettext("Points"),
+            xtype: 'numberfield'
+        }]
+    }, {
+            xtype: 'container',
+            anchor: '100%',
+            layout: 'column',
+            items: [{
+                name: "fake_topics",
+                fieldLabel: gettext("Topic"),
+                xtype: 'foreignkeyselector',
+                model: 'trix.apps.trix.simplified.topic.SimplifiedTopic',
+            emptyText: gettext('Select a topic'),
             displayTpl: '{name}',
             dropdownTpl: '<div class="important">{name}</div>'
         }, {
             name: "fake_prerequisites",
-            fieldLabel: "Prerequisite",
+            fieldLabel: gettext("Prerequisite"),
             xtype: 'foreignkeyselector',
             model: 'trix.apps.trix.simplified.topic.SimplifiedTopic',
-            emptyText: 'Select a topic',
+            emptyText: gettext('Select a topic'),
             displayTpl: '{name}',
             dropdownTpl: '<div class="important">{name}</div>'
         }]
@@ -66,9 +71,11 @@ Ext.define('trix.forms.Exercise', {
     }],
 
     help: [
-        gettext('<strong>Short name</strong> is a short name used when the long name takes to much space. Short name can only contain english lower-case letters, numbers and underscore (_).'),
         gettext('<strong>Long name</strong> is a longer descriptive exercise title.'),
+        gettext('<strong>Short name</strong> is a short name used when the long name takes to much space. Short name can only contain english lower-case letters, numbers and underscore (_).'),
         gettext('<strong>Points</strong> is the default number of points for this exercise'),
+        gettext('<strong>Topic</strong> is a topic for the exercise.'),
+        gettext('<strong>Prerequisite</strong> is a topic the student should know before doing the exercise.'),
         gettext('<strong>Exercise text</strong> is the exercise itself.')
     ]
 });
