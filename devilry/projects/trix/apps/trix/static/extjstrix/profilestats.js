@@ -16,7 +16,8 @@ Ext.define('Ext.chart.theme.Fancy', {
         extend: 'Ext.chart.theme.Base',
         
         constructor: function(config) {
-            this.callParent([Ext.apply({
+            this
+.callParent([Ext.apply({
                 axis: {
                     fill: baseColor,
                     stroke: baseColor
@@ -39,22 +40,23 @@ Ext.define('Ext.chart.theme.Fancy', {
     });
 
 Ext.onReady(function() {
+
     var topicstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
     var periodstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.periodstats.RestfulPeriodStatisticsStore').load();
 
     var tabs = Ext.create('Ext.tab.Panel', {
         width: 800,
         height: 600,
-        title: 'Statistics',
+        title: gettext('Statistics'),
         renderTo: 'stats',
         layout: 'fit',
 	activeTab: 'points_topic',
 
         items: [
-		getPercentageDict('points_topic', 'Points/Topic', 'Topic', 'name', 'Points', 'points_percent', topicstore),
-		getPercentageDict('exercises_topic', 'Exercises/Topic', 'Topic', 'name', 'Exercises', 'done_percent', topicstore), 
-		getPercentageDict('points_period', 'Points/Period', 'Period', 'long_name', 'Points', 'points_percent', periodstore),
-		getPercentageDict('exercise_period', 'Exercises/Period', 'Period', 'long_name', 'Exercises', 'done_percent', periodstore),
+		getPercentageDict('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', topicstore),
+		getPercentageDict('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', topicstore), 
+		getPercentageDict('points_period', gettext('Points'), gettext('Week'), 'long_name', gettext('Points'), 'points_percent', periodstore),
+		getPercentageDict('exercise_period', gettext('Effort'), gettext('Week'), 'long_name', gettext('Exercises'), 'done_percent', periodstore),
 		]
     });
 });

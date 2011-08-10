@@ -29,8 +29,8 @@ pre   { border-color: #CCC;
 .userinfo { position: relative; top: 15px; font-size:15px; }
 .levelinfo { clear: left; }
 
-.userdata { float: left; width: 30%; }
-.activity { float: left; width: 27%; }
+.userdata { float: left; width: 50%; }
+.activity {}
 .stats { float: left; width: 10%; margin-right: 2em; padding: 1em; }
 
 #perioddropdown label { font-size: 12pt; }

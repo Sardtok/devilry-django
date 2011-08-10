@@ -1,4 +1,4 @@
-# translation of django.po to Norsk bokmål
+# translation of django.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-09 11:38+0200\n"
-"PO-Revision-Date: 2011-08-09 11:43+0200\n"
-"Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
-"Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
+"POT-Creation-Date: 2011-08-10 11:36+0200\n"
+"PO-Revision-Date: 2011-08-10 11:37+0200\n"
+"Last-Translator: Larsen vestad Erlend\n"
+"Language-Team:  <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,14 +18,14 @@ msgstr ""
 
 #: apps/trix/models/exercise.py:27 apps/trix/models/exercisestatus.py:38
 #: apps/trix/models/periodexercise.py:38
-#: apps/trix/templates/trix/main.django.html:96
+#: apps/trix/templates/trix/main.django.html:98
 msgid "Exercise"
 msgstr "Oppgave"
 
 #: apps/trix/models/exercise.py:28
 #: apps/trix/templates/trix/base.django.html:81
 #: apps/trix/templates/trix/main.django.html:5
-#: apps/trix/templates/trix/main.django.html:89
+#: apps/trix/templates/trix/main.django.html:91
 msgid "Exercises"
 msgstr "Oppgaver"
 
@@ -54,7 +54,7 @@ msgstr "Statuser"
 msgid "Topic"
 msgstr "Tema"
 
-#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:69
+#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:71
 msgid "Topics"
 msgstr "Temaer"
 
@@ -76,25 +76,38 @@ msgid "Profile"
 msgstr "Profil"
 
 #: apps/trix/templates/trix/main.django.html:24
+#: apps/trix/templates/trix/main.django.html:118
 msgid "Hide exercise"
 msgstr "Skjul oppgaven"
 
 #: apps/trix/templates/trix/main.django.html:27
-#: apps/trix/templates/trix/main.django.html:115
+#: apps/trix/templates/trix/main.django.html:120
 msgid "Show exercise"
 msgstr "Vis oppgaven"
 
-#: apps/trix/templates/trix/main.django.html:63
+#: apps/trix/templates/trix/main.django.html:64
 msgid "Total points"
 msgstr "Totalt antall poeng"
 
-#: apps/trix/templates/trix/main.django.html:77
+#: apps/trix/templates/trix/main.django.html:79
 msgid "Prerequisites"
 msgstr "Nødvendige forkunnskaper"
 
-#: apps/trix/templates/trix/main.django.html:101
+#: apps/trix/templates/trix/main.django.html:103
 msgid "Unsolved"
 msgstr "Ikke forsøkt"
+
+#: apps/trix/templates/trix/main.django.html:161
+msgid "View period"
+msgstr "Vis periode"
+
+#: apps/trix/templates/trix/profile.django.html:33
+msgid "Name"
+msgstr "Navn"
+
+#: apps/trix/templates/trix/profile.django.html:37
+msgid "last login"
+msgstr "Sist pålogget"
 
 #: apps/trix/templates/trix/xpbar.django.html:5
 msgid "Level"

@@ -41,5 +41,5 @@ class PeriodExercise(models.Model):
 
     def clean(self, *args, **kwargs):
         if self.points <= 0:
-            self.points = self.exercise.rel.to.points
+            self.points = self.exercise.points
 
