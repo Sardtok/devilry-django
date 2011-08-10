@@ -5,8 +5,8 @@ Ext.define('trix.forms.PeriodExercise', {
     requires: 'devilry.extjshelpers.formfields.ForeignKeySelector',
 
     suggested_windowsize: {
-        width: 600,
-        height: 450
+        width: 500,
+        height: 300
     },
 
     flex: 8,
