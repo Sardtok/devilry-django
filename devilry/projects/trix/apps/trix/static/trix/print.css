@@ -1,6 +1,10 @@
 header { display: none; }
+footer { display: none; }
 table { width: 100%; }
+caption { font-size: 110%; font-weight: bold; }
 thead { display: none; }
 .statusbutton { display: none; }
-#dispexc { display: none; }
-#exctext { display: block !important; }
+.dispexc { display: none; }
+.exctext { display: block !important; }
+.levelinfo { display: none; }
+#perioddropdown { display: none; }

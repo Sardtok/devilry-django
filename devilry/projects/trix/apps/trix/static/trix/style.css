@@ -31,9 +31,9 @@ pre   { border-color: #CCC;
 
 .userdata { float: left; width: 30%; }
 .activity { float: left; width: 27%; }
-.stats { float: left; width: 43%; margin-right: 2em; padding: 1em; }
+.stats { float: left; width: 10%; margin-right: 2em; padding: 1em; }
 
-
+#perioddropdown label { font-size: 12pt; }
 
 header > nav.trix {
     border-bottom: 10px solid #0077B3;
