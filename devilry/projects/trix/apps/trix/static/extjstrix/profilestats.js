@@ -54,14 +54,14 @@ Ext.onReady(function() {
 	preventHeader: 'true',
         items: [
 		Ext.create('Ext.tab.Panel', {
-			title: gettext('Periods'),
+			title: gettext('Topics'),
 			items: [
 				getPercentageDict('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', topicstore),
 				getPercentageDict('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', topicstore), 
 			]
 		    }),
 		Ext.create('Ext.tab.Panel', {
-			title: gettext('Topics'),
+			title: gettext('Periods'),
 			items: [
 				getPercentageDict('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', periodstore),
 				getPercentageDict('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', periodstore),
@@ -230,6 +230,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                     font: '17px Arial'
                 },
                 renderer: function(sprite, storeItem, barAttr, i, store) {
+		    console.log(sprite);
                     barAttr.fill = colors[i % colors.length];
                     return barAttr;
                 },
@@ -238,11 +239,11 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 },
 		tips: {
                     trackMouse: true,
-		    width: 80,
-		    height: 28,
+		    width: 100,
+		    height: 32,
                     renderer: function(storeItem, item) {
-			console.log(item);
-                        this.setTitle(String(item.value[1]) + ' % of max');
+			console.log(storeItem);
+                        this.setTitle(String(storeItem.data['exercises']) + ' av ' + String(storeItem.data['exercises_done']) + ' oppgaver gjort');
                     }
                 },
 
