@@ -10,6 +10,8 @@ urlpatterns = patterns('devilry.projects.dev.apps.trix',
     url(r'^exercise/(?P<exercise>\d+)/status$',
         views.exercisestatus, name='exercisestatus'),
     url(r'^trixadmin/$', views.administrator, name='trixadmin'),
+    url(r'^topic/(?P<topic_id>\d+)$',
+        views.main, name='topicview'),
     url(r'^period/(?P<period_id>\d+)$',
-        views.period, name='periodview'),)
+        views.main, name='periodview'),)
 urlpatterns += trix_manager

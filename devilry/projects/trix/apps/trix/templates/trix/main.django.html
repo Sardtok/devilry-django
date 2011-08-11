@@ -77,18 +77,15 @@
 <div class="topics">{% trans "Prerequisites" %}:
   {% for prerequisite in prerequisites.values %}
   {{ prerequisite.name }}
-
   {% endfor %}</div>
 {% endif %}
 
-<div id="perioddropdown"></div>
+<div id="perioddropdown"></div><span id="periodoverview"><a href="http://www.uio.no/studier/emner/matnat/ifi/INF1000/h10/ukeoppgaver/">Ukeoversikt</a></span>
 
 {% for p, p_excs in exercises.items %}
   <form autocomplete="off">
   <table class="exercises">
-    <caption>{% trans "Exercises" %} —
-      {{ p.parentnode.long_name }} —
-      {{ p.long_name }}</caption>
+    <caption>{{ p.long_name }}</caption>
     <thead>
       <tr>
         <th
@@ -104,7 +101,7 @@
     </thead>
     <tbody>
         
-      {% for id, e in p_excs.items %}
+      {% for e in p_excs.values %}
       <tr>
         <td
            {% if statuses %}class="maincol"{% endif %}
@@ -122,6 +119,7 @@
           <h3>{% if e.starred %}
             <img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />
             {% endif %}
+            {{ e.number }}.
             {{ e.title }}</h3>
           {% autoescape off %}
           <div class="exctext"
@@ -132,7 +130,7 @@
         {% if statuses %}
           {% for status in statuses %}
             <td class="statusbutton">
-              <input type="radio" name="{{ id }}" value="{{ status.id }}"
+              <input type="radio" name="{{ e.id }}" value="{{ status.id }}"
                      {% if e.status == status.id %}
                      checked="checked"
                      {% endif %}
@@ -140,7 +138,7 @@
             </td>
           {% endfor %}
           <td class="statusbutton">
-            <input type="radio" name="{{ id }}" value="-1"
+            <input type="radio" name="{{ e.id }}" value="-1"
                      {% if e.status == -1 %}
                      checked="checked"
                      {% endif %}

@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from devilry.apps.core.models import Period
-from models import Status, ExerciseStatus, PeriodExercise
+from models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
 
 from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulSimplifiedPeriod, RestfulPeriodStatistics, RestfulTopicStatistics
 
@@ -64,20 +64,34 @@ def get_points(user):
         points_total += int(stats.exercise.points * stats.status.percentage)
     return points_total
 
-def main(request):
+def main(request, period_id=-1, topic_id=-1):
     """
     Main page showing current exercises.
     """
-    all_exercises = PeriodExercise.objects.filter(period__start_time__lte
-                                                  =datetime.now(),
-                                                  period__end_time__gte
-                                                  =datetime.now())
+
+    all_exercises = None
+    
+    if period_id != -1:
+        all_exercises = PeriodExercise.objects.filter(period__id=period_id)
+
+    if topic_id != -1:
+        all_exercises = PeriodExercise.objects.filter(exercise__topics=topic_id)
+
+    if all_exercises is None:
+        all_exercises = PeriodExercise.objects.filter(period__start_time__lte
+                                                      =datetime.now(),
+                                                      period__end_time__gte
+                                                      =datetime.now())
+
     exercises = {}
     topics = {}
     prerequisites = {}
     topicstats = {}
     for exercise in all_exercises:
-        e = {'title': exercise.exercise.long_name,
+        print exercise.number
+        e = {'id': exercise.id,
+             'number': exercise.number,
+             'title': exercise.exercise.long_name,
              'text': exercise.exercise.text,
              'status': -1,
              'starred': exercise.starred}
@@ -97,7 +111,7 @@ def main(request):
                 e.update([['status', stats.status.id]])
             except ExerciseStatus.DoesNotExist:
                 pass
-        exercises.setdefault(exercise.period, {}).update([[exercise.id, e]])
+        exercises.setdefault(exercise.period, {}).update([[exercise.number, e]])
 
     statuses = []
     if request.user.is_authenticated():
@@ -126,66 +140,6 @@ def main(request):
                    'RestfulPeriodStatistics': RestfulPeriodStatistics})
 
 #                  {'exercises': Period.objects.all().exercises.all()})
-
-def period(request, period_id=-1):
-    """
-    Main page showing current exercises.
-    """
-    period = Period.objects.get(id=period_id)
-    all_exercises = PeriodExercise.objects.filter(period=period)
-    exercises = {}
-    topics = {}
-    prerequisites = {}
-    topicstats = {}
-    for exercise in all_exercises:
-        e = {'title': exercise.exercise.long_name,
-             'text': exercise.exercise.text,
-             'status': -1,
-             'starred': exercise.starred}
-
-        ts = exercise.exercise.topics.exclude(id__in=topics.keys)
-        for t in ts:
-            topics.setdefault(t.id, t)
-
-        ps = exercise.exercise.prerequisites.exclude(id__in=prerequisites.keys)
-        for p in ps:
-            prerequisites.setdefault(p.id, p)
-        
-
-        if request.user.is_authenticated():
-            try:
-                stats = exercise.student_results.get(student=request.user)
-                e.update([['status', stats.status.id]])
-            except ExerciseStatus.DoesNotExist:
-                pass
-        exercises.setdefault(exercise.period, {}).update([[exercise.id, e]])
-
-    statuses = []
-    if request.user.is_authenticated():
-        statuses = Status.objects.filter(active=True)
-
-    for topic in topics.values():
-        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
-    for topic in prerequisites.values():
-        if (topicstats.has_key(topic.id)):
-            continue
-        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
-
-    return render(request,'trix/main.django.html',
-                  {'exercises': exercises,
-                   'statuses': statuses,
-                   'topics': topics,
-                   'prerequisites': prerequisites,
-                   'topicstats': topicstats,
-                   'level': get_level(get_points(request.user)),
-                   'period': period.long_name,
-                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
-                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
-                   'RestfulSimplifiedStatus': RestfulSimplifiedStatus,
-                   'RestfulSimplifiedExerciseStatus': RestfulSimplifiedExerciseStatus,
-                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
-                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod,
-                   'RestfulPeriodStatistics': RestfulPeriodStatistics})
 
 def get_portrait(level):
     """
