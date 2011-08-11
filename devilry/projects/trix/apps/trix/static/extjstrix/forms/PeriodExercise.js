@@ -5,11 +5,11 @@ Ext.define('trix.forms.PeriodExercise', {
     requires: 'devilry.extjshelpers.formfields.ForeignKeySelector',
 
     suggested_windowsize: {
-        width: 500,
-        height: 300
+        width: 550,
+        height: 350
     },
 
-    flex: 8,
+    flex: 6,
 
     layout: {
         type: 'vbox',
@@ -39,9 +39,18 @@ Ext.define('trix.forms.PeriodExercise', {
         displayTpl: '{short_name}',
         dropdownTpl: '<div class="important">{short_name}</div> <div>{long_name}</div>'
     }, {
-        name: "points",
-        fieldLabel: gettext("Points"),
-        xtype: 'numberfield'
+        xtype: 'container',
+        anchor: '100%',
+        layout: 'column',
+        items: [{
+            name: "number",
+            fieldLabel: gettext("Number"),
+            xtype: 'numberfield'
+        }, {
+            name: "points",
+            fieldLabel: gettext("Points"),
+            xtype: 'numberfield'
+        }]
     }, {
         name: "starred",
         fieldLabel: gettext("Key exercise"),
@@ -52,7 +61,8 @@ Ext.define('trix.forms.PeriodExercise', {
     help: [
         gettext('<strong>Period</strong> is the period in which an exercise should be given.'),
         gettext('<strong>Exercise</strong> is the exercise to be given.'),
-        gettext('<strong>Points</strong> is the default number of points for this exercise'),
+        gettext('<strong>Number</strong> the number of the exercise this period.'),
+        gettext('<strong>Points</strong> can be filled in to override the number of points for this exercise.'),
         gettext('<strong>Key exercise</strong> marks exercises that are important.')
     ]
 });
