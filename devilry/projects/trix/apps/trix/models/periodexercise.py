@@ -31,15 +31,34 @@ class PeriodExercise(models.Model):
     class Meta:
         app_label = 'trix'
         unique_together = ('period', 'exercise')
+        unique_together = ('period', 'number')
+        ordering = ['number']
 
     period = models.ForeignKey(Period, related_name="exercises",
                                verbose_name=_('Period'))
     exercise = models.ForeignKey(Exercise, related_name="periods",
                                  verbose_name=_('Exercise'))
-    points = models.PositiveIntegerField(blank=True)
+    number = models.PositiveIntegerField();
+    points = models.PositiveIntegerField()
     starred = models.BooleanField(default=False)
 
     def clean(self, *args, **kwargs):
         if self.points <= 0:
             self.points = self.exercise.points
+        exercises = PeriodExercise.objects.filter(period=self.period)
 
+        try:
+            exercises.get(number=self.number)
+        except:
+            pass
+        else:
+            self.number = self.getNext(exercises)
+
+        if self.number <= 0:
+            self.number = self.getNext(exercises)
+
+    def getNext(self, exercises):
+        last = exercises.aggregate(max=models.Max('number'))['max']
+        if last is None:
+            last = 0
+        return last + 1

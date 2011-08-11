@@ -12,6 +12,7 @@ class SimplifiedPeriodExercise(AuthorizationMixin):
                                  'exercise',
                                  'points',
                                  'starred',
+                                 'number'
                                  )
         searchfields = FieldSpec('period__short_name',
                                  'period__long_name',
