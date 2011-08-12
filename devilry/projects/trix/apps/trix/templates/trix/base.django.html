@@ -3,7 +3,7 @@
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>
-            {% block title %}{{ page_title|default:"Devilry" }}{% endblock %}
+            {% block title %}{{ page_title|default:"Trix" }}{% endblock %}
         </title>
 
         <link rel="stylesheet" href="{{DEVILRY_THEME_URL }}/style.css"
@@ -54,7 +54,7 @@
         <header>
             <div id="heading">
                 <h1>
-                    {% trans "Devilry" %}
+                    {% trans "Trix" %}
                 </h1>
                 <a href="http://devilry.org" id="projectlink">http://devilry.org</a>
             </div>
@@ -65,10 +65,14 @@
             </div>
 
             <div id='authenticated-user-bar'>
-                <span id='authenticated-user-info'>
-                    {{ user.username }}
-                </span>
-                | <a id='logout-link' href='{% url logout %}'>Log out</a>
+                {% if user.is_authenticated %}
+                    <span id='authenticated-user-info'>
+                        {{ user.username }}
+                    </span>
+                    | <a id='logout-link' href='{% url logout %}'>Log out</a>
+                {% else %}
+                    <a id='logout-link' href='{% url login %}'>Log in</a>
+                {% endif %}
             </div>
 
             <nav class="{% block nav-class %}{% endblock %}">
@@ -87,9 +91,11 @@
             </nav>
         </header>
 
+        <div id="mainwrapper">
         <div id="main">
             {% block main %}{{ page_main }}{% endblock %}
         </div>
+        </div id="mainwrapper">
 
         <footer>
             <a href='http://devilry.org'>Devilry</a> is an open source

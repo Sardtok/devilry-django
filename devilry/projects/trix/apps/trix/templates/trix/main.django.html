@@ -123,9 +123,8 @@
             {{ e.title }}
             {% autoescape off %}
             &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "poeng" %}</h3>
-          <div class="exctext"
-               {% if statuses and e.status != -1 %}style="display: none"{% endif %}
-               >{{ e.text }}</div>
+          <div class="exctext" {% if statuses and e.status != -1 %}
+               style="display: none"{% endif %}>{{ e.text }}</div>
           {% endautoescape %}
         </td>
         {% if statuses %}
