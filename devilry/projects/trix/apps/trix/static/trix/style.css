@@ -8,8 +8,10 @@ pre   { border-color: #CCC;
         border-style: dashed dashed dashed solid;
         border-width: 1px 1px 1px 4px; }
 .maincol { min-width: 70%; max-width: 100%; }
-.statusbutton { text-align: center; }
-.dispexc { margin: 0.25em; font-size: 1em !important; }
+.statusbutton { }
+.choices, .status { margin: 0.25em; }
+.choices a { margin-right: 0.5em; }
+.dispexc { font-size: 100% !important; }
 #bq   { background-color: #EEE;
         margin: 0.5em 0.5em 0.5em;
         padding: 1em; }
@@ -18,7 +20,7 @@ a { font-size: 100% !important; }
 
 .exercises { clear: both; }
 .exercises th    { font-weight: bold; font-size: 100%; padding: 0.3em; }
-.exercise td    { padding: 0.5em 0; }
+.exercises td    { padding: 0.5em 0.3em; }
 
 .xptopic { float: left; margin-right: 1em; }
 .xpbar { background-color: #0077B3; position: relative; float: left; z-index: 1; border: 1px solid #0077B3; }
