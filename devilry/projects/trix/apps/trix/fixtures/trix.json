@@ -39,25 +39,8 @@
     "pk": 2,
     "model": "trix.status",
     "fields": {
-      "name": "Tulleløsning",
-      "percentage": 0.31,
-      "active": false
-    }
-  },
-  {
-    "pk": 3,
-    "model": "trix.status",
-    "fields": {
       "name": "Løst m/hjelp",
-      "percentage": 0.5
-    }
-  },
-  {
-    "pk": 4,
-    "model": "trix.status",
-    "fields": {
-      "name": "Ikke fullført",
-      "percentage": 0.0
+      "percentage": 0.75
     }
   },
   {
