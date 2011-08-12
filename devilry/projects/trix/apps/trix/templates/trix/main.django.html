@@ -120,8 +120,9 @@
             <img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />
             {% endif %}
             {{ e.number }}.
-            {{ e.title }}</h3>
-          {% autoescape off %}
+            {{ e.title }}
+            {% autoescape off %}
+            &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "poeng" %}</h3>
           <div class="exctext"
                {% if statuses and e.status != -1 %}style="display: none"{% endif %}
                >{{ e.text }}</div>

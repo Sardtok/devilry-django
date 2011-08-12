@@ -94,6 +94,7 @@ def main(request, period_id=-1, topic_id=-1):
              'title': exercise.exercise.long_name,
              'text': exercise.exercise.text,
              'status': -1,
+             'points': exercise.points,
              'starred': exercise.starred}
 
         ts = exercise.exercise.topics.exclude(id__in=topics.keys)
