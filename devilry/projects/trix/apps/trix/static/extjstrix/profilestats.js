@@ -40,17 +40,18 @@ Ext.onReady(function() {
     var topicstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
     var periodstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.periodstats.RestfulPeriodStatisticsStore').load();
 
-    var periodstats = Ext.create('Ext.tab.Panel', {
+    var fancystats = Ext.create('Ext.tab.Panel', {
         width: 800,
         height: 600,
         title: gettext('Statistics'),
         renderTo: 'stats',
         layout: 'fit',
-	activeTab: 'points_topic',
+	//activeTab: 'periods',
 	preventHeader: 'true',
         items: [
 		Ext.create('Ext.tab.Panel', {
 			title: gettext('Topics'),
+			//id: 'topics',
 			items: [
 				getPercentageBarChart('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), topicstore),
 				getPercentageBarChart('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), topicstore), 
@@ -58,6 +59,7 @@ Ext.onReady(function() {
 		    }),
 		Ext.create('Ext.tab.Panel', {
 			title: gettext('Periods'),
+			//id: 'periods',
 			items: [
 				getPercentageBarChart('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), periodstore),
 				getPercentageBarChart('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), periodstore),
@@ -65,18 +67,56 @@ Ext.onReady(function() {
 		    }),]
     });
 
-    var grid = Ext.create('Ext.grid.Panel', {
-	    title: 'Oversikt',
+
+    var periodgrid = Ext.create('Ext.grid.Panel', {
+	    title: gettext('Periods'),
 	    store: periodstore,
 	    columns: [
-                {header: 'Periode',  dataIndex: 'long_name'},
-		//TODO put a render function in here to make oppgaver gjort 5 av 7
-    {header: 'Oppgaver gjort', dataIndex: 'exercises_done', flex:1},
-                {header: 'Poeng', dataIndex: 'points'}
-		      ],
+    {header: gettext('Period'),  dataIndex: 'long_name'},
+                {header: gettext('Points'), dataIndex: 'points', 
+		 renderer: function(value, md, record) {
+			return String(value + gettext(' of ') + record.get('total_points'));}},
+                {header: 
+		 gettext('Exercises done'), dataIndex: 'exercises_done', flex:1,
+		 renderer: function(value, md, record) {
+			return String(value) + gettext(' of ') + record.get('exercises');}},
+                {header: 
+		 gettext('Key exercises'), dataIndex: 'starred_done', flex:1,
+		 renderer: function(value, md, record) {
+			return String(value) + gettext(' of ') + record.get('starred');   
+		    }},],
 	    height: 200,
-	    width: 400,
-	    renderTo: 'grid'
+	    width: 450,
+	});
+
+    var topicgrid = Ext.create('Ext.grid.Panel', {
+	    title: gettext('Topics'),
+	    store: topicstore,
+	    columns: [
+    {header: gettext('Topic'),  dataIndex: 'name', flex:1},
+                {header: gettext('Points'), dataIndex: 'points', 
+		 renderer: function(value, md, record) {
+			return String(value + gettext(' of ') + record.get('total_points'));}},
+                {header: 
+		 gettext('Exercises done'), dataIndex: 'exercises_done', flex:1,
+		 renderer: function(value, md, record) {
+			return String(value) + gettext(' of ') + record.get('exercises');}},
+                {header: 
+		 gettext('Key exercises'), dataIndex: 'starred_done', flex:1,
+		 renderer: function(value, md, record) {
+			return String(value) + gettext(' of ') + record.get('starred');   
+		    }},],
+	    height: 200,
+	    width: 450,
+	});
+
+    var gridstats = Ext.create('Ext.tab.Panel', {
+	    height: 200,
+	    width: 450,
+	    title: gettext('Overview'),
+	    preventHeader: 'true',
+	    renderTo: 'grid',
+	    items: [periodgrid, topicgrid]		    
 	});
 });
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: djangojs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-11 14:21+0200\n"
-"PO-Revision-Date: 2011-08-11 14:26+0200\n"
+"POT-Creation-Date: 2011-08-15 15:32+0200\n"
+"PO-Revision-Date: 2011-08-15 15:38+0200\n"
 "Last-Translator: Larsen vestad Erlend\n"
 "Language-Team:  <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -28,60 +28,86 @@ msgstr "Fullført"
 msgid "Data saved successfully!"
 msgstr "Dataene ble lagret!"
 
-#: apps/trix/static/extjstrix/profilestats.js:50
+#: apps/trix/static/extjstrix/profilestats.js:46
 msgid "Statistics"
 msgstr "Statistikk"
 
-#: apps/trix/static/extjstrix/profilestats.js:57
+#: apps/trix/static/extjstrix/profilestats.js:53
+#: apps/trix/static/extjstrix/profilestats.js:93
 msgid "Topics"
 msgstr "Temaer"
 
-#: apps/trix/static/extjstrix/profilestats.js:59
-#: apps/trix/static/extjstrix/profilestats.js:66
+#: apps/trix/static/extjstrix/profilestats.js:56
+#: apps/trix/static/extjstrix/profilestats.js:64
+#: apps/trix/static/extjstrix/profilestats.js:76
+#: apps/trix/static/extjstrix/profilestats.js:97
 #: apps/trix/static/extjstrix/forms/Exercise.js:41
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:43
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:51
 msgid "Points"
 msgstr "Poeng"
 
-#: apps/trix/static/extjstrix/profilestats.js:59
-#: apps/trix/static/extjstrix/profilestats.js:60
+#: apps/trix/static/extjstrix/profilestats.js:56
+#: apps/trix/static/extjstrix/profilestats.js:57
+#: apps/trix/static/extjstrix/profilestats.js:96
 #: apps/trix/static/extjstrix/forms/Exercise.js:50
 msgid "Topic"
 msgstr "Tema"
 
-#: apps/trix/static/extjstrix/profilestats.js:59
-#: apps/trix/static/extjstrix/profilestats.js:66
+#: apps/trix/static/extjstrix/profilestats.js:56
+#: apps/trix/static/extjstrix/profilestats.js:64
 msgid " possible points"
 msgstr " mulige poeng"
 
-#: apps/trix/static/extjstrix/profilestats.js:60
-#: apps/trix/static/extjstrix/profilestats.js:67
+#: apps/trix/static/extjstrix/profilestats.js:57
+#: apps/trix/static/extjstrix/profilestats.js:65
 msgid "Effort"
 msgstr "Innsats"
 
-#: apps/trix/static/extjstrix/profilestats.js:60
-#: apps/trix/static/extjstrix/profilestats.js:67
+#: apps/trix/static/extjstrix/profilestats.js:57
+#: apps/trix/static/extjstrix/profilestats.js:65
 msgid "Exercises"
 msgstr "Oppgaver"
 
-#: apps/trix/static/extjstrix/profilestats.js:60
-#: apps/trix/static/extjstrix/profilestats.js:67
+#: apps/trix/static/extjstrix/profilestats.js:57
+#: apps/trix/static/extjstrix/profilestats.js:65
 msgid " exercises done"
 msgstr " oppgaver gjort"
 
-#: apps/trix/static/extjstrix/profilestats.js:64
+#: apps/trix/static/extjstrix/profilestats.js:61
+#: apps/trix/static/extjstrix/profilestats.js:72
 msgid "Periods"
 msgstr "Perioder"
 
-#: apps/trix/static/extjstrix/profilestats.js:66
-#: apps/trix/static/extjstrix/profilestats.js:67
+#: apps/trix/static/extjstrix/profilestats.js:64
+#: apps/trix/static/extjstrix/profilestats.js:65
+#: apps/trix/static/extjstrix/profilestats.js:75
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:27
 msgid "Period"
 msgstr "Periode"
 
+#: apps/trix/static/extjstrix/profilestats.js:78
+#: apps/trix/static/extjstrix/profilestats.js:82
+#: apps/trix/static/extjstrix/profilestats.js:86
+#: apps/trix/static/extjstrix/profilestats.js:99
+#: apps/trix/static/extjstrix/profilestats.js:103
+#: apps/trix/static/extjstrix/profilestats.js:107
 #: apps/trix/static/extjstrix/profilestats.js:249
 msgid " of "
 msgstr " av "
+
+#: apps/trix/static/extjstrix/profilestats.js:80
+#: apps/trix/static/extjstrix/profilestats.js:101
+msgid "Exercises done"
+msgstr "Oppgaver gjort"
+
+#: apps/trix/static/extjstrix/profilestats.js:84
+#: apps/trix/static/extjstrix/profilestats.js:105
+msgid "Key exercises"
+msgstr "Nøkkeloppgaver"
+
+#: apps/trix/static/extjstrix/profilestats.js:116
+msgid "Overview"
+msgstr "Oversikt"
 
 #: apps/trix/static/extjstrix/forms/Exercise.js:27
 msgid "Long name"
@@ -127,7 +153,6 @@ msgstr ""
 "alfabetet, tall og understrek (_)."
 
 #: apps/trix/static/extjstrix/forms/Exercise.js:76
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:55
 msgid "<strong>Points</strong> is the default number of points for this exercise"
 msgstr ""
 "<strong>Poeng</strong> er poengsummen som gis som standard for denne "
@@ -158,18 +183,32 @@ msgid "Exercise"
 msgstr "Oppgave"
 
 #: apps/trix/static/extjstrix/forms/PeriodExercise.js:47
+msgid "Number"
+msgstr "Nummer"
+
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:56
 msgid "Key exercise"
 msgstr "Nøkkeloppgave"
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:53
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:62
 msgid "<strong>Period</strong> is the period in which an exercise should be given."
 msgstr "<strong>Periode</strong> er perioden oppgaven skal gis."
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:54
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:63
 msgid "<strong>Exercise</strong> is the exercise to be given."
 msgstr "<strong>Oppgave</strong> er oppgaven som skal gis."
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:56
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:64
+msgid "<strong>Number</strong> the number of the exercise this period."
+msgstr "<strong>Nummer</strong> nummeret til oppgaven denne perioden"
+
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:65
+msgid ""
+"<strong>Points</strong> can be filled in to override the number of points "
+"for this exercise."
+msgstr "<strong>Poeng</strong> kan fylles in for å overstyre antall poeng for denne oppgaven"
+
+#: apps/trix/static/extjstrix/forms/PeriodExercise.js:66
 msgid "<strong>Key exercise</strong> marks exercises that are important."
 msgstr "<strong>Nøkkeloppgave</strong> merker oppgaven som viktig."
 
