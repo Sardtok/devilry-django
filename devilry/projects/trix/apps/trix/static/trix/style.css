@@ -8,11 +8,11 @@ caption { font-size: 110%; font-weight: bold; }
 pre   { border-color: #CCC;
         border-style: dashed dashed dashed solid;
         border-width: 1px 1px 1px 4px; }
-.maincol { max-width: 100%; }
+.maincol { min-width: 600px; max-width: 100%; }
 .statusbutton { }
 .choices, .status { margin: 0.25em; }
 .choices a { margin-right: 0.5em; }
-.dispexc { font-size: 100% !important; }
+.dispexc { font-size: 100% !important; padding-left: 2em; float: right; }
 #bq   { background-color: #EEE;
         margin: 0.5em 0.5em 0.5em;
         padding: 1em; }

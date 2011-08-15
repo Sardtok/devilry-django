@@ -75,15 +75,15 @@
 {% if topics %}
 <div class="topics">{% trans "Topics" %}:
   {% for id, topic in topics.items %}
-  {{ topic.name }}
+  <a href="/trix/topic/{{ id }}">{{ topic.name }}</a>
   {% endfor %}
 </div>
 {% endif %}
 
 {% if prerequisites %}
 <div class="topics">{% trans "Prerequisites" %}:
-  {% for prerequisite in prerequisites.values %}
-  {{ prerequisite.name }}
+  {% for id, prerequisite in prerequisites.items %}
+  <a href="/trix/topic/{{ id }}">{{ prerequisite.name }}</a>
   {% endfor %}</div>
 {% endif %}
 
@@ -114,8 +114,7 @@
     {% for e in p_excs.values %}
     <tr>
       <td {% if statuses %} class="maincol">
-        <a class="dispexc" href="javascript:void(0)"
-           onClick="toggleExc(this)" style="float: right;">
+        <a class="dispexc" href="javascript:void(0)" onClick="toggleExc(this)">
           {% if e.status == -1 %}
           {% trans "Hide exercise" %}
           {% else %}
@@ -127,8 +126,7 @@
         <h3>{% if e.starred %}
           <img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />
           {% endif %}
-          {{ e.number }}.
-          {{ e.title }}
+          {{ e.number }}.&nbsp;{{ e.title }}
           {% autoescape off %}
           &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "poeng" %}</h3>
         <div class="exctext" {% if statuses and e.status != -1 %}
