@@ -3,7 +3,7 @@
  * Panel to show Delivery info.
  */
 Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
-    extend: 'Ext.toolbar.Toolbar',
+    extend: 'Ext.panel.Panel',
     alias: 'widget.deliveryinfo',
     cls: 'widget-deliveryinfo',
     html: '',
@@ -11,8 +11,8 @@ Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
         'devilry.extjshelpers.assignmentgroup.FileMetaBrowserPanel'
     ],
 
-    width: 500,
-    style: {border: 'none'},
+    //width: 500,
+    //style: {border: 'none'},
 
     config: {
         /**
@@ -30,18 +30,31 @@ Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
         delivery_recordcontainer: undefined
     },
 
-    timeOfDeliveryTpl: Ext.create('Ext.XTemplate',
-        '<span class="time_of_delivery">',
-        '   Time of delivery: <em>{time_of_delivery:date}</em><br/>',
-        '   <tpl if="time_of_delivery &gt; deadline__deadline">',
-        '       <span class="after-deadline">(After deadline)</span>',
-        '   </tpl>',
-        '</span>'
+    tpl: Ext.create('Ext.XTemplate',
+        '<tpl if="time_of_delivery">', // If time_of_delivery is false, the record is not loaded yet
+        '    <section class="info-small">',
+        '       <h1>Delivery number {number}</h1>',
+        '       <p>This delivery was made <em>{time_of_delivery:date}</em>. Choose <span class="menuref">Browse files</span> in the toolbar to download the delivered files.</p>',
+        '    </section>',
+        '    <tpl if="time_of_delivery &gt; deadline__deadline">',
+        '        <section class="warning-small">',
+        '           <h1>After deadline</h1>',
+        '           <p>This delivery was made <strong>after</strong> the deadline (<em>{deadline__deadline:date}</em>).</p>',
+        '        </section>',
+        '    </tpl>',
+        '</tpl>'
     ),
 
     initComponent: function() {
+        this.toolbar = Ext.widget('toolbar', {
+            xtype: 'toolbar',
+            dock: 'top',
+            items: []
+        });
+        
         Ext.apply(this, {
             hidden: true,
+            dockedItems: [this.toolbar]
         });
         this.callParent(arguments);
         if(this.delivery_recordcontainer.record) {
@@ -56,11 +69,9 @@ Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
     onLoadDelivery: function() {
         var delivery = this.delivery_recordcontainer.record.data;
         this.show();
-        this.removeAll();
-        this.add('->');
-        this.add(this.timeOfDeliveryTpl.apply(delivery));
-        this.add('-');
-        this.add({
+        this.toolbar.removeAll();
+        this.update(delivery);
+        this.toolbar.add({
             xtype: 'button',
             text: 'Browse files',
             id: 'tooltip-browse-files',
@@ -69,7 +80,10 @@ Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
             enableToggle: true,
             listeners: {
                 scope: this,
-                click: this.showFileMetaBrowserWindow
+                click: this.showFileMetaBrowserWindow,
+                render: function() {
+                    Ext.create('devilry.extjshelpers.tooltips.assignmentgroup.BrowseFiles', {});
+                }
             }
         });
     },
@@ -99,6 +113,6 @@ Ext.define('devilry.extjshelpers.assignmentgroup.DeliveryInfo', {
             }
         });
         fileBrowser.show();
-        fileBrowser.alignTo(button, 'br', [-fileBrowser.getWidth(), 0]);
+        fileBrowser.alignTo(button, 'bl', [0, 0]);
     }
 });

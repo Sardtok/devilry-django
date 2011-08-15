@@ -206,7 +206,7 @@ class SimplifiedAssignmentGroup(CanSaveBase):
         If all usernames are valid, ``obj.examiners`` is cleared, and the
         given examiners are added (I.E.: All current examiners are replaced).
         """
-        if hasattr(obj, 'fake_examiners'):
+        if hasattr(obj, 'fake_examiners') and obj.fake_examiners != None:
             fake_examiners = obj.fake_examiners
             users = []
             for username in fake_examiners:
@@ -234,7 +234,7 @@ class SimplifiedAssignmentGroup(CanSaveBase):
         If all usernames are valid, ``obj.candidates`` is cleared, and the
         given candidates are added (I.E.: All current candidates are replaced).
         """
-        if hasattr(obj, 'fake_candidates'):
+        if hasattr(obj, 'fake_candidates') and obj.fake_candidates != None:
             candidateskwargs = []
             for candidatespec in obj.fake_candidates:
                 try:
@@ -260,7 +260,7 @@ class SimplifiedDelivery(SimplifiedModelApi):
     """ Simplified wrapper for :class:`devilry.apps.core.models.Delivery`. """
     class Meta(SimplifiedDeliveryMetaMixin):
         """ Defines what methods an Administrator can use on a Delivery object using the Simplified API """
-        methods = ['search', 'read', 'delete']
+        methods = ['search', 'read'] #, 'create', 'update', 'delete'] # TODO: Delivered by administrator?
 
     @classmethod
     def create_searchqryset(cls, user, **kwargs):
@@ -321,6 +321,8 @@ class SimplifiedDeadline(SimplifiedModelApi):
     class Meta(SimplifiedDeadlineMetaMixin):
         """ Defines what methods an Administrator can use on a Deadline object using the Simplified API """
         methods = ['search', 'read', 'create', 'delete']
+        editablefields = ('text', 'deadline', 'assignment_group',
+                          'feedbacks_published')
 
     @classmethod
     def create_searchqryset(cls, user):
