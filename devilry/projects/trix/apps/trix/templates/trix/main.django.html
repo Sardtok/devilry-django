@@ -62,7 +62,7 @@
 </script>
 {% endblock %}
 
-{% block main %}
+{% block top %}
 {% if user.is_authenticated %}
 <div class="levelinfo">
   {% include "trix/xpbar.django.html" %}
@@ -88,7 +88,8 @@
 {% endif %}
 
 <div id="perioddropdown"></div><span id="periodoverview"><a href="http://www.uio.no/studier/emner/matnat/ifi/INF1000/h10/ukeoppgaver/">Ukeoversikt</a></span>
-
+{% endblock %}
+{% block main %}
 {% for p, p_excs in exercises.items %}
 <table class="exercises">
   <caption>{{ p.long_name }}</caption>

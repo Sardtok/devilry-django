@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+'<!DOCTYPE HTML>
 {% load i18n %}
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
@@ -90,6 +90,10 @@
 		  </ul>
             </nav>
         </header>
+
+        <div id="topwrapper">
+          {% block top %}{{ page_top }}{% endblock %}
+        </div>
 
         <div id="mainwrapper">
         <div id="main">
