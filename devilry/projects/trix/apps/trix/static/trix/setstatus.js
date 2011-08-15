@@ -1,4 +1,5 @@
-setStatus = function(exercise, status) {
+setStatus = function(link, exercise, status) {
+    elems = link.parentNode.parentNode.childNodes;
     var status_exercise_request;
     if (window.XMLHttpRequest) { // REAL browsers
         status_exercise_request = new XMLHttpRequest();
@@ -21,14 +22,21 @@ setStatus = function(exercise, status) {
                 }
 
                 settings = status_exercise_request.responseText.split(", ");
-                radiobuttons = document.getElementsByName(exercise);
 
-                for (i = 0; i < radiobuttons.length; i++) {
-                    button = radiobuttons[i];
-                    if (button.getAttribute("value") != settings[0]) {
-                        button.removeAttribute("checked");
-                    } else {
-                        button.setAttribute("checked", "checked");
+                for (i = 0; i < elems.length; i++) {
+                    if (elems[i].nodeType !== 1)
+                        continue;
+
+                    cls = elems[i].getAttribute("class");
+                    if (cls == "choices") {
+                        elems[i].style.display = 'none';
+                    } else if (cls == "status") {
+                        status = unsolved;
+                        if (settings[0] != "-1") {
+                            status = statuses[settings[0]];
+                        }
+                        elems[i].innerHTML = status + ' - <a href="javascript:void(0)" onclick="showChoices(this)">' + change_str + '</a>';
+                        elems[i].style.display = 'block';
                     }
                 }
 
@@ -52,4 +60,19 @@ setStatus = function(exercise, status) {
 
     status_exercise_request.setRequestHeader("Content-type", "text/plain");
     status_exercise_request.send("status=" + status);
+}
+
+showChoices = function(link) {
+    elems = link.parentNode.parentNode.childNodes;
+    for (i = 0; i < elems.length; i++) {
+        if (elems[i].nodeType !== 1)
+            continue;
+        
+        cls = elems[i].getAttribute("class");
+        if (cls == "choices") {
+            elems[i].style.display = 'block';
+        } else if (cls == "status") {
+            elems[i].style.display = 'none';
+        }
+    }
 }

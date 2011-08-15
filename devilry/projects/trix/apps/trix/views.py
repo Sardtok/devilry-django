@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 from devilry.apps.core.models import Period
 from models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
@@ -88,12 +88,12 @@ def main(request, period_id=-1, topic_id=-1):
     prerequisites = {}
     topicstats = {}
     for exercise in all_exercises:
-        print exercise.number
         e = {'id': exercise.id,
              'number': exercise.number,
              'title': exercise.exercise.long_name,
              'text': exercise.exercise.text,
              'status': -1,
+             'status_name': '',
              'points': exercise.points,
              'starred': exercise.starred}
 
@@ -110,6 +110,7 @@ def main(request, period_id=-1, topic_id=-1):
             try:
                 stats = exercise.student_results.get(student=request.user)
                 e.update([['status', stats.status.id]])
+                e.update([['status_name', stats.status.name]])
             except ExerciseStatus.DoesNotExist:
                 pass
         exercises.setdefault(exercise.period, {}).update([[exercise.number, e]])
@@ -199,9 +200,8 @@ def exercisestatus(request, exercise=-1):
                                         student=request.user, status=status)
 
     if status is None:
-        if exc_status is None:
-            raise Http404
-        exc_status.delete()
+        if exc_status is not None:
+            exc_status.delete()
         points = get_level(get_points(request.user))
         return HttpResponse("%d, %d, %d, %d, %d, %d"
                             % (-1, points['level'], points['percentage'],
