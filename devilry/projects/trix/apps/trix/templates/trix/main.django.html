@@ -87,12 +87,12 @@
   {% endfor %}</div>
 {% endif %}
 
-<div id="perioddropdown"></div><span id="periodoverview"><a href="http://www.uio.no/studier/emner/matnat/ifi/INF1000/h10/ukeoppgaver/">Ukeoversikt</a></span>
+<div id="perioddropdown"></div>
 {% endblock %}
 {% block main %}
 {% for p, p_excs in exercises.items %}
 <table class="exercises">
-  <caption>{{ p.long_name }}</caption>
+  <caption>{{ p.long_name }}</caption>{% comment %}
   <thead>
     <tr>
       <th
@@ -105,10 +105,10 @@
       <th class="statusbutton">{{ status.name }}</th>
       {% endfor %}
       <th class="statusbutton">{% trans "Unsolved" %}</th>
-      {% endcomment %}
+      {% endcomment %}{% comment %}
       {% endif %}
     </tr>
-  </thead>
+  </thead>{% endcomment %}
   <tbody>
     
     {% for e in p_excs.values %}
@@ -123,10 +123,8 @@
         </a>
         {% else %}>
         {% endif %}
-        <h3>{% if e.starred %}
-          <img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />
-          {% endif %}
-          {{ e.number }}.&nbsp;{{ e.title }}
+        <h3>
+          {{ e.number }}.&nbsp;{% if e.starred %}<img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />&nbsp;{% endif %}{{ e.title }}
           {% autoescape off %}
           &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "poeng" %}</h3>
         <div class="exctext" {% if statuses and e.status != -1 %}
@@ -135,14 +133,7 @@
       </td>
       {% if statuses %}
       <td class="statusbutton">
-        <div class="choices" {% if e.status != -1 %}style="display: none;"{% endif %}>
-        {% for status in statuses %}
-        <a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, {{status.id}})">{{status.name}}</a>
-        {% endfor %}
-        <a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, '-1')">
-          {% trans "Unsolved" %}
-        </a>
-        </div>
+        <div class="choices" {% if e.status != -1 %}style="display: none;"{% endif %}>{% for status in statuses %}<a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, {{status.id}})">{{status.name}}</a>&nbsp;{% endfor %}<a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, '-1')">{% trans "Unsolved" %}</a></div>
         <div class="status" {% if e.status == -1 %}style="display: none;"{% endif %}>{{ e.status_name }} - <a href="javascript:void(0)" onclick="showChoices(this)">{% trans "Change" %}</a></div>
       </td>
       {% endif %}
