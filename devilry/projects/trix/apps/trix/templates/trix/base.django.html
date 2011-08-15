@@ -91,6 +91,10 @@
             </nav>
         </header>
 
+        <div id="topwrapper">
+          {% block top %}{{ page_top }}{% endblock %}
+        </div>
+
         <div id="mainwrapper">
         <div id="main">
             {% block main %}{{ page_main }}{% endblock %}
