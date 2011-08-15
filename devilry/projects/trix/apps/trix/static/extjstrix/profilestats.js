@@ -1,14 +1,10 @@
 Ext.require('Ext.chart.*');
+Ext.require('Ext.grid.*');
 Ext.require(['Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
     
 var colors = ['#0077B3',
                   '#77B300',
                   '#CC4400',];
-/*var colors = ['url(#v-1)',
-	      'url(#v-2)',
-	      'url(#v-3)',
-	      'url(#v-4)',
-	      'url(#v-5)',];*/
     
 var baseColor = '#eee';
     
@@ -56,18 +52,32 @@ Ext.onReady(function() {
 		Ext.create('Ext.tab.Panel', {
 			title: gettext('Topics'),
 			items: [
-				getPercentageDict('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', topicstore),
-				getPercentageDict('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', topicstore), 
+				getPercentageBarChart('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), topicstore),
+				getPercentageBarChart('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), topicstore), 
 			]
 		    }),
 		Ext.create('Ext.tab.Panel', {
 			title: gettext('Periods'),
 			items: [
-				getPercentageDict('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', periodstore),
-				getPercentageDict('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', periodstore),
+				getPercentageBarChart('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), periodstore),
+				getPercentageBarChart('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), periodstore),
 				]
 		    }),]
     });
+
+    var grid = Ext.create('Ext.grid.Panel', {
+	    title: 'Oversikt',
+	    store: periodstore,
+	    columns: [
+                {header: 'Periode',  dataIndex: 'long_name'},
+		//TODO put a render function in here to make oppgaver gjort 5 av 7
+    {header: 'Oppgaver gjort', dataIndex: 'exercises_done', flex:1},
+                {header: 'Poeng', dataIndex: 'points'}
+		      ],
+	    height: 200,
+	    width: 400,
+	    renderTo: 'grid'
+	});
 });
 
 /***
@@ -127,9 +137,22 @@ function getValuesDict(id, title, x_title, x_field, y_title, y_field, store) {
 }
 
 /***
- * Returns a dictionary containing data to be displayed as percentage in a bar chart.
+ * Returns a dictionary containing data to be displayed as a percentage bar chart.
+ *
+ * Parameters:
+ * - id             = id of this item
+ * - title          = title that will be displayed in the tab
+ * - x_title        = title that will be displayed on the x axis
+ * - x_field        = name of data field to look for in store
+ * - y_title        = title for y axix
+ * - y_field        = name of data field to look for in store
+ * - mouseover1     = name of first data field to be displayed in the mouseover tip
+ * - mouseover2     = name of second data field to be displayed in the mouseover tip
+ * - mouseover_text = text to be displayed in mouseover tip
+ *
+ * Returns : a dictionary, meant to be used as an item in the tab Panel
  */
-function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store) {
+function getPercentageBarChart(id, title, x_title, x_field, y_title, y_field, mouseover1, mouseover2, mouseover_text, store) {
     return {
             id: id,
 	    title: title,
@@ -143,67 +166,6 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
             background: {
                 fill: 'rgb(17, 17, 17)'
             },
-	    /*gradients: [
-            {
-                'id': 'v-1',
-                'angle': 0,
-                stops: {
-                    0: {
-                        color: 'rgb(212, 40, 40)'
-                    },
-                    100: {
-                        color: 'rgb(117, 14, 14)'
-                    }
-                }
-            },
-            {
-                'id': 'v-2',
-                'angle': 0,
-                stops: {
-                    0: {
-                        color: 'rgb(180, 216, 42)'
-                    },
-                    100: {
-                        color: 'rgb(94, 114, 13)'
-                    }
-                }
-            },
-            {
-                'id': 'v-3',
-                'angle': 0,
-                stops: {
-                    0: {
-                        color: 'rgb(43, 221, 115)'
-                    },
-                    100: {
-                        color: 'rgb(14, 117, 56)'
-                    }
-                }
-            },
-            {
-                'id': 'v-4',
-                'angle': 0,
-                stops: {
-                    0: {
-                        color: 'rgb(45, 117, 226)'
-                    },
-                    100: {
-                        color: 'rgb(14, 56, 117)'
-                    }
-                }
-            },
-            {
-                'id': 'v-5',
-                'angle': 0,
-                stops: {
-                    0: {
-                        color: 'rgb(187, 45, 222)'
-                    },
-                    100: {
-                        color: 'rgb(85, 10, 103)'
-                    }
-                }
-		}],*/
             axes: [{
                 type: 'Category',
                 position: 'bottom',
@@ -213,7 +175,7 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
                 type: 'Numeric',
                 position: 'left',
 		fields: [y_field],
-                title: y_title + ' %',
+                title: y_title,
 		minimum: 0,
 		maximum: 100,
 
@@ -227,10 +189,12 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
 		    field: y_field,
                     orientation: 'horizontal',
                     fill: '#fff',
-                    font: '17px Arial'
-                },
+		    font: '17px Arial',
+		    renderer: function(string) {
+			return string + '%'
+		    },
+		},
                 renderer: function(sprite, storeItem, barAttr, i, store) {
-		    console.log(sprite);
                     barAttr.fill = colors[i % colors.length];
                     return barAttr;
                 },
@@ -242,14 +206,13 @@ function getPercentageDict(id, title, x_title, x_field, y_title, y_field, store)
 		    width: 100,
 		    height: 32,
                     renderer: function(storeItem, item) {
-			console.log(storeItem);
-                        this.setTitle(String(storeItem.data['exercises_done']) + ' av ' + String(storeItem.data['exercises']) + ' oppgaver gjort');
+                        this.setTitle(String(storeItem.data[mouseover1]) + gettext(' of ') 
+				      + String(storeItem.data[mouseover2]) + mouseover_text);
                     }
                 },
 
                 xField: x_field,
-                yField: y_field
-
-            }]
-        }
+		yField: y_field,
+	    }],
+    }
 }
