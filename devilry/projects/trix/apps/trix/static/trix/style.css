@@ -10,7 +10,7 @@ pre   { border-color: #CCC;
         border-width: 1px 1px 1px 4px; }
 .maincol { min-width: 600px; max-width: 100%; }
 .statusbutton { }
-.choices, .status { margin: 0.25em; }
+.choices, .status { margin: 0.25em; white-space: pre;}
 .choices a { margin-right: 0.5em; }
 .dispexc { font-size: 100% !important; padding-left: 2em; float: right; }
 #bq   { background-color: #EEE;

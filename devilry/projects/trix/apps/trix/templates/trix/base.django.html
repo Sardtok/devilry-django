@@ -69,9 +69,9 @@
                     <span id='authenticated-user-info'>
                         {{ user.username }}
                     </span>
-                    | <a id='logout-link' href='{% url logout %}'>Log out</a>
+                    | <a id='logout-link' href='{% url logout %}'>{% trans "Log out" %}</a>
                 {% else %}
-                    <a id='logout-link' href='{% url login %}'>Log in</a>
+                    <a id='logout-link' href='{% url login %}'>{% trans "Log in" %}</a>
                 {% endif %}
             </div>
 
