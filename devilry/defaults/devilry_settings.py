@@ -12,7 +12,8 @@ DEVILRY_DEFAULT_GRADEEDITOR='asminimalaspossible'
 
 DEVILRY_STATIC_URL = '/static' # Must not end in / (this means that '' is the server root)
 DEVILRY_THEME_URL = DEVILRY_STATIC_URL + '/theme/themes/devilry'
-DEVILRY_EXTJS_URL = DEVILRY_STATIC_URL + '/extjshelpers/extjs'
+#DEVILRY_EXTJS_URL = DEVILRY_STATIC_URL + '/extjshelpers/extjs'
+DEVILRY_EXTJS_URL = 'http://cdn.sencha.io/ext-4.0.2a'
 DEVILRY_LOGOUT_URL = '/authenticate/logout'
 
 #Set max file size to 5MB. Files greater than this size are split into chunks of this size.
@@ -24,6 +25,7 @@ DEVILRY_EMAIL_SIGNATURE = "This is a message from the Devilry assignment deliver
                   "Please do not respond to this email."
 
 DEVILRY_DELIVERY_STORE_BACKEND = 'devilry.apps.core.deliverystore.FsDeliveryStore'
+DEVILRY_SYNCSYSTEM = 'YOUR MASTER SYSTEM HERE'
 
 
 #################################################

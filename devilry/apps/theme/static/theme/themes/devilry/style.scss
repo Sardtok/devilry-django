@@ -10,6 +10,10 @@ $neutralcolor_fg: #E5F7FF;
 $warningcolor_bg: #CC4400;
 $warningcolor_hoverbg: #E64D00;
 $warningcolor_fg: #FFEEE5;
+$errorcolor_bg: #B00;
+$errorcolor_hoverbg: #F00;
+$errorcolor_fg: #FFF0F0;
+
 
 $studentcolor_bg: $goodcolor_bg;
 $studentcolor_hoverbg: $goodcolor_hoverbg;
@@ -60,6 +64,19 @@ body {
     font-weight: bold;
     padding: 1px 4px;
     white-space: nowrap;
+}
+
+@mixin goodInlineItem() {
+    @include inlineItem($goodcolor_bg, $goodcolor_fg, $goodcolor_hoverbg);
+}
+@mixin neutralInlineItem() {
+    @include inlineItem($neutralcolor_bg, $neutralcolor_fg, $neutralcolor_hoverbg);
+}
+@mixin warningInlineItem() {
+    @include inlineItem($warningcolor_bg, $warningcolor_fg, $warningcolor_hoverbg);
+}
+@mixin errorInlineItem() {
+    @include inlineItem($errorcolor_bg, $errorcolor_fg, $errorcolor_hoverbg);
 }
 
 @mixin commonSectionElements() {
@@ -257,14 +274,23 @@ header {
  * SearchWidget
  *
  */
+
+.widget-searchfield {
+    line-height: normal !important;
+    height: auto !important;
+
+    font-size: 1.0em;
+    padding: 4px 10px 4px 10px !important;
+    border-radius: 8px;
+}
+
+
 .widget-searchwidget {
     .widget-searchfield {
+        width: $mainwidth !important;
         font-size: 24px;
-        line-height: normal !important;
-        height: auto !important;
         padding: 4px 15px 4px 15px !important;
         border-radius: 20px;
-        width: $mainwidth !important;
     }
 }
 
@@ -281,8 +307,9 @@ header {
                 border: 4px solid transparent;
                 height: auto !important;
                 &:hover {
-                    border: 4px solid $goodcolor_bg;
-                    background-color: $goodcolor_fg;
+                    //border: 4px solid $goodcolor_bg;
+                    background-color: #eee;
+                    //color: $goodcolor_fg !important;
                 }
             }
             .searchresultitem-even {
@@ -389,17 +416,20 @@ a.warning-button {
  *
  */
 
-.icon-delete-16 { background-image: url(icons/16x16/delete.png); }
-.icon-edit-16 { background-image: url(icons/16x16/edit.png); }
-.icon-save-16 { background-image: url(icons/16x16/save.png); }
-.icon-save-16 { background-image: url(icons/16x16/save.png); }
-.icon-add-16 { background-image: url(icons/16x16/add.png); }
+.icon-info-16 { }
+.icon-delete-16 { background-image: url(icons/16x16/delete.png) !important; }
+.icon-edit-16 { background-image: url(icons/16x16/edit.png) !important; }
+.icon-save-16 { background-image: url(icons/16x16/save.png) !important; }
+.icon-save-16 { background-image: url(icons/16x16/save.png) !important; }
+.icon-add-16 { background-image: url(icons/16x16/add.png) !important; }
 
-.icon-delete-32 { background-image: url(icons/32x32/delete.png); }
-.icon-edit-32 { background-image: url(icons/32x32/edit.png); }
-.icon-save-32 { background-image: url(icons/32x32/save.png); }
-.icon-save-32 { background-image: url(icons/32x32/save.png); }
-.icon-add-32 { background-image: url(icons/32x32/add.png); }
+.icon-previous-32 { background-image: url(icons/32x32/previous.png) !important; }
+.icon-next-32 { background-image: url(icons/32x32/next.png) !important; }
+.icon-delete-32 { background-image: url(icons/32x32/delete.png) !important; }
+.icon-edit-32 { background-image: url(icons/32x32/edit.png) !important; }
+.icon-save-32 { background-image: url(icons/32x32/save.png) !important; }
+.icon-save-32 { background-image: url(icons/32x32/save.png) !important; }
+.icon-add-32 { background-image: url(icons/32x32/add.png) !important; }
 
 
 
@@ -438,6 +468,12 @@ a.warning-button {
 section.helpsection {
     @include commonSectionElements();
 
+    background-color: #fff;
+    background-image: url(icons/128x128/helpfade-rightdown.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding: 20px;
+
     p {
         padding: 5px 0;
         line-height: 1.3em;
@@ -461,10 +497,17 @@ section.helpsection {
     }
 }
 
-.x-item-disabled { /* The overlay of disabled ExtJS forms. */
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-    opacity: 1.0 !important;
+//.x-item-disabled { /* The overlay of disabled ExtJS forms. */
+    //-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    //filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    //opacity: 1.0 !important;
+//}
+
+.x-mask {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)" !important;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70) !important;
+    opacity: 0.7 !important;
+    background-color: #000 !important;
 }
 
 
@@ -490,7 +533,7 @@ span.error {
 }
 
 span.menuref {
-    @include inlineItem($neutralcolor_bg, $neutralcolor_fg, $neutralcolor_hoverbg);
+    @include neutralInlineItem();
 }
 
 table.verticalinfotable {
@@ -525,8 +568,12 @@ table.verticalinfotable {
         }
     }
 
-    .widget-assignmentgroupdetailspanel {
+    .widget-assignmentgroupdetails {
         padding: 20px;
+    }
+
+    .widget-deliveryinfo, .widget-staticfeedbackinfo {
+        margin-top: 20px;
     }
     
     .widget-staticfeedbackinfo {
@@ -580,6 +627,22 @@ td.selectable-gridcell {
         &:hover {
             border: 4px solid $goodcolor_bg !important;
             background-color: $goodcolor_fg;
+        }
+    }
+}
+
+
+.selectable-grid {
+    tr.x-grid-row {
+        &:hover .x-grid-cell-inner{
+            cursor: pointer;
+            font-weight: bold;
+            background-color: $goodcolor_bg;
+            color: $goodcolor_fg;
+        }
+
+        .x-grid-cell-inner {
+            padding: 8px;
         }
     }
 }
@@ -718,20 +781,54 @@ section.treeheading {
 
 
 .studentsmanager {
-    .pointscolumn {
-        font-size: 30px;
-    }
-    .nofeedback {
-        color: #aaa;
+    .widget-studentsmanager_studentsgrid {
+        td.x-grid-cell {
+            vertical-align: middle !important;
+        }
+        section.infocolumn {
+            line-height: 1.8em;
+            .has_no_deadlines {
+                @include errorInlineItem();
+            }
+        }
+        .candidatescolumn, .examinerscolumn {
+            @include inlineList();
+        }   
+        .pointscolumn {
+            font-size: 30px;
+        }
+        .nofeedback, .nodeliveries {
+            color: #aaa;
+        }
+        section.gradecolumn {
+            line-height: 1.8em;
+            .not_passing_grade {
+                @include warningInlineItem();
+            }
+            .passing_grade {
+                @include goodInlineItem();
+            }
+            .delivery_type {
+                font-style: italic;
+                font-weight: bold !important;
+                .alias {
+                    @include neutralInlineItem();
+                }
+                .unknown {
+                    @include errorInlineItem();
+                }
+            }
+        }
     }
 }
 
 .group_is_open {
-    @include inlineItem($warningcolor_bg, $warningcolor_fg, $warningcolor_hoverbg);
+    @include goodInlineItem();
 }
 .group_is_closed {
-    @include inlineItem($goodcolor_bg, $goodcolor_fg, $goodcolor_hoverbg);
+    @include warningInlineItem();
 }
+
 
 
 

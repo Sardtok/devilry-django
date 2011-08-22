@@ -2,70 +2,79 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.studentsmanager',
     cls: 'studentsmanager',
-    layout: 'border',
     frame: false,
     border: false,
 
     requires: [
         'devilry.extjshelpers.studentsmanager.FilterSelector',
         'devilry.extjshelpers.studentsmanager.StudentsGrid',
-        'devilry.extjshelpers.studentsmanager.ManuallyCreateUsers',
-        'devilry.extjshelpers.SearchField'
+        'devilry.extjshelpers.assignmentgroup.MultiCreateNewDeadlineWindow',
+        'devilry.extjshelpers.SearchField',
+        'devilry.extjshelpers.SetListOfUsers',
+        'devilry.gradeeditors.EditManyDraftEditorWindow'
     ],
 
+    mixins: {
+        createFeedback: 'devilry.extjshelpers.studentsmanager.StudentsManagerCreateFeedback',
+        manageDeadlines: 'devilry.extjshelpers.studentsmanager.StudentsManagerManageDeadlines',
+        closeOpen: 'devilry.extjshelpers.studentsmanager.StudentsManagerCloseOpen'
+    },
+
     config: {
+        /**
+         * @cfg
+         * Use the administrator RESTful interface to store drafts? If this is
+         * ``false``, we use the examiner RESTful interface.
+         */
+        isAdministrator: false,
+        gradeeditor_config_model: undefined,
+        deadlinemodel: undefined,
+        assignmentid: undefined,
         assignmentgroupstore: undefined,
-        assignmentid: undefined
+
+        periodid: undefined
     },
 
     constructor: function(config) {
         this.callParent([config]);
         this.initConfig(config);
+
+        this.role = this.isAdministrator? 'administrator': 'examiner';
+        this.gradeeditor_config_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
+        this.registryitem_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
+        this.registryitem_recordcontainer.addListener('setRecord', this.onLoadRegistryItem, this);
     },
 
     initComponent: function() {
-        Ext.apply(this, {
-            items: [{
-                region: 'north',     // position for region
-                xtype: 'panel',
-                frame: false,
-                border: false,
-                height: 100,
-                layout: { //Layout spec of underlying components
-                    type: 'vbox',
-                    align: 'center'
-                },
-                items: [{
-                    xtype: 'searchfield',
-                    width: 600,
-                    height: 40,
-                    padding: '30 0 0 0'
-
-                }]
-            },{
-                region:'west',
-                xtype: 'panel',
-                width: 200,
-                layout: 'fit',
-                tbar: [{
-                    xtype: 'button',
-                    text: 'Add more students',
-                    iconCls: 'icon-add-32',
-                    scale: 'large',
-                    width: 194,
-                    listeners: {
-                        scope: this,
-                        click: this.onManuallyCreateUsers
+        this.giveFeedbackButton = Ext.widget('button', {
+            scale: 'large',
+            text: 'Give feedback to many',
+            listeners: {
+                scope: this,
+                click: this.onGiveFeedbackToSelected,
+                render: function(button) {
+                    if(!this.registryitem_recordcontainer.record) {
+                        button.getEl().mask('Loading'); // TODO: Only mask the affected buttons
                     }
-                }],
-                items: [{
-                    xtype: 'studentsmanager_filterselector'
-                }]
-            },{
-                region: 'center',     // center region is required, no width/height specified
+                }
+            }
+        });
+
+        Ext.apply(this, {
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            items: [{
+                xtype: 'searchfield',
+                emptyText: 'Search...',
+                margin: 10,
+                flex: 0,
+            }, {
                 xtype: 'panel',
+                flex: 1,
                 layout: 'fit',
-                frame: false,
+                frame: true,
                 border: false,
                 items: [{
                     xtype: 'studentsmanager_studentsgrid',
@@ -77,11 +86,7 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
                     xtype: 'toolbar',
                     dock: 'bottom',
                     ui: 'footer',
-                    items: ['->', {
-                        xtype: 'button',
-                        scale: 'large',
-                        text: 'Give feedback to selected'
-                    }]
+                    items: this.getToolbarItems()
                 }]
             }],
 
@@ -89,35 +94,136 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
         this.callParent(arguments);
         this.setSearchfieldAttributes();
 
-        //this.addListener('render', function() {
+        this.addListener('render', function() {
             //this.up('window').addListener('show', this.onManuallyCreateUsers, this);
-        //}, this);
+            //this.up('window').addListener('show', this.onOneGroupForEachRelatedStudent, this);
+        }, this);
+        this.loadGradeEditorConfigModel();
+
+        this.loadFirstPage();
     },
-    
+
+    getToolbarItems: function() {
+        return ['->', {
+            xtype: 'button',
+            text: 'On single group',
+            scale: 'large',
+            menu: this.getOnSingleMenuItems()
+        }, {
+            xtype: 'button',
+            text: 'On many groups',
+            scale: 'large',
+            menu: this.getOnManyMenuItems()
+        }, this.giveFeedbackButton];
+    },
+
+    getOnSingleMenuItems: function() {
+        return [{
+            text: 'Open examiner interface',
+            listeners: {
+                scope: this,
+                click: this.onOpenExaminerInterface
+            }
+        }];
+    },
+
+    getOnManyMenuItems: function() {
+        return [{
+            text: 'Close/open',
+            menu: [{
+                text: 'Close',
+                listeners: {
+                    scope: this,
+                    click: this.onCloseGroups
+                }
+            }, {
+                text: 'Open',
+                listeners: {
+                    scope: this,
+                    click: this.onOpenGroups
+                }
+            }]
+        }, {
+            text: 'Add deadline',
+            iconCls: 'icon-add-16',
+            listeners: {
+                scope: this,
+                click: this.onAddDeadline
+            }
+        }];
+    },
+
     /**
      * @private
      */
-    onManuallyCreateUsers: function() {
-        var win = Ext.widget('window', {
-            title: 'Create assignment groups',
-            modal: true,
-            width: 830,
-            height: 600,
-            maximizable: true,
-            layout: 'fit',
-            items: {
-                xtype: 'manuallycreateusers',
-                assignmentid: this.assignmentid
-            },
-            listeners: {
-                scope: this,
-                close: function() {
-                    this.refreshStore();
-                }
-            }
-        });
-        win.show();
+    onSelectNone: function() {
+        Ext.MessageBox.alert('No element(s) selected', 'You must select at least one group to use the selected action.');
     },
+
+    /**
+     * @private
+     */
+    noneSelected: function() {
+        return this.down('studentsmanager_studentsgrid').selModel.getSelection().length == 0;
+    },
+
+    /**
+     * @private
+     */
+    onNotSingleSelected: function() {
+        Ext.MessageBox.alert('Invalid selection', 'You must select exactly one group to use the selected action.');
+    },
+
+    /**
+     * @private
+     */
+    singleSelected: function() {
+        return this.down('studentsmanager_studentsgrid').selModel.getSelection().length == 1;
+    },
+
+    /**
+     * @private
+     */
+    getSelection: function() {
+        return this.down('studentsmanager_studentsgrid').selModel.getSelection();
+    },
+
+    /**
+     * @private
+     */
+    loadFirstPage: function() {
+        this.assignmentgroupstore.currentPage = 1;
+        this.refreshStore();
+    },
+
+    /**
+     * @private
+     */
+    createRecordFromStoreRecord: function(record) {
+        var modelname = Ext.String.format('devilry.apps.{0}.simplified.SimplifiedAssignmentGroup', this.role);
+        var editRecord = Ext.create(modelname, {
+            // NOTE: Very important that this is all the editablefields, since any missing fields will be None!
+            id: record.data.id,
+            name: record.data.name,
+            is_open: record.data.is_open,
+            parentnode: record.data.parentnode,
+        });
+        return editRecord;
+    },
+
+
+    /**
+     * @private
+     */
+    onOpenExaminerInterface: function() {
+        if(!this.singleSelected()) {
+            this.onNotSingleSelected();
+            return;
+        }
+        var record = this.getSelection()[0];
+        window.open(Ext.String.format('../assignmentgroup/{0}', record.data.id), '_blank');
+    },
+
     
     /**
      * @private
@@ -147,7 +253,6 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
         this.assignmentgroupstore.loadPage(1, {
             scope: this,
             callback: function(records, operation, success) {
-                //console.log(records);
             }
         });
     },

@@ -34,7 +34,7 @@ def extjs_model(restfulcls, args=None):
         result_fieldgroups = args[0].split(',')
         if len(args) > 1:
             modelnamesuffix = args[1]
-    js = restfulcls_to_extjsmodel(restfulcls, result_fieldgroups)
+    js = restfulcls_to_extjsmodel(restfulcls, result_fieldgroups, modelnamesuffix)
     return mark_safe(js)
 
 @register.filter

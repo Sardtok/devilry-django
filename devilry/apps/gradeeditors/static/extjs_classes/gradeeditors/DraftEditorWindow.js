@@ -37,11 +37,34 @@ Ext.define('devilry.gradeeditors.DraftEditorWindow', {
     },
 
     constructor: function(config) {
-        this.callParent([config]);
         this.initConfig(config);
+        this.callParent([config]);
+        this.addEvents('publishNewFeedback');
     },
 
     initComponent: function() {
+        Ext.apply(this, {
+            items: {
+                xtype: 'panel',
+                frame: false,
+                border: false,
+                layout: 'fit',
+                loader: {
+                    url: this.registryitem.draft_editor_url,
+                    renderer: 'component',
+                    autoLoad: true,
+                    loadMask: true,
+                    scope: this, // for success and failure
+                    success: this.onLoadDraftEditorSuccess,
+                    failure: this.onLoadDraftEditorFailure
+                }
+            }
+        });
+        this.initComponentExtra();
+        this.callParent(arguments);
+    },
+
+    initComponentExtra: function() {
         Ext.apply(this, {
             dockedItems: [{
                 xtype: 'toolbar',
@@ -66,29 +89,8 @@ Ext.define('devilry.gradeeditors.DraftEditorWindow', {
                         click: this.onPublish
                     }
                 }]
-            }],
-
-            items: {
-                xtype: 'panel',
-                frame: false,
-                border: false,
-                layout: 'fit',
-                loader: {
-                    url: this.registryitem.draft_editor_url,
-                    renderer: 'component',
-                    autoLoad: true,
-                    loadMask: true,
-                    scope: this, // for success and failure
-                    success: this.onLoadDraftEditorSuccess,
-                    failure: this.onLoadDraftEditorFailure
-                    //listeners: {
-                        //scope: this,
-                        //load: this.onLoadDraftEditorSuccess
-                    //}
-                }
-            }
+            }]
         });
-        this.callParent(arguments);
     },
 
     /**
@@ -154,11 +156,19 @@ Ext.define('devilry.gradeeditors.DraftEditorWindow', {
             if(records.length !== 0) {
                 draftstring = records[0].data.draft;
             }
-            this.getDraftEditor().initializeEditor(this.getGradeEditorConfig());
-            this.getDraftEditor().setDraftstring(draftstring);
+            this.initializeDraftEditor(draftstring);
         } else {
             throw "Failed to load current draft."
         }
+    },
+
+    /**
+     * @private
+     * @param draftstring May be undefined.
+     */
+    initializeDraftEditor: function(draftstring) {
+        this.getDraftEditor().initializeEditor(this.getGradeEditorConfig());
+        this.getDraftEditor().setDraftstring(draftstring);
     },
 
     /**
@@ -231,6 +241,7 @@ Ext.define('devilry.gradeeditors.DraftEditorWindow', {
         this.save(true, draftstring, {
             scope: this.getDraftEditor(),
             success: function(response) {
+                me.fireEvent('publishNewFeedback');
                 me.exit();
             },
             failure: onFailure
