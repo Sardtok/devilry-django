@@ -5,7 +5,10 @@ caption { font-size: 110%; font-weight: bold; }
 thead { display: none; }
 .statusbutton { display: none; }
 .dispexc { display: none; }
-.exctext { display: block !important; }
+.exctext { display: block !important; page-break-before: avoid; }
 .levelinfo { display: none; }
+.exercises { clear: none; page-break-before: avoid; }
 #perioddropdown { display: none; }
 #periodoverview { display: none; }
+#topwrapper { page-break-after: avoid; background-color: #fff !important;}
+table table { page-break-inside: avoid; }
