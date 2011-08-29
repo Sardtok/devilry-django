@@ -3,11 +3,12 @@
     border: false,
     frame: false,
     xtype: 'form',
-    //items: [{
-        //xtype: 'checkboxfield',
-        //boxLabel: 'Approved',
-        //id: 'approved-checkbox'
-    //}],
+
+    // These 3 settings are optional.
+    help: '<h1>Some useful help here</h1>' +
+        '<p>Help is never needed, since all users are really smart, and all of them knows the internals of how Devilry works...</p>',
+    helpwidth: 500,
+    helpheight: 300,
 
     /**
      * Called by the grade-editor main window just before calling
@@ -17,8 +18,6 @@
      *      current assignment.
      */
     initializeEditor: function(config) {
-        this.getMainWin().changeSize(300, 200); // Change window size to a more appropritate size for so little content.
-
         this.editorConfig = Ext.JSON.decode(config.config);
         this.checkbox = Ext.widget('checkboxfield', {
             boxLabel: this.editorConfig.fieldlabel
@@ -75,7 +74,7 @@
     onSaveDraft: function() {
         if (this.getForm().isValid()) {
             var draft = this.createDraft();
-            this.getMainWin().saveDraft(draft, this.onFailure);
+            this.getMainWin().saveDraft(draft);
         }
     },
 
@@ -85,7 +84,7 @@
     onPublish: function() {
         if (this.getForm().isValid()) {
             var draft = this.createDraft();
-            this.getMainWin().saveDraftAndPublish(draft, this.onFailure);
+            this.getMainWin().saveDraftAndPublish(draft);
         }
     },
 
@@ -97,14 +96,6 @@
      */
     getMainWin: function() {
         return this.up('gradedrafteditormainwin');
-    },
-
-    /**
-     * @private
-     * Used by onSaveDraft and onPublish to handle save-failures.
-     */
-    onFailure: function() {
-        console.error('Failed!');
     },
 
     /**

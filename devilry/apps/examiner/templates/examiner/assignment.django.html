@@ -32,9 +32,6 @@
                 '</tpl>'
             ]
         });
-        assignment_recordcontainer.addListener('setRecord', function() {
-            heading.update(assignment_recordcontainer.record.data);
-        });
 
         var assignmentview = Ext.create('devilry.examiner.AssignmentView', {
             renderTo: 'content-main',
@@ -44,14 +41,19 @@
             assignmentgroupstore: assignmentgroupstore
             //assignmentgroupGraphstore: assignmentgroupGraphstore
         });
+
+        assignment_recordcontainer.addListener('setRecord', function() {
+            heading.update(assignment_recordcontainer.record.data);
+            {#Ext.Function.defer(function() { assignmentview.onStudents(); }, 200);#}
+        });
     });
 </script>
 {% endblock %}
 
 {% block main %}
-
 <section class="treeheading" id="content-heading"></section>
+{{ block.super }}
+
 <div id="content-main"></div>
 
 {% endblock %}
-

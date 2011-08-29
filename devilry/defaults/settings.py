@@ -12,6 +12,7 @@ LOGIN_URL = '/authenticate/login'
 STATIC_URL = '/static/'
 STATIC_ROOT = 'devilry-static-files'
 DATABASES = {}
+EMAIL_SUBJECT_PREFIX = '[Devilry] '
 ROOT_URLCONF = 'devilry.defaults.root_urlconf'
 
 
@@ -26,14 +27,17 @@ INSTALLED_APPS = ['django.contrib.markup',
                   'devilry.apps.core',
                   'devilry.apps.theme',
                   'devilry.apps.extjshelpers',
+                  'devilry.apps.developertools',
 
                   'devilry.apps.approved_gradeeditor',
                   'devilry.apps.manual_gradeeditor',
                   'devilry.apps.autograde_gradeeditor',
 
+                  'devilry.apps.markup',
                   'devilry.apps.student',
                   'devilry.apps.examiner',
                   'devilry.apps.administrator',
+                  'devilry.apps.superadmin',
                   'devilry.apps.authenticate',
                   'devilry.apps.gradeeditors']
 

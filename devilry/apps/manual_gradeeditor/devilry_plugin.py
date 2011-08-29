@@ -3,6 +3,7 @@ from django.conf import settings
 
 from devilry.apps.gradeeditors import (gradeeditor_registry, JsonRegistryItem,
                                        DraftValidationError, ConfigValidationError)
+from devilry.apps.markup.parse_markdown import markdown_full
 
 
 
@@ -21,9 +22,21 @@ class Manual(JsonRegistryItem):
     def validate_draft(cls, draftstring, configstring):
         buf = json.loads(draftstring)
         is_approved = buf[0]
+        points = buf[1]
+        grade = buf[2]
+        feedback = buf[3]
 
         if not isinstance(is_approved, bool):
             raise DraftValidationError('The draft string must contain a boolean value.')
+
+        if not isinstance(points, int):
+            raise DraftValidationError('The points-field must contain a number')
+
+        if grade == '':
+            raise DraftValidationError('The grade-field cannot be empty')
+
+        if not isinstance(feedback, basestring):
+            raise DraftValidationError('The feedback-field must be a text-entry')
 
     @classmethod
     def draft_to_staticfeedback_kwargs(cls, draftstring, configstring):
@@ -40,6 +53,6 @@ class Manual(JsonRegistryItem):
         return dict(is_passing_grade=is_approved,
                     grade=grade,
                     points=points,
-                    rendered_view=feedback)
+                    rendered_view=markdown_full(feedback))
 
 gradeeditor_registry.register(Manual)

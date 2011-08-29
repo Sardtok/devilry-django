@@ -18,7 +18,9 @@ DELIVERY_STORE_ROOT = join(PARENT_DIR, 'deliverystore')
 ## tells users that this data comes from.
 DEVILRY_SYNCSYSTEM = 'FS (Felles Studentsystem)'
 
-DEBUG=True
+## Nice to have this set to True while you are setting up devilry, however set
+## it to False for production
+DEBUG = True
 
 ## Example config for SQLite (see also PostgreSQL below)
 DATABASES["default"] = {

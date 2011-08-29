@@ -2,7 +2,8 @@ import json
 from django.conf import settings
 
 from devilry.apps.gradeeditors import (gradeeditor_registry, JsonRegistryItem,
-                                       DraftValidationError, ConfigValidationError)
+                                       DraftValidationError)
+from devilry.apps.markup.parse_markdown import markdown_full
 
 
 
@@ -26,6 +27,9 @@ class Approved(JsonRegistryItem):
         if not isinstance(is_approved, bool):
             raise DraftValidationError('The draft string must contain a single boolean value.')
 
+        if not isinstance(feedback, basestring):
+            raise DraftValidationError('Feedback-text must be a text-entry')
+
     @classmethod
     def draft_to_staticfeedback_kwargs(cls, draftstring, configstring):
         buf = json.loads(draftstring)
@@ -39,6 +43,6 @@ class Approved(JsonRegistryItem):
         return dict(is_passing_grade=is_approved,
                     grade=grade,
                     points=int(is_approved),
-                    rendered_view=feedback)
+                    rendered_view=markdown_full(feedback))
 
 gradeeditor_registry.register(Approved)

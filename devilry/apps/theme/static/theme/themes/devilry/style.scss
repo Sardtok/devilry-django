@@ -13,6 +13,8 @@ $warningcolor_fg: #FFEEE5;
 $errorcolor_bg: #B00;
 $errorcolor_hoverbg: #F00;
 $errorcolor_fg: #FFF0F0;
+$unimportant_fontcolor: #666;
+$linkcolor: #0B5A9D;
 
 
 $studentcolor_bg: $goodcolor_bg;
@@ -36,19 +38,12 @@ body {
 }
 
 
-@mixin navitemlink($bg, $fg, $hoverbg) {
-    background-color: $bg;
-    color: $fg;
-    &:hover {
-        background-color: $hoverbg;
-    }
-}
 
-@mixin inlineList() {
+@mixin inlineList($separator:", ") {
     li {
         display: inline; 
         &:after {
-            content: ", ";
+            content: $separator;
         }
         &:last-child:after {
             content: "";
@@ -92,6 +87,19 @@ body {
         line-height: 1.2em;
     }
 
+    pre, code {
+        background-color: #f8f8f8;;
+        border: 1px solid #eee;
+    }
+    code {
+        padding: 1px 4px;
+        color: #600;
+        white-space: nowrap;
+    }
+    pre {
+        padding: 8px;
+    }
+
     ul {
         li {
             padding: 5px 0;
@@ -99,6 +107,29 @@ body {
             list-style-type: disc !important;
             list-style-position: outside !important;
         }
+    }
+}
+
+@mixin commonHeaderElements() {
+    h2 {
+        border-top: 5px solid #f8f8f8;
+        padding-top: 8px;
+        font-size: 2.0em;
+        margin: 36px 0 6px 0;
+    }
+    h3 {
+        font-size: 1.5em;
+        margin: 16px 0 6px 0;
+    }
+}
+
+
+@mixin navitemlink($bg, $fg, $hoverbg) {
+    background-color: #222;
+    color: #fff;
+    &:hover {
+        color: $fg;
+        background-color: $hoverbg !important;
     }
 }
 
@@ -217,17 +248,34 @@ header {
         li.administrator-navitem a {
             @include navitemlink($administratorcolor_bg, $administratorcolor_fg, $administratorcolor_hoverbg);
         }
+        li.externallink-navitem a {
+            @include navitemlink(#444, #fff, #333);
+            border-radius: $radiussize_small $radiussize_big 0 0;
+            background-image: url(icons/16x16/external-link.png) !important;
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            padding-left: 32px;
+        }
     }
 
     /* Color the bottom border of the header with the color of the current section. */
     >nav.student {
         border-bottom: 10px solid $studentcolor_bg;
+        li.student-navitem a {
+            background-color: $studentcolor_bg;
+        }
     }
     >nav.examiner {
         border-bottom: 10px solid $examinercolor_bg;
+        li.examiner-navitem a {
+            background-color: $examinercolor_bg;
+        }
     }
     >nav.administrator {
         border-bottom: 10px solid $administratorcolor_bg;
+        li.administrator-navitem a {
+            background-color: $administratorcolor_bg;
+        }
     }
 }
 
@@ -251,7 +299,7 @@ header {
         a {
             font-size: 1.2em;
             font-weight: bold;
-            color: #0B5A9D;
+            color: $linkcolor;
         }
         a:visited {
             color: #6E0840;
@@ -295,31 +343,26 @@ header {
 }
 
 .multisearchresults {
-    width: ($mainwidth - 30px);
-    >.x-panel-body {
-        background-color: #fff;
-        border: 3px solid #111;
-        border-radius: 0 0 $radiussize_big $radiussize_small;
-        .searchresults {
-            margin: 20px;
-            .searchresultitem {
-                padding: 4px;
-                border: 4px solid transparent;
-                height: auto !important;
-                &:hover {
-                    //border: 4px solid $goodcolor_bg;
-                    background-color: #eee;
-                    //color: $goodcolor_fg !important;
-                }
+    .searchresults {
+        margin: 0;
+        .searchresultitem {
+            padding: 4px;
+            border: 4px solid transparent;
+            height: auto !important;
+            &:hover {
+                //border: 4px solid $goodcolor_bg;
+                background-color: #eee;
+                //color: $goodcolor_fg !important;
             }
-            .searchresultitem-even {
-                background-color: #f8f8f8;
-            }
+        }
+        .searchresultitem-even {
+            background-color: #f8f8f8;
         }
     }
 }
 .multisearchresults-floating {
-    //box-shadow: 0 1px 8px #888;
+    width: ($mainwidth - 30px);
+    //width: 500px;
 }
 .searchwidget-help {
     padding: 4px 15px 15px 15px !important;
@@ -359,9 +402,32 @@ section.popuplistitem {
     ul {
         @include inlineList();
     }
-    ul.useridlist {
-        li {
-            font-size: 1.2em;
+    //ul.useridlist {
+        //li {
+            //font-size: 1.2em;
+        //}
+    //}
+
+    line-height: 1.6em;
+
+    p.path {
+        font-size: 0.8em;
+        color: $unimportant_fontcolor;
+        font-weight: bold;
+    }
+
+    section.dl_valueimportant {
+        >section {
+            font-weight: bold;
+
+            h1 {
+                display: inline;
+                &:after {
+                    content: ": ";
+                }
+                font-size: 0.8em;
+                font-weight: normal;
+            }
         }
     }
 }
@@ -423,6 +489,7 @@ a.warning-button {
 .icon-save-16 { background-image: url(icons/16x16/save.png) !important; }
 .icon-add-16 { background-image: url(icons/16x16/add.png) !important; }
 
+.icon-help-32 { background-image: url(icons/32x32/help.png) !important; }
 .icon-previous-32 { background-image: url(icons/32x32/previous.png) !important; }
 .icon-next-32 { background-image: url(icons/32x32/next.png) !important; }
 .icon-delete-32 { background-image: url(icons/32x32/delete.png) !important; }
@@ -465,10 +532,15 @@ a.warning-button {
 
 
 
+.helpbox {
+    background-color: #fff !important;
+}
 section.helpsection {
     @include commonSectionElements();
+    @include commonHeaderElements();
 
     background-color: #fff;
+    min-height: 128px; // Make sure background icon is not clipped
     background-image: url(icons/128x128/helpfade-rightdown.png);
     background-repeat: no-repeat;
     background-position: right top;
@@ -477,6 +549,46 @@ section.helpsection {
     p {
         padding: 5px 0;
         line-height: 1.3em;
+    }
+
+    ul.right_toc {
+        float: right;
+        background-color: #f8f8f8;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 0 0 20px 20px;
+        width: 150px;
+        li {
+            &:first-child {
+                margin-top: 0 !important;
+            }
+            &:last-child {
+                margin-bottom: 0 !important;
+            }
+            padding: 0 !important;
+            margin: 10px 0 !important;
+            list-style-type: none !important;
+            font-weight: bold !important;
+            ul {
+                margin: 5px 0 5px 18px !important;
+                li {
+                    font-weight: normal !important;
+                    list-style-type: square !important;
+                }
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: $linkcolor;
+        }
+        a:visited {
+            color: $linkcolor;
+        }
+        a:hover{
+            text-decoration: underline;
+        }
     }
 }
 
@@ -503,11 +615,33 @@ section.helpsection {
     //opacity: 1.0 !important;
 //}
 
-.x-mask {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)" !important;
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70) !important;
-    opacity: 0.7 !important;
+@mixin overlayMask($opacity) {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity*100})" !important;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity*100}) !important;
+    opacity: $opacity !important;
     background-color: #000 !important;
+    width: 100% !important;
+}
+
+.x-mask {
+    @include overlayMask(0.7);
+}
+.page-load-mask {
+    //width: 600px !important;
+    //height: 400px !important;
+    padding: 20px !important;
+    border-radius: 20px;
+    background-color: #000 !important;
+    border: none !important;
+    div {
+        background-color: transparent !important;
+        color: #666 !important;
+        border: none !important;
+        font-size: 1.2em !important;
+    }
+}
+.x-window-maximized {
+    width: 100% !important;
 }
 
 
@@ -520,7 +654,7 @@ section.helpsection {
 
 .unimportant {
     font-size: 1.0em;
-    color: #444;
+    color: $unimportant_fontcolor;
 }
 .important {
     font-size: 1.1em;
@@ -560,6 +694,10 @@ table.verticalinfotable {
     }
 }
 
+.widget-assignmentgrouptodolist {
+    background: #fff !important;
+}
+
 
 .widget-assignmentgroupoverview {
     .widget-deliveryinfo {
@@ -591,23 +729,28 @@ table.verticalinfotable {
                 padding: 40px;
                 text-align: center;
                 font-size: 2.0em;
+                .no-feedback-message {
+                    font-size: 1.5em;
+                }
             }
             .no-feedback-editable {
                 cursor: pointer;
                 border: 4px solid transparent;
                 &:hover {
-                    border: 4px solid $goodcolor_bg;
-                    background-color: $goodcolor_fg;
+                    font-weight: bold;
+                    background-color: $goodcolor_bg;
+                    color: $goodcolor_fg;
+                    border-radius: 20px;
                 }
             }
 
             section.rendered_view {
-                //margin: 0 20px 20px 20px;
                 @include commonSectionElements();
+                @include commonHeaderElements();
                 p {
                     padding: 5px 0 !important;
                     line-height: 1.6em !important;
-                }
+                }   
             }
         }
     }
@@ -616,19 +759,6 @@ table.verticalinfotable {
 .after-deadline {
     display: inline-block;
     color: $warningcolor_bg;
-}
-
-td.selectable-gridcell {
-    border: none !important;
-    .x-grid-cell-inner {
-        padding: 8px 4px 8px 4px !important;
-        border: 4px solid transparent !important;
-        cursor: pointer;
-        &:hover {
-            border: 4px solid $goodcolor_bg !important;
-            background-color: $goodcolor_fg;
-        }
-    }
 }
 
 
@@ -647,33 +777,23 @@ td.selectable-gridcell {
     }
 }
 
-
-section.extravisible {
+@mixin extravisibleBox($minHeight) {
     //border: 2px solid #999;
     border-radius: $radiussize_big;
-    padding: 10px 10px 10px 158px !important;
+    padding: 10px 10px 10px ($minHeight + 30px) !important;
     background-position: 10px 10px;
-    min-height: 148px !important;
+    min-height: $minHeight !important;
     margin: 20px !important;
-    box-shadow: 0 0 5px 5px #aaa;
-    
+    background-color: #fff;
+    border: 1px solid #eee;
+}
+section.extravisible {
+    @include extravisibleBox(148px);
+}
+section.extravisible-small {
+    @include extravisibleBox(64px);
 }
 
-
-@mixin bigIconBox($icon) {
-    padding: 0px 0 0 148px;
-    min-height: 128px;
-    background-image: $icon;
-    background-repeat: no-repeat;
-    margin: 20px 0 20px 0;
-
-
-    p {
-        padding: 5px 0;
-        line-height: 1.6em !important;
-    }
-    @include commonSectionElements();
-}
 
 @mixin iconBox($category, $icon, $size) {
     section.#{$category} {
@@ -740,20 +860,22 @@ section.extravisible {
 }
 
 
-section h1 {
-    font-size: 2.6em;
-    margin: 20px 0 15px 0;
-}
-section h1:first-child {
-    margin-top: 0;
-}
-section h2 {
-    font-size: 2.0em;
-    margin: 16px 0 6px 0;
-}
-section h3 {
-    font-size: 1.5em;
-    margin: 16px 0 6px 0;
+section {
+    h1 {
+        font-size: 2.6em;
+        margin: 20px 0 15px 0;
+    }
+    h1:first-child {
+        margin-top: 0;
+    }
+    h2 {
+        font-size: 2.0em;
+        margin: 16px 0 6px 0;
+    }
+    h3 {
+        font-size: 1.5em;
+        margin: 16px 0 6px 0;
+    }
 }
 
 
@@ -829,7 +951,46 @@ section.treeheading {
     @include warningInlineItem();
 }
 
+.group_is_corrected {
+    @include goodInlineItem();
+}
 
+.group_is_uncorrected {
+    @include warningInlineItem();
+}
+
+.menuheader {
+    font-weight:bold;
+}
+.menuheader:first-child {
+    margin-top:0;
+}
+
+
+.edit-toolbar {
+    .x-btn {
+        min-width: 30px !important;
+        text-align: center;
+    }
+    .x-btn-inner {
+        //font-family: serif !important;
+        font-size: 1.2em !important;
+    }
+    .headbtn, .bbtn, .helpbtn {
+        .x-btn-inner {
+            font-weight: bold !important;
+        }
+    }
+    .ibtn .x-btn-inner {
+        font-style: italic !important;
+    }
+    .codebtn .x-btn-inner {
+        font-family: monospace !important;
+    }
+    .linkbtn .x-btn-inner {
+        text-decoration: underline;
+    }
+}
 
 
 
@@ -860,3 +1021,6 @@ footer {
         color: #D4D2CE;
     }
 }
+
+
+@import "../../pygments/tango"
