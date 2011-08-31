@@ -28,15 +28,17 @@ setStatus = function(link, exercise, status) {
                         continue;
 
                     cls = elems[i].getAttribute("class");
-                    if (cls == "choices") {
+                    if (cls == "choices" && settings[0] != "-1") {
                         elems[i].style.display = 'none';
                     } else if (cls == "status") {
                         status = unsolved;
                         if (settings[0] != "-1") {
                             status = statuses[settings[0]];
+                            elems[i].innerHTML = status + ' - <a href="javascript:void(0)" onclick="showChoices(this)">' + change_str + '</a>' + ' <a href="javascript:void(0)" onclick="setStatus(this, ' + exercise + ', -1)">' + reset_str + '</a>';
+                            elems[i].style.display = 'block';
+                        } else {
+                            showChoices(elems[i].childNodes[0]);
                         }
-                        elems[i].innerHTML = status + ' - <a href="javascript:void(0)" onclick="showChoices(this)">' + change_str + '</a>';
-                        elems[i].style.display = 'block';
                     }
                 }
 

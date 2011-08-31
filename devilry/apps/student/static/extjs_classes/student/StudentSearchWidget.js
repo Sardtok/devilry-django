@@ -44,16 +44,21 @@ Ext.define('devilry.student.StudentSearchWidget', {
                 filterconfig: devilry.extjshelpers.searchwidget.FilterConfigDefaults.delivery,
                 resultitemConfig: {
                     tpl: this.deliveryRowTpl,
-                    //defaultbutton: {
-                        //text: 'View',
-                        //clickLinkTpl: this.urlPrefix + 'assignmentgroup/view/{deadline__assignment_group}?deliveryid={id}'
-                    //}
+                    defaultbutton: {
+                        text: 'View',
+                        clickLinkTpl: this.urlPrefix + 'assignmentgroup/{deadline__assignment_group}?deliveryid={id}'
+                    }
                 }
             }, {
                 xtype: 'searchresults',
                 title: 'Deadlines',
                 store: Ext.data.StoreManager.lookup('devilry.apps.student.simplified.SimplifiedDeadlineStoreSearch'),
                 filterconfig: devilry.extjshelpers.searchwidget.FilterConfigDefaults.deadline,
+                alwaysAppliedFilters: [{
+                    field: 'assignment_group__is_open',
+                    comp: 'exact',
+                    value: true
+                }],
                 resultitemConfig: {
                     tpl: this.deadlineRowTpl,
                     defaultbutton: {

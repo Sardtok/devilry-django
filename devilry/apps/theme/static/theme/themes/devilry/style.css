@@ -226,13 +226,18 @@ header {
  * SearchWidget
  *
  */
-.widget-searchwidget .widget-searchfield {
-  font-size: 24px;
+.widget-searchfield {
   line-height: normal !important;
   height: auto !important;
+  font-size: 1.0em;
+  padding: 4px 10px 4px 10px !important;
+  border-radius: 8px; }
+
+.widget-searchwidget .widget-searchfield {
+  width: 930px !important;
+  font-size: 24px;
   padding: 4px 15px 4px 15px !important;
-  border-radius: 20px;
-  width: 930px !important; }
+  border-radius: 20px; }
 
 .multisearchresults {
   width: 900px; }
@@ -247,8 +252,7 @@ header {
         border: 4px solid transparent;
         height: auto !important; }
         .multisearchresults > .x-panel-body .searchresults .searchresultitem:hover {
-          border: 4px solid #77b300;
-          background-color: #f7ffe5; }
+          background-color: #eee; }
       .multisearchresults > .x-panel-body .searchresults .searchresultitem-even {
         background-color: #f8f8f8; }
 
@@ -329,34 +333,40 @@ a.warning-button {
  *
  */
 .icon-delete-16 {
-  background-image: url(icons/16x16/delete.png); }
+  background-image: url(icons/16x16/delete.png) !important; }
 
 .icon-edit-16 {
-  background-image: url(icons/16x16/edit.png); }
+  background-image: url(icons/16x16/edit.png) !important; }
 
 .icon-save-16 {
-  background-image: url(icons/16x16/save.png); }
+  background-image: url(icons/16x16/save.png) !important; }
 
 .icon-save-16 {
-  background-image: url(icons/16x16/save.png); }
+  background-image: url(icons/16x16/save.png) !important; }
 
 .icon-add-16 {
-  background-image: url(icons/16x16/add.png); }
+  background-image: url(icons/16x16/add.png) !important; }
+
+.icon-previous-32 {
+  background-image: url(icons/32x32/previous.png) !important; }
+
+.icon-next-32 {
+  background-image: url(icons/32x32/next.png) !important; }
 
 .icon-delete-32 {
-  background-image: url(icons/32x32/delete.png); }
+  background-image: url(icons/32x32/delete.png) !important; }
 
 .icon-edit-32 {
-  background-image: url(icons/32x32/edit.png); }
+  background-image: url(icons/32x32/edit.png) !important; }
 
 .icon-save-32 {
-  background-image: url(icons/32x32/save.png); }
+  background-image: url(icons/32x32/save.png) !important; }
 
 .icon-save-32 {
-  background-image: url(icons/32x32/save.png); }
+  background-image: url(icons/32x32/save.png) !important; }
 
 .icon-add-32 {
-  background-image: url(icons/32x32/add.png); }
+  background-image: url(icons/32x32/add.png) !important; }
 
 /**
  *
@@ -376,21 +386,27 @@ a.warning-button {
   .editform .editform-body .extrabaronright {
     margin-left: 30px; }
 
-section.helpsection strong {
-  font-weight: bold; }
-section.helpsection em {
-  font-style: italic; }
-section.helpsection p {
-  padding: 5px 0;
-  line-height: 1.2em; }
-section.helpsection ul li {
-  padding: 5px 0;
-  margin-left: 25px !important;
-  list-style-type: disc !important;
-  list-style-position: outside !important; }
-section.helpsection p {
-  padding: 5px 0;
-  line-height: 1.3em; }
+section.helpsection {
+  background-color: #fff;
+  background-image: url(icons/128x128/helpfade-rightdown.png);
+  background-repeat: no-repeat;
+  background-position: right top;
+  padding: 20px; }
+  section.helpsection strong {
+    font-weight: bold; }
+  section.helpsection em {
+    font-style: italic; }
+  section.helpsection p {
+    padding: 5px 0;
+    line-height: 1.2em; }
+  section.helpsection ul li {
+    padding: 5px 0;
+    margin-left: 25px !important;
+    list-style-type: disc !important;
+    list-style-position: outside !important; }
+  section.helpsection p {
+    padding: 5px 0;
+    line-height: 1.3em; }
 
 /**
  *
@@ -403,11 +419,11 @@ section.helpsection p {
   .tooltip-title span.tooltip-title-current-item {
     font-weight: bold; }
 
-.x-item-disabled {
-  /* The overlay of disabled ExtJS forms. */
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1.0 !important; }
+.x-mask {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)" !important;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70) !important;
+  opacity: 0.7 !important;
+  background-color: #000 !important; }
 
 /*
  *
@@ -456,8 +472,10 @@ table.verticalinfotable {
 
 .widget-assignmentgroupoverview .widget-deliveryinfo > .x-panel-body {
   padding: 20px; }
-.widget-assignmentgroupoverview .widget-assignmentgroupdetailspanel {
+.widget-assignmentgroupoverview .widget-assignmentgroupdetails {
   padding: 20px; }
+.widget-assignmentgroupoverview .widget-deliveryinfo, .widget-assignmentgroupoverview .widget-staticfeedbackinfo {
+  margin-top: 20px; }
 .widget-assignmentgroupoverview .widget-staticfeedbackinfo {
   width: 100% !important; }
   .widget-assignmentgroupoverview .widget-staticfeedbackinfo > .x-panel-body {
@@ -505,6 +523,14 @@ td.selectable-gridcell {
     td.selectable-gridcell .x-grid-cell-inner:hover {
       border: 4px solid #77b300 !important;
       background-color: #f7ffe5; }
+
+.selectable-grid tr.x-grid-row:hover .x-grid-cell-inner {
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #77b300;
+  color: #f7ffe5; }
+.selectable-grid tr.x-grid-row .x-grid-cell-inner {
+  padding: 8px; }
 
 section.extravisible {
   border-radius: 14px;
@@ -874,25 +900,80 @@ section.treeheading {
   list-style-type: disc !important;
   list-style-position: outside !important; }
 
-.studentsmanager .pointscolumn {
+.studentsmanager .widget-studentsmanager_studentsgrid td.x-grid-cell {
+  vertical-align: middle !important; }
+.studentsmanager .widget-studentsmanager_studentsgrid section.infocolumn {
+  line-height: 1.8em; }
+  .studentsmanager .widget-studentsmanager_studentsgrid section.infocolumn .has_no_deadlines {
+    border: 1px solid red;
+    border-radius: 3px;
+    background-color: #bb0000;
+    color: #fff0f0;
+    font-weight: bold;
+    padding: 1px 4px;
+    white-space: nowrap; }
+.studentsmanager .widget-studentsmanager_studentsgrid .candidatescolumn li, .studentsmanager .widget-studentsmanager_studentsgrid .examinerscolumn li {
+  display: inline; }
+  .studentsmanager .widget-studentsmanager_studentsgrid .candidatescolumn li:after, .studentsmanager .widget-studentsmanager_studentsgrid .examinerscolumn li:after {
+    content: ", "; }
+  .studentsmanager .widget-studentsmanager_studentsgrid .candidatescolumn li:last-child:after, .studentsmanager .widget-studentsmanager_studentsgrid .examinerscolumn li:last-child:after {
+    content: ""; }
+.studentsmanager .widget-studentsmanager_studentsgrid .pointscolumn {
   font-size: 30px; }
-.studentsmanager .nofeedback {
+.studentsmanager .widget-studentsmanager_studentsgrid .nofeedback, .studentsmanager .widget-studentsmanager_studentsgrid .nodeliveries {
   color: #aaa; }
+.studentsmanager .widget-studentsmanager_studentsgrid section.gradecolumn {
+  line-height: 1.8em; }
+  .studentsmanager .widget-studentsmanager_studentsgrid section.gradecolumn .not_passing_grade {
+    border: 1px solid #e64d00;
+    border-radius: 3px;
+    background-color: #cc4400;
+    color: #ffeee5;
+    font-weight: bold;
+    padding: 1px 4px;
+    white-space: nowrap; }
+  .studentsmanager .widget-studentsmanager_studentsgrid section.gradecolumn .passing_grade {
+    border: 1px solid #88cc00;
+    border-radius: 3px;
+    background-color: #77b300;
+    color: #f7ffe5;
+    font-weight: bold;
+    padding: 1px 4px;
+    white-space: nowrap; }
+  .studentsmanager .widget-studentsmanager_studentsgrid section.gradecolumn .delivery_type {
+    font-style: italic;
+    font-weight: bold !important; }
+    .studentsmanager .widget-studentsmanager_studentsgrid section.gradecolumn .delivery_type .alias {
+      border: 1px solid #0088cc;
+      border-radius: 3px;
+      background-color: #0077b3;
+      color: #e5f7ff;
+      font-weight: bold;
+      padding: 1px 4px;
+      white-space: nowrap; }
+    .studentsmanager .widget-studentsmanager_studentsgrid section.gradecolumn .delivery_type .unknown {
+      border: 1px solid red;
+      border-radius: 3px;
+      background-color: #bb0000;
+      color: #fff0f0;
+      font-weight: bold;
+      padding: 1px 4px;
+      white-space: nowrap; }
 
 .group_is_open {
-  border: 1px solid #e64d00;
+  border: 1px solid #88cc00;
   border-radius: 3px;
-  background-color: #cc4400;
-  color: #ffeee5;
+  background-color: #77b300;
+  color: #f7ffe5;
   font-weight: bold;
   padding: 1px 4px;
   white-space: nowrap; }
 
 .group_is_closed {
-  border: 1px solid #88cc00;
+  border: 1px solid #e64d00;
   border-radius: 3px;
-  background-color: #77b300;
-  color: #f7ffe5;
+  background-color: #cc4400;
+  color: #ffeee5;
   font-weight: bold;
   padding: 1px 4px;
   white-space: nowrap; }

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-15 15:55+0200\n"
-"PO-Revision-Date: 2011-08-15 15:55+0200\n"
+"POT-Creation-Date: 2011-08-22 17:16+0200\n"
+"PO-Revision-Date: 2011-08-22 17:17+0200\n"
 "Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "Statuser"
 msgid "Topic"
 msgstr "Tema"
 
-#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:78
+#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:79
 msgid "Topics"
 msgstr "Temaer"
 
@@ -91,39 +91,43 @@ msgid "Profile"
 msgstr "Profil"
 
 #: apps/trix/templates/trix/main.django.html:24
-#: apps/trix/templates/trix/main.django.html:123
+#: apps/trix/templates/trix/main.django.html:124
 msgid "Hide exercise"
 msgstr "Skjul oppgaven"
 
 #: apps/trix/templates/trix/main.django.html:27
-#: apps/trix/templates/trix/main.django.html:125
+#: apps/trix/templates/trix/main.django.html:126
 msgid "Show exercise"
 msgstr "Vis oppgaven"
 
 #: apps/trix/templates/trix/main.django.html:33
-#: apps/trix/templates/trix/main.django.html:140
 msgid "Unsolved"
 msgstr "Ikke forsøkt"
 
 #: apps/trix/templates/trix/main.django.html:34
-#: apps/trix/templates/trix/main.django.html:141
-msgid "Change"
-msgstr "Endre"
+#: apps/trix/templates/trix/main.django.html:142
+msgid "Change status"
+msgstr "Endre status"
 
-#: apps/trix/templates/trix/main.django.html:71
+#: apps/trix/templates/trix/main.django.html:35
+#: apps/trix/templates/trix/main.django.html:142
+msgid "Reset status"
+msgstr "Nullstill status"
+
+#: apps/trix/templates/trix/main.django.html:72
 #: apps/trix/templates/trix/profile.django.html:24
 msgid "Total points"
 msgstr "Totalt antall poeng"
 
-#: apps/trix/templates/trix/main.django.html:86
+#: apps/trix/templates/trix/main.django.html:87
 msgid "Prerequisites"
 msgstr "Nødvendige forkunnskaper"
 
-#: apps/trix/templates/trix/main.django.html:133
+#: apps/trix/templates/trix/main.django.html:134
 msgid "points"
 msgstr "poeng"
 
-#: apps/trix/templates/trix/main.django.html:152
+#: apps/trix/templates/trix/main.django.html:153
 msgid "View period"
 msgstr "Vis periode"
 

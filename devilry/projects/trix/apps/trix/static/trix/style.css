@@ -11,7 +11,7 @@ pre   { border-color: #CCC;
 .maincol { min-width: 600px; max-width: 100%; }
 .statusbutton { }
 .choices, .status { margin: 0.25em; white-space: pre;}
-.choices a { margin-right: 0.5em; }
+.choices a, .status a { margin-right: 0.5em; }
 .dispexc { font-size: 100% !important; padding-left: 2em; float: right; }
 #bq   { background-color: #EEE;
         margin: 0.5em 0.5em 0.5em;
