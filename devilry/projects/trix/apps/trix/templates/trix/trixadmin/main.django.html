@@ -18,6 +18,11 @@
     {{ RestfulSimplifiedPeriodExercise|extjs_model }},
     {{ RestfulSimplifiedPeriod|extjs_model }};
 
+    var exercisestore = {{ RestfulSimplifiedExercise|extjs_store }};
+    var topicstore = {{ RestfulSimplifiedTopic|extjs_store }};
+    var periodexercisestore = {{ RestfulSimplifiedPeriodExercise|extjs_store }};
+    var periodstore = {{ RestfulSimplifiedPeriod|extjs_store }};
+
 
     Ext.onReady(function(){
         Ext.create('devilry.extjshelpers.ButtonBar', {
@@ -27,6 +32,7 @@
                 xtype: 'buttonbarbutton',
                 text: '{% trans "Topic" %}',
                 iconCls: 'icon-add-32',
+                store: periodstore,
                 tooltipCfg: {
                     title: '<span class="tooltip-title-current-item">{% trans "Topic" %}</span> &rArr; {% trans "Exercise" %} &rArr; {% trans "Link exercise and period" %}',
                     body: "{% trans "A topic for exercise's topics and prerequisites." %}"
@@ -46,6 +52,7 @@
                 xtype: 'buttonbarbutton',
                 text: '{% trans "Exercise" %}',
                 iconCls: 'icon-add-32',
+                store: periodstore,
                 tooltipCfg: {
                     title: '{% trans "Topic" %} &rArr; <span class="tooltip-title-current-item">{% trans "Exercise" %}</span> &rArr; {% trans "Link exercise and period" %}',
                     body: '{% trans "An exercise that goes in the exercise database." %}'
@@ -65,6 +72,7 @@
                 xtype: 'buttonbarbutton',
                 text: '{% trans "Link exercise and period" %}',
                 iconCls: 'icon-add-32',
+                store: periodstore,
                 tooltipCfg: {
                     title: '{% trans "Topic" %} &rArr; {% trans "Exercise" %} &rArr; <span class="tooltip-title-current-item">{% trans "Link exercise and period" %}</span>',
                     body: '{% trans "Link an exercise and a period." %}'
@@ -82,6 +90,7 @@
                 }
             }]
         });
+    periodstore.load();
     Ext.QuickTips.init();
 });
 </script>

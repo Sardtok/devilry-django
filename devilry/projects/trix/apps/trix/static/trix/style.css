@@ -1,6 +1,8 @@
 #main { font-size: 11pt; margin: 1em; }
 #topwrapper { font-size: 11pt; padding: 1em; background-color: #F8F8F8; }
 h3    { font-weight: bold; }
+body { background-color: #F8F8F8; }
+footer { background-color: #FFF; }
 i     { font-style: italic; }
 li { padding: 0.5em 0; }
 strong, b     { font-weight: bold; }
@@ -42,8 +44,11 @@ a { font-size: 100% !important; }
 header > nav.trix {
     border-bottom: 10px solid #0077B3;
 }
-
 header > nav li.trix-navitem a {
+      background-color: #222;
+      color: #fff; }
+
+header > nav.trix li.trix-navitem a {
     background-color: #0077B3;
     color: #F7FFE5;
 }
