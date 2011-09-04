@@ -17,9 +17,31 @@
   <script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
 {% endblock %}
 
-{% block top % }
-Tabellen under ser du
-{% endblock % }
+{% block top %}
+
+<div class="stats">
+<div id="grid" class="grid">
+  <strong>Tabell</strong><br />
+  Gir deg oversikt over hvor mange oppgaver du har gjort innenfor en
+  uke eller et tema. Du velger periode/temavisning i fanene under.
+  Poenget med tabellen er at du lett kan se hvilke deler av pensum du
+  kan jobbe mer med. Det er spesielt viktig å gjøre nøkkeloppgavene
+  hver uke.<br /><br />
+</div>
+
+<div id="graph" class="graph">
+<strong>Stolpediagram</strong><br />
+  Her er dataene fra tabellen presentert i et prosentdiagram. Klikk på
+  fanene under for å se hvordan du har gjort det innenfor en uke eller
+  et tema. Deretter kan du velge å vise Poeng eller Innsats. Er
+  Innsats på 100% betyr det at du har gjort alle oppgavene innenfor den kategorien.
+  Har du samtidig bare 80% av poengene i samme kategori betyr det at du har fått
+  hjelp til en del av oppgavene. Løser du en oppgave selv vil du få
+  maks poeng, imens en oppgave som løses med hjelp gir litt mindre
+  poeng.<br /><br />
+</div>
+</div>
+{% endblock %}
 
 {% block main %}
 <!-- Make this only available for Beta users
@@ -42,23 +64,4 @@ Tabellen under ser du
 </div>
 -->
 
-<div>
-<div id="grid" class="grid">
-  <strong>Hva er dette?</strong><br />
-  Tabellen under viser en oversikt over hvordan du har jobbet hittil i
-  semesteret. Etterhvert som du har kommet et stykke ut i semesteret vil dataene
-  under fortelle deg hvilke deler av pensum du har jobbet mye eller lite
-  med.<br />
-  <strong>Hva kan jeg bruke det til?</strong><br />
-  Det fungerer som et verkt&oslash;y for &aring; se
-  hvilke omr&aring;der av pensum det kan v&aelig;re lurt &aring; jobbe mer med. Et viktig m&aring;l
-  er &aring; gj&oslash;re n&oslash;kkeloppgaven hver uke.
-</div>
-
-<div id="stats" class="stats">
-<strong>Grafisk framstilling</strong>
-  {% trans "New User" %}
-  {% trans "Make new user" %}
-</div>
-</div>
 {% endblock %}

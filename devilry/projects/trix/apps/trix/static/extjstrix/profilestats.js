@@ -47,30 +47,31 @@ Ext.onReady(function() {
         width: 800,
         height: 600,
         title: gettext('Statistics'),
-        renderTo: 'stats',
+        renderTo: 'graph',
         layout: 'fit',
 	//activeTab: 'periods',
 	preventHeader: 'true',
 	
         items: [{
 		    xtype: 'tabpanel',
-		    title: gettext('Topics'),
-		    //id: 'topics',
-		    padding: 3,
-		    plain: true,
-		    items: [
-			    getPercentageBarChart('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), topicstore),
-			    getPercentageBarChart('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), topicstore), 
-			    ]
-		},{
-		    xtype: 'tabpanel',
 		    title: gettext('Periods'),
 		    plain: true,
 		    padding: 3,
 		    //id: 'periods',
 		    items: [
-			    getPercentageBarChart('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), periodstore),
 			    getPercentageBarChart('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), periodstore),
+			    getPercentageBarChart('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), periodstore),
+			    ]
+		},
+	        {
+		    xtype: 'tabpanel',
+		    title: gettext('Topics'),
+		    //id: 'topics',
+		    padding: 3,
+		    plain: true,
+		    items: [
+			    getPercentageBarChart('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), topicstore),
+			    getPercentageBarChart('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), topicstore), 
 			    ]
 		},]
     });
@@ -115,7 +116,7 @@ Ext.onReady(function() {
 	});
 
     var gridstats = Ext.create('Ext.tab.Panel', {
-	    height: 600,
+	    autoHeight: true,
 	    width: 450,
 	    title: gettext('Overview'),
 	    preventHeader: 'true',
@@ -242,10 +243,16 @@ function getPercentageBarChart(id, title, x_title, x_field, y_title, y_field, mo
 		},
                 renderer: function(sprite, storeItem, barAttr, i, store) {
 		    //barAttr.fill = colors[i % colors.length];
-		    if (storeItem.data[y_field] > 79) {
-			barAttr.fill = colors[0];
-		    } else if (storeItem.data[y_field] > 49){
-			barAttr.fill = colors[1];
+		    if (storeItem.data[y_field] > 66) {
+			if (storeItem.data['starred_done'] > 0)
+			    barAttr.fill = colors[0];
+			else
+			    barAttr.fill = colors[1];
+		    } else if (storeItem.data[y_field] > 33){
+			if (storeItem.data['starred_done'] > 0)
+			    barAttr.fill = colors[1];
+			else
+			    barAttr.fill = colors[2];
 		    } else {
 			barAttr.fill = colors[2];
 		    }
