@@ -1,0 +1,136 @@
+{% extends "trix/trixadmin/base.django.html" %}
+{% load extjs %}
+{% load i18n %}
+{% block headextra %}
+{{ block.super }}
+
+<script>
+    Ext.require('devilry.extjshelpers.RestfulSimplifiedEditWindowBase');
+    Ext.require('devilry.extjshelpers.RestfulSimplifiedEditPanel');
+    Ext.require('devilry.extjshelpers.ButtonBarButton');
+    Ext.require('devilry.extjshelpers.ButtonBar');
+    Ext.require('trix.forms.Exercise');
+    Ext.require('trix.forms.Topic');
+    Ext.require('trix.forms.PeriodExercise');
+  {{ RestfulSimplifiedPeriod|extjs_model }},
+  {{ RestfulSimplifiedTopic|extjs_model }};
+  var periodexercisemodel = {{ RestfulSimplifiedPeriodExercise|extjs_model }};
+  var exercisemodel = {{ RestfulSimplifiedExercise|extjs_model }};
+
+  var exercisestore = {{ RestfulSimplifiedExercise|extjs_store }};
+  var topicstore = {{ RestfulSimplifiedTopic|extjs_store }};
+  var periodexercisestore = {{ RestfulSimplifiedPeriodExercise|extjs_store }};
+  var periodstore = {{ RestfulSimplifiedPeriod|extjs_store }};
+
+  function editExercise(exercise, number) {
+    if (exercise == null)
+      return;
+    
+    exercisemodel.load(exercise, { scope: this,
+      success: function(record) {
+        var editpanel = Ext.ComponentManager.create({
+          xtype: 'restfulsimplified_editpanel',
+          model: {{ RestfulSimplifiedExercise|extjs_modelname }},
+          editform: Ext.widget('administrator_exerciseform'),
+          record: record
+        });
+        var editwindow = Ext.create('devilry.extjshelpers.RestfulSimplifiedEditWindowBase', {
+          editpanel: editpanel,
+          onSaveSuccess: function(record) {
+            text = document.getElementById("exercisetext" + exercise);
+            text.innerHTML = record.data['text'];
+            title = document.getElementById("exercisetitle" + exercise);
+            title.innerHTML = number + ". "
+                              + record.data['long_name'] + " - "
+                              + record.data['points'];
+          }
+        });
+        editwindow.show();
+      },
+      failure: function(record) {
+        Ext.MessageBox.show({
+           title:'{% trans "Error!" %}',
+           msg: '{% trans "Invalid exercise ID!" %}',
+           buttons: Ext.MessageBox.OK,
+           icon: Ext.MessageBox.ERROR
+        });
+      }
+    });
+  }
+
+  function deletePeriodExercise(exercise) {
+    if (exercise == null)
+      return;
+
+    periodexercisemodel.load(exercise,
+      { scope: this,
+        success: function(record) {
+          var me = this;
+          var win = Ext.MessageBox.show({
+            title: 'Confirm delete',
+            msg: 'Are you sure you want to delete?',
+            buttons: Ext.Msg.YESNO,
+            icon: Ext.Msg.WARNING,
+            closable: false,
+            fn: function(btn) {
+              if(btn == 'yes') {
+                record.destroy({
+                  scope: this,
+                  success: function() {
+                    element = document.getElementById("exercise" + exercise);
+                    element.parentNode.removeChild(element);
+                  }
+                });
+              }
+            }
+          });
+        }
+      });
+  }
+  
+</script>
+
+{% endblock %}
+
+{% block top %}
+<div class="topics">{% trans "Topics" %}:
+  <span id="topiclist">
+    {% for topic in topics.values %}
+    {{topic.name}}
+    {% endfor %}
+  </span>
+</div>
+
+<div class="topics">{% trans "Prerequisites" %}:
+  <span id="prerequisitelist">
+    {% for topic in prerequisites.values %}
+    {{topic.name}}
+    {% endfor %}
+  </span>
+</div>
+{% endblock %}
+
+{% block main %}
+<table class="exercises">
+  <tbody>
+  {% for exercise in exercises %}
+  <tr id="exercise{{exercise.id}}">
+    <td>
+      <span class="dispexc">
+        <a href="javascript:void(0)" onclick="editExercise({{exercise.exercise.id}}, {{exercise.number}})">
+          {% trans "Edit" %}
+        </a> -
+        <a href="javascript:void(0)" onclick="deletePeriodExercise({{exercise.id}})">
+          {% trans "Delete" %}
+        </a>
+      </span>
+      <h3 id="exercisetitle{{exercise.exercise.id}}">{{exercise.number}}. {{exercise.exercise.long_name}} - {{exercise.exercise.points}} {% trans "points" %}</h3>
+      {% autoescape off %}
+      <div id="exercisetext{{exercise.exercise.id}}" class="exctext">{{exercise.exercise.text}}</div>
+      {% endautoescape %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

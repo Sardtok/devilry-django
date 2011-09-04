@@ -25,8 +25,7 @@ DATABASES = {
     }
 
 INSTALLED_APPS += [
-    'devilry.projects.trix.apps.trix',
-    'devilry.projects.trix',
+    'trix.apps.trix',
     
     # Not apps, but here for the Django test system to discover them:
     'devilry.utils',

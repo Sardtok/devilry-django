@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 
 from devilry.apps.core.models import Period
-from models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
+from trix.apps.trix.models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
 
 from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulSimplifiedPeriod, RestfulPeriodStatistics, RestfulTopicStatistics
 
@@ -170,11 +170,39 @@ def administrator(request):
     Administrator page showing the administrator interface
     """
     return render(request, 'trix/trixadmin/main.django.html',
-                  {'data': 1,
-                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
+                  {'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
                    'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
                    'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
                    'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod })
+
+def periodadmin(request, period_id=-1):
+    """
+    Administrator interface for periods,
+    allowing an admin to change a period's exercises.
+    """
+    period = get_object_or_404(Period, pk=period_id)
+    exercises = PeriodExercise.objects.filter(period=period)
+    topics = {}
+    prerequisites = {}
+    for exercise in exercises:
+        ts = exercise.exercise.topics.exclude(id__in=topics.keys)
+        for t in ts:
+            topics.setdefault(t.id, t)
+
+        ps = exercise.exercise.prerequisites.exclude(id__in=prerequisites.keys)
+        for p in ps:
+            prerequisites.setdefault(p.id, p)
+
+    return render(request, 'trix/trixadmin/period.django.html',
+                  {'period': period,
+                   'exercises': exercises,
+                   'topics': topics,
+                   'prerequisites': prerequisites,
+                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
+                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
+                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
+                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod}
+                  )
 
 @login_required
 def exercisestatus(request, exercise=-1):

@@ -52,13 +52,25 @@ class PeriodExercise(models.Model):
         except:
             pass
         else:
-            self.number = self.getNext(exercises)
+            self.shift_items_up();
 
         if self.number <= 0:
-            self.number = self.getNext(exercises)
+            self.number = self.get_next(exercises)
 
-    def getNext(self, exercises):
+    def shift_items_up(self):
+        exercises = PeriodExercise.objects.filter(period=self.period).filter(number__gte=self.number).order_by('-number')
+        for exercise in exercises:
+            exercise.number = exercise.number + 1
+            exercise.save()
+
+    def get_next(self, exercises):
         last = exercises.aggregate(max=models.Max('number'))['max']
         if last is None:
             last = 0
         return last + 1
+
+    def shift_items_down(self):
+        exercises = PeriodExercise.objects.filter(period=self.period).filter(number__gte=self.number)
+        for exercise in list(exercises):
+            exercise.number = exercise.number - 1
+            exercise.save()
