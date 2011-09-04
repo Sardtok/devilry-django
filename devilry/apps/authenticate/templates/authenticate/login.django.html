@@ -13,13 +13,27 @@
 	<p class='error'>{% trans "Invalid username or password." %}</p>
 {% endif %}
 
+{% if not register %}
 <form method='post' action='{% url login %}'>
   <table>
 		{{ form.as_table}}
 	</table>
 	<p>
 		<input type='submit' name='login' value='{% trans "Log in" %}'/>
+	        <a href='{% url register %}'> <button>{% trans "New User" %}</button></a>
 	</p>
+
 </form>
+{% else %}
+<form method='post' action='{% url register %}'>
+  <table>
+		{{ form.as_table}}
+	</table>
+	<p>
+		<input type='submit' name='new_user' value='{% trans "Make new user" %}'/>
+	</p>
+
+</form>
+{% endif %}
 
 {% endblock %}

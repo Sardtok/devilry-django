@@ -17,12 +17,39 @@
   <script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
 {% endblock %}
 
+{% block top %}
+
+<div class="stats">
+<div id="grid" class="grid">
+  <strong>Tabell</strong><br />
+  Gir deg oversikt over hvor mange oppgaver du har gjort innenfor en
+  uke eller et tema. Du velger periode/temavisning i fanene under.
+  Poenget med tabellen er at du lett kan se hvilke deler av pensum du
+  kan jobbe mer med. Det er spesielt viktig å gjøre nøkkeloppgavene
+  hver uke.<br /><br />
+</div>
+
+<div id="graph" class="graph">
+<strong>Stolpediagram</strong><br />
+  Her er dataene fra tabellen presentert i et prosentdiagram. Klikk på
+  fanene under for å se hvordan du har gjort det innenfor en uke eller
+  et tema. Deretter kan du velge å vise Poeng eller Innsats. Er
+  Innsats på 100% betyr det at du har gjort alle oppgavene innenfor den kategorien.
+  Har du samtidig bare 80% av poengene i samme kategori betyr det at du har fått
+  hjelp til en del av oppgavene. Løser du en oppgave selv vil du få
+  maks poeng, imens en oppgave som løses med hjelp gir litt mindre
+  poeng.<br /><br />
+</div>
+</div>
+{% endblock %}
+
 {% block main %}
+<!-- Make this only available for Beta users
 <div class="levelinfo">
   {% include "trix/xpbar.django.html" %}<br />
-  <!--Points needed to reach level {{level.next_level }}: {{ level.points_needed }}<br />-->
   {% trans "Total points" %} : {{ level.total_points }} <br /><br />
-</div> 
+</div>
+
 <div class="userdata">
 <br /><br />
 <div class="portrait">
@@ -33,17 +60,8 @@
   {% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}<br />
   {% trans "Username" %}: {{ user.username }}<br />
   email: {{ user.email }} <br /><br />
+  {% trans "last login" %}: {{ user.last_login }}<br /><br />
 </div>
-{% trans "last login" %}: {{ user.last_login }}<br /><br />
-
-<br /><br /><br /><br />
-<br /><br /><br /><br />
-<div id="grid" class="grid">
-    </div>
-</div>
-
-<div>
-<div id="stats" class="stats"></div>
-</div>
+-->
 
 {% endblock %}
