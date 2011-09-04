@@ -2,9 +2,12 @@ Ext.require('Ext.chart.*');
 Ext.require('Ext.grid.*');
 Ext.require(['Ext.fx.target.Sprite', 'Ext.layout.container.Fit']);
     
-var colors = ['#0077B3',
+/*var colors = ['#0077B3',
                   '#77B300',
-                  '#CC4400',];
+                  '#CC4400',];*/
+var colors = ['#77B300',
+	      '#0077B3',
+	      '#FF3333',];
     
 var baseColor = '#eee';
     
@@ -48,23 +51,28 @@ Ext.onReady(function() {
         layout: 'fit',
 	//activeTab: 'periods',
 	preventHeader: 'true',
-        items: [
-		Ext.create('Ext.tab.Panel', {
-			title: gettext('Topics'),
-			//id: 'topics',
-			items: [
-				getPercentageBarChart('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), topicstore),
-				getPercentageBarChart('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), topicstore), 
-			]
-		    }),
-		Ext.create('Ext.tab.Panel', {
-			title: gettext('Periods'),
-			//id: 'periods',
-			items: [
-				getPercentageBarChart('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), periodstore),
-				getPercentageBarChart('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), periodstore),
-				]
-		    }),]
+	
+        items: [{
+		    xtype: 'tabpanel',
+		    title: gettext('Topics'),
+		    //id: 'topics',
+		    padding: 3,
+		    plain: true,
+		    items: [
+			    getPercentageBarChart('points_topic', gettext('Points'), gettext('Topic'), 'name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), topicstore),
+			    getPercentageBarChart('exercises_topic', gettext('Effort'), gettext('Topic'), 'name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), topicstore), 
+			    ]
+		},{
+		    xtype: 'tabpanel',
+		    title: gettext('Periods'),
+		    plain: true,
+		    padding: 3,
+		    //id: 'periods',
+		    items: [
+			    getPercentageBarChart('points_period', gettext('Points'), gettext('Period'), 'long_name', gettext('Points'), 'points_percent', 'points', 'total_points', gettext(' possible points'), periodstore),
+			    getPercentageBarChart('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), periodstore),
+			    ]
+		},]
     });
 
 
@@ -72,8 +80,8 @@ Ext.onReady(function() {
 	    title: gettext('Periods'),
 	    store: periodstore,
 	    columns: [
-    {header: gettext('Period'),  dataIndex: 'long_name'},
-                {header: gettext('Points'), dataIndex: 'points', 
+                 {header: gettext('Period'),  dataIndex: 'long_name'},
+                 {header: gettext('Points'), dataIndex: 'points', 
 		 renderer: function(value, md, record) {
 			return String(value + gettext(' of ') + record.get('total_points'));}},
                 {header: 
@@ -85,15 +93,13 @@ Ext.onReady(function() {
 		 renderer: function(value, md, record) {
 			return String(value) + gettext(' of ') + record.get('starred');   
 		    }},],
-	    height: 200,
-	    width: 450,
 	});
 
     var topicgrid = Ext.create('Ext.grid.Panel', {
 	    title: gettext('Topics'),
 	    store: topicstore,
 	    columns: [
-    {header: gettext('Topic'),  dataIndex: 'name', flex:1},
+                {header: gettext('Topic'),  dataIndex: 'name', flex:1},
                 {header: gettext('Points'), dataIndex: 'points', 
 		 renderer: function(value, md, record) {
 			return String(value + gettext(' of ') + record.get('total_points'));}},
@@ -106,18 +112,18 @@ Ext.onReady(function() {
 		 renderer: function(value, md, record) {
 			return String(value) + gettext(' of ') + record.get('starred');   
 		    }},],
-	    height: 200,
-	    width: 450,
 	});
 
     var gridstats = Ext.create('Ext.tab.Panel', {
-	    height: 200,
+	    height: 600,
 	    width: 450,
 	    title: gettext('Overview'),
 	    preventHeader: 'true',
 	    renderTo: 'grid',
 	    items: [periodgrid, topicgrid]		    
 	});
+
+    //gridstats.on('rowclick', function() { alert("hey");});
 });
 
 /***
@@ -235,7 +241,14 @@ function getPercentageBarChart(id, title, x_title, x_field, y_title, y_field, mo
 		    },
 		},
                 renderer: function(sprite, storeItem, barAttr, i, store) {
-                    barAttr.fill = colors[i % colors.length];
+		    //barAttr.fill = colors[i % colors.length];
+		    if (storeItem.data[y_field] > 79) {
+			barAttr.fill = colors[0];
+		    } else if (storeItem.data[y_field] > 49){
+			barAttr.fill = colors[1];
+		    } else {
+			barAttr.fill = colors[2];
+		    }
                     return barAttr;
                 },
                 style: {

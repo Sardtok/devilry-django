@@ -5,6 +5,7 @@
         <title>
             {% block title %}{{ page_title|default:"Devilry" }}{% endblock %}
         </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" >
 
         <link rel="stylesheet" href="{{DEVILRY_THEME_URL }}/style.css"
             type="text/css" media="screen" charset="utf-8"/>
@@ -37,13 +38,27 @@
             Ext.define('DevilrySettings', {
                 singleton: true,
                 DEVILRY_STATIC_URL: '{{ DEVILRY_STATIC_URL}}',
-                DEVILRY_MAIN_PAGE: '{{ DEVILRY_MAIN_PAGE }}',
+                DEVILRY_URLPATH_PREFIX: '{{ DEVILRY_URLPATH_PREFIX }}',
                 DEVILRY_SYNCSYSTEM: '{{ DEVILRY_SYNCSYSTEM|escapejs }}'
             });
+
+            Ext.onReady(function() {
+                Ext.QuickTips.init();
+            });
+
+            if(Ext.isIE) {
+                Ext.onReady(function() {
+                    var win = Ext.MessageBox.show({
+                        title: 'Unsupported browser',
+                        msg: 'Devilry has several knows issues with your current browser (Internet Explorer). Please use Google Chrome, Firefox, Opera or Safari.',
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.WARNING,
+                        closable: false
+                    });
+                });
+            }
         </script>
         <script src="{{ DEVILRY_STATIC_URL }}/extjshelpers/formatoverrides.js"></script>
-
-
 
         {% block headextra %}{% endblock %}
     </head>
@@ -56,11 +71,14 @@
                 </h1>
                 <a href="http://devilry.org" id="projectlink">http://devilry.org</a>
             </div>
+
+            {% comment %}
             <div id="version">
                 <span class="text">Version</span>
                 <span class="number">1.0-beta</span>
                 <span class="codename"> &mdash; Miss piggy</span>
             </div>
+            {% endcomment %}
 
             <div id='authenticated-user-bar'>
                 {% if user.is_authenticated %}
@@ -78,6 +96,7 @@
                     <li class="student-navitem"><a href="{% url student %}">{% trans "Student" %}</a></li>
                     <li class="examiner-navitem"><a href="{% url examiner %}">{% trans "Examiner" %}</a></li>
                     <li class="administrator-navitem"><a href="{% url administrator %}">{% trans "Administrator" %}</a></li>
+                    <li class="externallink-navitem"><a href="{{ DEVILRY_HELP_URL }}" target="_blank">{% trans "Help" %}</a></li>
                 </ul>
             </nav>
         </header>

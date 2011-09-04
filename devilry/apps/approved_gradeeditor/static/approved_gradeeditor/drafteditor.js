@@ -3,11 +3,13 @@
     border: false,
     frame: false,
     xtype: 'form',
-    //items: [{
-        //xtype: 'checkboxfield',
-        //boxLabel: 'Approved',
-        //id: 'approved-checkbox'
-    //}],
+
+    help: '<h3>Is the assignment approved:</h3>' +
+        '<p>Mark the checkbox if the assignment is approved</p>' + 
+        '<h3>Enter feedback:</h3>'+
+        '<p>Here you enter a feedback to the student. What was good, what was bad etc. For help on how to format the feedback text, click the question button in the upper right corner of the feedback editor.</p>',
+    //helpwidth: 500,
+    //helpheight: 300,
 
     layout: {
         type: 'vbox',
@@ -30,17 +32,37 @@
      *      current assignment.
      */
     initializeEditor: function() {
-
         this.checkbox = Ext.widget('checkboxfield', {
             boxLabel: 'Is the assignment approved?',
             flex: 0
         });
-        this.textarea = Ext.widget('textareafield', {
-            fieldLabel: 'Enter feedback',
-            flex: 1
+        //this.textarea = Ext.widget('textareafield', {
+            //fieldLabel: 'Enter feedback',
+            //flex: 1
+        //});
+        this.textarea = Ext.widget('markdownfulleditor', {
+            flex: 1,
+            title: 'Enter feedback'
         });
+
         this.add(this.checkbox);
         this.add(this.textarea);
+    },
+
+    /**
+     * @private
+     */
+    parseDraftString: function(draftstring) {
+        try {
+            var buf = Ext.JSON.decode(draftstring);
+        } catch(e) {
+            // The current draft string is not JSON, proceed as if no draft string
+            return;
+        }
+        if(buf.gradeeditor && buf.gradeeditor.id === 'approved') {
+            this.checkbox.setValue(buf.approved);
+            this.textarea.setValue(buf.feedback);
+        }
     },
 
     /**
@@ -55,11 +77,7 @@
         if(draftstring === undefined) {
             this.checkbox.setValue(true);
         } else {
-            var buf = Ext.JSON.decode(draftstring);
-            var approved = buf[0];
-            var feedback = buf[1];
-            this.checkbox.setValue(approved);
-            this.textarea.setValue(feedback);
+            this.parseDraftString(draftstring);
         }
         this.getEl().unmask(); // Unmask the loading mask (set by the main window).
     },
@@ -70,7 +88,7 @@
     onSaveDraft: function() {
         if (this.getForm().isValid()) {
             var draft = this.createDraft();
-            this.getMainWin().saveDraft(draft, this.onFailure);
+            this.getMainWin().saveDraft(draft);
         }
     },
 
@@ -80,7 +98,7 @@
     onPublish: function() {
         if (this.getForm().isValid()) {
             var draft = this.createDraft();
-            this.getMainWin().saveDraftAndPublish(draft, this.onFailure);
+            this.getMainWin().saveDraftAndPublish(draft);
         }
     },
 
@@ -94,23 +112,20 @@
 
     /**
      * @private
-     * Used by onSaveDraft and onPublish to handle save-failures.
-     */
-    onFailure: function() {
-        console.error('Failed!');
-    },
-
-    /**
-     * @private
      * Create a draft (used in onSaveDraft and onPublish)
      */
     createDraft: function() {
         var approved = this.checkbox.getValue();
         var feedback = this.textarea.getValue();
         var retval = new Array();
-        retval[0] = approved
-        retval[1] = feedback
-        var draft = Ext.JSON.encode(retval);
+        var draft = Ext.JSON.encode({
+            gradeeditor: {
+                id: 'approved',
+                version: '1.0'
+            },
+            approved: approved,
+            feedback: feedback
+        });
         return draft;
     }
 }

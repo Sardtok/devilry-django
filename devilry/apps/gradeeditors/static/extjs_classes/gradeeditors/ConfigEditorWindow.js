@@ -6,6 +6,10 @@ Ext.define('devilry.gradeeditors.ConfigEditorWindow', {
     height: 400,
     layout: 'fit',
     modal: true,
+    requires: [
+        'devilry.gradeeditors.FailureHandler',
+        'devilry.extjshelpers.HelpWindow'
+    ],
 
     config: {
         /**
@@ -30,22 +34,23 @@ Ext.define('devilry.gradeeditors.ConfigEditorWindow', {
     },
 
     initComponent: function() {
+        this.buttonBar = Ext.widget('toolbar', {
+            dock: 'bottom',
+            ui: 'footer',
+            items: ['->', {
+                xtype: 'button',
+                text: 'Save',
+                scale: 'large',
+                iconCls: 'icon-save-32',
+                listeners: {
+                    scope: this,
+                    click: this.onSave
+                }
+            }]
+        });
+
         Ext.apply(this, {
-            dockedItems: [{
-                xtype: 'toolbar',
-                dock: 'bottom',
-                ui: 'footer',
-                items: ['->', {
-                    xtype: 'button',
-                    text: 'Save',
-                    scale: 'large',
-                    iconCls: 'icon-save-32',
-                    listeners: {
-                        scope: this,
-                        click: this.onSave
-                    }
-                }]
-            }],
+            dockedItems: [this.buttonBar],
 
             items: {
                 xtype: 'panel',
@@ -93,7 +98,32 @@ Ext.define('devilry.gradeeditors.ConfigEditorWindow', {
     /**
      * @private
      */
+    onHelp: function() {
+        this.helpwindow.show();
+    },
+
+    /**
+     * @private
+     */
     initializeEditor: function() {
+        if(this.getConfigEditor().help) {
+            this.helpwindow = Ext.widget('helpwindow', {
+                title: 'Help',
+                closeAction: 'hide',
+                helptext: this.getConfigEditor().help
+            });
+
+            this.buttonBar.insert(0, {
+                text: 'Help',
+                iconCls: 'icon-help-32',
+                scale: 'large',
+                listeners: {
+                    scope: this,
+                    click: this.onHelp
+                }
+            });
+        }
+
         this.getConfigEditor().initializeEditor(this.gradeeditorconfig_recordcontainer.record.data);
     },
 
@@ -119,6 +149,7 @@ Ext.define('devilry.gradeeditors.ConfigEditorWindow', {
      * Called to save a configstring.
      */
     saveConfig: function(configstring, onFailure) {
+        onFailure = onFailure || devilry.gradeeditors.FailureHandler.onFailure;
         var me = this;
         var configrecord = Ext.create(this.getConfigModelName(), {
             config: configstring,

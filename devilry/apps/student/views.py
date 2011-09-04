@@ -1,4 +1,4 @@
-from tempfile import TemporaryFile
+from tempfile import TemporaryFile, NamedTemporaryFile
 from django.views.generic import (TemplateView, View)
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpResponseForbidden
@@ -8,6 +8,7 @@ import zipfile
 import tarfile
 from os import stat
 from mimetypes import guess_type
+from time import mktime
 import json
 from ..core.models import (Delivery, FileMeta,
                            Deadline, AssignmentGroup,
@@ -19,7 +20,7 @@ import restful
 from restful import (RestfulSimplifiedDelivery, RestfulSimplifiedFileMeta,
                      RestfulSimplifiedDeadline,
                      RestfulSimplifiedStaticFeedback,
-                     RestfulSimplifiedAssignment)
+                     RestfulSimplifiedAssignment, RestfulSimplifiedAssignmentGroup)
 
 class MainView(TemplateView):
     template_name='student/main.django.html'
@@ -31,14 +32,21 @@ class MainView(TemplateView):
 
 
 class AddDeliveryView(View):
-    def get(self, request, deadlineid):
+    def get(self, request, assignmentgroupid):
+        assignmentgroup = get_object_or_404(AssignmentGroup, id=assignmentgroupid)
+        deadline = assignmentgroup.get_active_deadline()
+        deadline_timestamp_milliseconds = mktime(deadline.deadline.timetuple()) + (deadline.deadline.microsecond/1000000)
+        deadline_timestamp_milliseconds *= 1000
         return render(request, 'student/add-delivery.django.html',
                       {'RestfulSimplifiedDelivery': RestfulSimplifiedDelivery,
                        'RestfulSimplifiedDeadline': RestfulSimplifiedDeadline,
                        'RestfulSimplifiedFileMeta': RestfulSimplifiedFileMeta,
                        'RestfulSimplifiedStaticFeedback': RestfulSimplifiedStaticFeedback,
-                       'deadlineid': deadlineid,
-                       'RestfulSimplifiedAssignment': RestfulSimplifiedAssignment}
+                       'assignmentgroupid': assignmentgroupid,
+                       'deadlineid': deadline.id,
+                       'deadline_timestamp_milliseconds': deadline_timestamp_milliseconds,
+                       'RestfulSimplifiedAssignment': RestfulSimplifiedAssignment,
+                       'RestfulSimplifiedAssignmentGroup': RestfulSimplifiedAssignmentGroup}
                       )
 
 class ShowDeliveryView(View):
@@ -52,9 +60,10 @@ class ShowDeliveryView(View):
                       )
 
 class FileUploadView(View):
-    def post(self, request, deadlineid):
+    def post(self, request, assignmentgroupid):
+        assignment_group_obj = get_object_or_404(AssignmentGroup, id=assignmentgroupid)
+        deadlineid = assignment_group_obj.get_active_deadline().id
         deadline_obj = get_object_or_404(Deadline, id=deadlineid)
-        assignment_group_obj = get_object_or_404(AssignmentGroup, id=deadline_obj.assignment_group.id)
         logged_in_user = request.user
         deliveryid = request.POST['deliveryid']
 
@@ -101,7 +110,6 @@ class FileDownloadView(View):
 
     def get(self, request, filemetaid):    
         filemeta = get_object_or_404(FileMeta, id=filemetaid)
-        #print filemeta
         assignment_group = filemeta.delivery.deadline.assignment_group
         if not (assignment_group.is_candidate(request.user) \
                     or assignment_group.is_examiner(request.user) \
@@ -125,7 +133,7 @@ class CompressedFileDownloadView(View):
         delivery = get_object_or_404(Delivery, id=deliveryid)
         zip_file_name = str(delivery.delivered_by) + ".zip"
 
-        tempfile = TemporaryFile()
+        tempfile = NamedTemporaryFile()
         zip_file = zipfile.ZipFile(tempfile, 'w');
 
         for filemeta in delivery.filemetas.all():

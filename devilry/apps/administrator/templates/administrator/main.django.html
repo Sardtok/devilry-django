@@ -18,20 +18,51 @@
     Ext.require('devilry.extjshelpers.forms.administrator.Subject');
     Ext.require('devilry.extjshelpers.forms.administrator.Period');
     Ext.require('devilry.extjshelpers.forms.administrator.Assignment');
+    Ext.require('devilry.extjshelpers.PermissionChecker');
 
 
-    {{ restfulapi.RestfulSimplifiedNode|extjs_model }},
-    {{ restfulapi.RestfulSimplifiedSubject|extjs_model }},
-    {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }},
-    {{ restfulapi.RestfulSimplifiedAssignment|extjs_model:"pointfields" }},
+    {{ restfulapi.RestfulSimplifiedNode|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedSubject|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
+    {{ restfulapi.RestfulSimplifiedAssignment|extjs_model:"pointfields" }};
+
+    var nodestore = {{ restfulapi.RestfulSimplifiedNode|extjs_store }};
+    var subjectstore = {{ restfulapi.RestfulSimplifiedSubject|extjs_store }};
+    var periodstore = {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
+    nodestore.pageSize = 1;
+    subjectstore.pageSize = 1;
+    periodstore.pageSize = 1;
+
+    var is_superuser = {{ user.is_superuser|lower }};
 
     Ext.onReady(function() {
+        Ext.getBody().mask("Loading page", 'page-load-mask');
+
+
+        Ext.create('devilry.extjshelpers.PermissionChecker', {
+            stores: [nodestore, subjectstore, periodstore],
+            renderTo: 'no-permissions-message',
+            emptyHtml: '<section class="info-small extravisible-small"><h1>You are not an administrator</h1>' +
+                '<p>{{ DEVILRY_ADMINISTRATOR_NO_PERMISSION_MSG }}</p></section>',
+            listeners: {
+                allLoaded: function(loadedItems, loadedWithRecords) {
+                    Ext.getBody().unmask();
+                    if(is_superuser || loadedWithRecords > 0) {
+                        Ext.getDom('searchsection').style.display = 'block';
+                        createActiveAssignmentsView();
+                    }
+                }
+            }
+        });
+
         Ext.create('devilry.extjshelpers.ButtonBar', {
             renderTo: 'createbuttonbar',
             cls: 'dashboard-buttonbar',
             items: [{
                 xtype: 'buttonbarbutton',
+                is_superuser: is_superuser,
                 text: 'Node',
+                store: nodestore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
                     title: '<span class="tooltip-title-current-item">Node</span> &rArr; Subject &rArr; Period &rArr; Assignment',
@@ -51,6 +82,7 @@
             }, {
                 xtype: 'buttonbarbutton',
                 text: 'Subject',
+                store: nodestore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
                     title: 'Node &rArr; <span class="tooltip-title-current-item">Subject</span> &rArr; Period &rArr; Assignment',
@@ -69,7 +101,8 @@
                 }
             }, {
                 xtype: 'buttonbarbutton',
-                text: 'Period',
+                text: 'Period/Semester',
+                store: subjectstore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
                     title: 'Node &rArr; Subject &rArr; <span class="tooltip-title-current-item">Period</span> &rArr; Assignment',
@@ -89,6 +122,7 @@
             }, {
                 xtype: 'buttonbarbutton',
                 text: 'Assignment',
+                store: periodstore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
                     title: 'Node &rArr; Subject &rArr; Period &rArr; <span class="tooltip-title-current-item">Assignment</span>',
@@ -107,20 +141,31 @@
                 }
             }]
         });
-        Ext.QuickTips.init();
+
+        nodestore.load();
+        subjectstore.load();
+        periodstore.load();
     });
+
+    var dashboard_assignment_model = {{ restfulapi.RestfulSimplifiedAssignment|extjs_model:"subject,period" }}
+
+    function createActiveAssignmentsView() {
+        var activeAssignmentsView = Ext.create('devilry.examiner.ActiveAssignmentsView', {
+            renderTo: 'activeassignments',
+            model: dashboard_assignment_model
+        });
+    }
 </script>
 
 {% endblock %}
 
+{% block searchsectionstyle %}display: none;{% endblock %}
+
 
 {% block main %}
 {{ block.super }}
-<p class='searchwidget-help'>In the box above, you can search for anything
-related to anything that you have permission to view or edit as an
-<strong>administrator</strong>. Searching for a user will find any item related
-to that user, and searching for a subject will find anything related to that
-subject.</p>
 
+<div id="no-permissions-message"></div>
 <div id="createbuttonbar"></div>
+<section id="activeassignments"></section>
 {% endblock %}

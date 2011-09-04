@@ -83,7 +83,7 @@
                     <li class="administrator-navitem"><a href="{% url administrator %}">{% trans "Administrator" %}</a></li>
                     -->
                     <li class="trix-navitem"><a href="{% url trix %}">{% trans "Exercises" %}</a></li>
-		    <li class="student-navitem"><a href="{% url profile %}">{% trans "Profile" %}</a></li>
+		    <li class="student-navitem"><a href="{% url profile %}">{% trans "My Statistics" %}</a></li>
 		    {% if user.is_superuser %}
 		        <li class="administrator-navitem"><a href="{% url trixadmin %}">{% trans "Administrator" %}</a></li>
 		    {% endif %}

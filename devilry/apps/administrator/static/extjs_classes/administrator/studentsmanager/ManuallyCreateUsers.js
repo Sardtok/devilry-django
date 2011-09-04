@@ -23,7 +23,7 @@ Ext.define('devilry.administrator.studentsmanager.ManuallyCreateUsers', {
     helptext:
         '<section class="helpsection">' +
         //'   <h1>Help</h1>' +
-        '   <p>Students are organized in <em>assignment groups</em>. You should specify <strong>one</strong> <em>assignment group</em> on each line in the input box on the right hand side.</p>' +
+        '   <p>Students are organized in <em>assignment groups</em>. You should specify <strong>one</strong> <em>assignment group</em> on each line in the input box.</p>' +
         '   <h2>Common usage examples</h2>' +
         '   <h3>Individual deliveries</h3>' +
         '   <p>Very often, an assignment requires <strong>individual</strong> deliveries and feedback. In this case, each <em>assignment group</em> should contain a single student. In this case, the input box should contain something similar to this:</p>' +
@@ -115,19 +115,6 @@ Ext.define('devilry.administrator.studentsmanager.ManuallyCreateUsers', {
         this.callParent(arguments);
     },
 
-
-    /**
-     * @private
-     */
-    parseCandidateSpec: function(candidateSpec) {
-        var asArray = candidateSpec.split(/\s*:\s*/);
-        var candidate_id = asArray.length > 1? asArray[1]: null;
-        return {
-            username: asArray[0],
-            candidate_id: candidate_id
-        };
-    },
-
     /**
      * @private
      */
@@ -150,7 +137,7 @@ Ext.define('devilry.administrator.studentsmanager.ManuallyCreateUsers', {
         }
         var asArray = groupSpec.split(/\s*,\s*/);
         Ext.Array.each(asArray, function(candidateSpec) {
-            groupSpecObj.fake_candidates.push(this.parseCandidateSpec(candidateSpec));
+            groupSpecObj.fake_candidates.push(devilry.administrator.studentsmanager.StudentsManagerManageGroups.parseCandidateSpec(candidateSpec));
         }, this);
         return groupSpecObj;
     },
