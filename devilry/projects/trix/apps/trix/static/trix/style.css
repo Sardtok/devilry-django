@@ -36,7 +36,9 @@ a { font-size: 100% !important; }
 .levelinfo { clear: left; }
 
 .grid { width: 450px; float: left; clear: none;}
-.graph { float: right; width: 800px; clear: none; margin-bottom: 2em;}
+.emptydiv1 { width: 10%; }
+.graph { float: right; width: 800px; clear: none; margin-right: 2em; margin-bottom: 2em;}
+.emptydiv2 { width: 10 %;  }
 
 #perioddropdown label { font-size: 11pt; }
 
