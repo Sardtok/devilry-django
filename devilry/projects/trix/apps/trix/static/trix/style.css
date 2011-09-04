@@ -42,8 +42,11 @@ a { font-size: 100% !important; }
 header > nav.trix {
     border-bottom: 10px solid #0077B3;
 }
-
 header > nav li.trix-navitem a {
+      background-color: #222;
+      color: #fff; }
+
+header > nav.trix li.trix-navitem a {
     background-color: #0077B3;
     color: #F7FFE5;
 }
