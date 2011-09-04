@@ -2,6 +2,7 @@
 #topwrapper { font-size: 11pt; padding: 1em; background-color: #F8F8F8; }
 h3    { font-weight: bold; }
 i     { font-style: italic; }
+li { padding: 0.5em 0; }
 strong, b     { font-weight: bold; }
 table { margin: 1em 0; }
 caption { font-size: 110%; font-weight: bold; }

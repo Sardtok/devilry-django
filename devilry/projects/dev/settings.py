@@ -13,14 +13,7 @@ DATABASES = {"default": {
                         }
             }
 
-<<<<<<< HEAD
-INSTALLED_APPS += [
-                   'devilry.projects.dev.apps.tutorialstats',
-
-                   'devilry.apps.asminimalaspossible_gradeeditor',
-=======
 INSTALLED_APPS += ['devilry.apps.asminimalaspossible_gradeeditor',
->>>>>>> fb2f338a383769ed604413bb54127e5105faac99
                    'devilry.apps.approved_gradeeditor',
                    'devilry.apps.manual_gradeeditor',
                    'devilry.apps.autograde_gradeeditor',
