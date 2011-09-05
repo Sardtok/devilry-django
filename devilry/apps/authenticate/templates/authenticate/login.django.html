@@ -20,7 +20,7 @@
 	</table>
 	<p>
 		<input type='submit' name='login' value='{% trans "Log in" %}'/>
-	        <a href='{% url register %}'> <button>{% trans "New User" %}</button></a>
+	        <input type="submit" name="registerlink" formaction="{% url register %}" value="{% trans "New User" %}" />
 	</p>
 
 </form>

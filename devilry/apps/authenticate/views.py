@@ -61,6 +61,9 @@ def register(request):
             next = form.cleaned_data.get('next') or \
                    settings.DEVILRY_URLPATH_PREFIX or '/'
             return http.HttpResponseRedirect(next)
+        elif request.POST.get('registerlink') is not None:
+            print "WAHOOO!"
+            form = RegisterForm(initial={'next': request.GET.get('next')})
     else:
         form = RegisterForm(initial={'next': request.GET.get('next')})
     return render(request,
