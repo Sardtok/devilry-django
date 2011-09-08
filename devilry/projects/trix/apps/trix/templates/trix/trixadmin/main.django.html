@@ -5,7 +5,7 @@
 {{ block.super }}
 
 <script>
-    Ext.require('devilry.extjshelpers.RestfulSimplifiedEditWindowBase');
+    Ext.require('trix.DefaultEditWindow');
     Ext.require('devilry.extjshelpers.RestfulSimplifiedEditPanel');
     Ext.require('devilry.extjshelpers.ButtonBarButton');
     Ext.require('devilry.extjshelpers.ButtonBar');
@@ -38,7 +38,7 @@
                     body: "{% trans "A topic for exercise's topics and prerequisites." %}"
                 },
                 handler: function() {
-                    Ext.create('devilry.extjshelpers.RestfulSimplifiedEditWindowBase', {
+                    Ext.create('trix.DefaultEditWindow', {
                         title: '{% trans "Create new topic" %}',
                         editpanel: Ext.ComponentManager.create({
                             xtype: 'restfulsimplified_editpanel',
@@ -58,7 +58,7 @@
                     body: '{% trans "An exercise that goes in the exercise database." %}'
                 },
                 handler: function() {
-                    Ext.create('devilry.extjshelpers.RestfulSimplifiedEditWindowBase', {
+                    Ext.create('trix.DefaultEditWindow', {
                         title: '{% trans "Create new exercise" %}',
                         editpanel: Ext.ComponentManager.create({
                             xtype: 'restfulsimplified_editpanel',
@@ -78,7 +78,7 @@
                     body: '{% trans "Link an exercise and a period." %}'
                 },
                 handler: function() {
-                    Ext.create('devilry.extjshelpers.RestfulSimplifiedEditWindowBase', {
+                    Ext.create('trix.DefaultEditWindow', {
                         title: '{% trans "Add exercise to period" %}',
                         editpanel: Ext.ComponentManager.create({
                             xtype: 'restfulsimplified_editpanel',

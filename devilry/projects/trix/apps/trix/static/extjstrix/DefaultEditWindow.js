@@ -1,9 +1,7 @@
 /** Default config for the Create New window, which is opened to create an item
  * in the admin interface. */
-Ext.require('Ext.window.MessageBox');
-
-Ext.define('trix.DefaultCreateWindow', {
-    extend: 'devilry.administrator.DefaultEditWindow',
+Ext.define('trix.DefaultEditWindow', {
+    extend: 'devilry.extjshelpers.RestfulSimplifiedEditWindowBase',
     title: gettext('Create new'),
 
     config: {
@@ -17,6 +15,5 @@ Ext.define('trix.DefaultCreateWindow', {
 
     onSaveSuccess: function(record) {
         this.close();
-        Ext.MessageBox.alert(gettext('Success'), gettext('Data saved successfully!'));
     }
 });
