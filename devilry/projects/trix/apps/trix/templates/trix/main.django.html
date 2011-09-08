@@ -65,12 +65,14 @@
 
 {% block top %}
 {% if user.is_authenticated %}
+<!--
 <div class="levelinfo">
   {% include "trix/xpbar.django.html" %}
   <div>{% trans "Total points" %}:
     <span id="total_points">{{ level.total_points }}</span>
   </div>
 </div>
+-->
 {% endif %}
 
 {% if topics %}
