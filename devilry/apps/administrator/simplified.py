@@ -2,9 +2,10 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db.models import Count, Max
 
-from ...simplified import (SimplifiedModelApi, simplified_modelapi,
-                           PermissionDenied, FieldSpec,
-                           FilterSpecs, FilterSpec, PatternFilterSpec)
+from devilry.simplified import (SimplifiedModelApi, simplified_modelapi,
+                                PermissionDenied, FieldSpec,
+                                FilterSpecs, FilterSpec, PatternFilterSpec,
+                                stringOrNoneConverter)
 from ..core import models
 from devilry.coreutils.simplified.metabases import (SimplifiedSubjectMetaMixin,
                                                    SimplifiedPeriodMetaMixin,
@@ -244,7 +245,9 @@ class SimplifiedAssignmentGroup(CanSaveBase):
         methods = ['create', 'read', 'update', 'delete', 'search']
         resultfields = FieldSpec(users=['candidates__student__username']) + \
                 SimplifiedAssignmentGroupMetaMixin.resultfields
-        filters = FilterSpecs(FilterSpec('candidates__student__username')) + SimplifiedAssignmentGroupMetaMixin.filters
+        filters = SimplifiedAssignmentGroupMetaMixin.filters + \
+                FilterSpecs(FilterSpec('candidates__student__username', type_converter=stringOrNoneConverter),
+                            FilterSpec('examiners__username', type_converter=stringOrNoneConverter))
 
 
     @classmethod
@@ -308,6 +311,13 @@ class SimplifiedAssignmentGroup(CanSaveBase):
         cls._parse_examiners_as_list_of_usernames(obj)
         cls._parse_candidates_as_list_of_dicts(obj)
 
+    @classmethod
+    def is_empty(cls, obj):
+        """
+        Return ``True`` if the given assignmentgroup contains no deliveries.
+        """
+        return models.Delivery.objects.filter(deadline__assignment_group=obj).count() == 0
+
 
 @simplified_modelapi
 class SimplifiedDelivery(SimplifiedModelApi):
@@ -332,7 +342,8 @@ class SimplifiedDelivery(SimplifiedModelApi):
     def pre_full_clean(cls, user, obj):
         obj.time_of_delivery = datetime.now()
         obj.delivered_by = None # None marks this as delivered by an administrator
-        obj._set_number()
+        if obj.id == None:
+            obj.number = 0
 
     @classmethod
     def write_authorize(cls, user, obj):

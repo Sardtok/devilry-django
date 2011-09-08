@@ -5,18 +5,44 @@
 Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers', {
 
     randomDistResultTpl: Ext.create('Ext.XTemplate',
-        '<p>The selected examiners got the following number of groups:</p>',
-        '<ul>',
-        '<tpl for="result">',
-        '   <li><strong>{examiner}</strong>: {groups.length}</li>',
+        '<section class="info">',
+        '    <p>The selected examiners got the following number of groups:</p>',
+        '    <ul>',
+        '    <tpl for="result">',
+        '       <li><strong>{examiner}</strong>: {groups.length}</li>',
+        '    </tpl>',
+        '    </ul>',
+        '</section>'
+    ),
+
+    successSetExaminerTpl: Ext.create('Ext.XTemplate',
+        'Examiners set successfully to: <tpl for="examiners">',
+        '   {.}<tpl if="xindex &lt; xcount">, </tpl>',
+        '</tpl>'
+    ),
+
+    errorSetExaminerTpl: Ext.create('Ext.XTemplate',
+        'Failed to set examiners: <tpl for="examiners">',
+        '   {.}<tpl if="xindex &lt; xcount">, </tpl>',
+        '</tpl>. Error details:',
+        '<tpl if="status === 403">',
+        '   {status} {statusText}. This is ususall caused by an <strong>invalid username</strong>.',
         '</tpl>',
-        '</ul>'
+        '<tpl if="status !== 403">',
+        '   <tpl if="status === 0">',
+        '       Could not contact the Devilry server.',
+        '   </tpl>',
+        '   <tpl if="status !== 0">',
+        '       {status} {statusText}.',
+        '   </tpl>',
+        '</tpl>'
     ),
     
     /**
      * @private
      */
     onRandomDistributeExaminers: function() {
+        //this.down('studentsmanager_studentsgrid').selModel.selectAll();
         if(this.noneSelected()) {
             this.onSelectNone();
             return;
@@ -59,6 +85,8 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
      */
     randomDistributeExaminersOnSelected: function(setlistofusersobj, examiners) {
         setlistofusersobj.up('window').close();
+        this.progressWindow.start('Change examiners');
+        this._finishedSavingGroupCount = 0;
 
         this._randomDistributeTmp = {
             remainingExaminers: Ext.Array.clone(examiners),
@@ -100,8 +128,7 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
     /**
      * @private
      */
-    showRandomDistributeResults: function() {
-        //console.log(this._randomDistributeTmp.result);
+    getRandomDistributeResults: function() {
         var resultArray = [];
         Ext.each(this._randomDistributeTmp.allExaminers, function(examiner, index) {
             resultArray.push({
@@ -109,13 +136,7 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
                 groups: this._randomDistributeTmp.result[examiner]
             });
         }, this);
-
-        Ext.MessageBox.show({
-            title: 'Random distribution of examiners complete',
-            msg: this.randomDistResultTpl.apply({result: resultArray}),
-            buttons: Ext.Msg.OK,
-            scope: this
-        });
+        return this.randomDistResultTpl.apply({result: resultArray});
     },
 
 
@@ -133,16 +154,17 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
 
         editRecord.data.fake_examiners = [examiner];
         editRecord.save({
-            failure: function() {
-                console.error('Failed to save record');
+            scope: this,
+            callback: function(r, operation) {
+                this.setExaminerRecordCallback(record, operation, [examiner], totalSelectedGroups);
+                if(this._finishedSavingGroupCount == totalSelectedGroups) {
+                    this.progressWindow.finish({
+                        title: 'Result of random distribution of examiners',
+                        html: this.getRandomDistributeResults()
+                    });
+                }
             }
         });
-
-        if(index == totalSelectedGroups) {
-            this.loadFirstPage();
-            this.getEl().unmask();
-            this.showRandomDistributeResults();
-        }
     },
 
 
@@ -150,12 +172,16 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
      * @private
      */
     onSetExaminers: function(append) {
+        //this.down('studentsmanager_studentsgrid').selModel.selectAll();
         if(this.noneSelected()) {
             this.onSelectNone();
             return;
         }
+        var helptext = '<p>The username of a single examiner on each line.' +
+            (append? '': '<strong> Current examiners will be replaced</strong>.') +
+            '</p><p>Example:</p>';
         var win = Ext.widget('window', {
-            title: 'Select examiners',
+            title: (append? 'Add examiners': 'Replace examiners') + ' - select examiners',
             modal: true,
             width: 500,
             height: 400,
@@ -165,7 +191,7 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
                 xtype: 'setlistofusers',
                 //usernames: ['donald', 'scrooge'],
                 usernames: [],
-                helptext: '<p>The username of a single examiner on each line. Example:</p>',
+                helptext: helptext,
                 listeners: {
                     scope: this,
                     saveClicked: function(setlistofusersobj, usernames) {
@@ -206,7 +232,6 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
      * @private
      */
     onAddExaminers: function() {
-        //this.down('studentsmanager_studentsgrid').selModel.selectAll();
         this.onSetExaminers(true);
     },
 
@@ -226,6 +251,8 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
             return;
         }
 
+        this.progressWindow.start('Clear examiners');
+        this._finishedSavingGroupCount = 0;
         Ext.MessageBox.show({
             title: 'Confirm clear examiners?',
             msg: 'Are you sure you want to clear examiners on all the selected groups?',
@@ -250,6 +277,8 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
      */
     setExaminersOnSelected: function(setlistofusersobj, usernames, append) {
         setlistofusersobj.up('window').close();
+        this.progressWindow.start('Change examiners');
+        this._finishedSavingGroupCount = 0;
         this.down('studentsmanager_studentsgrid').performActionOnSelected({
             scope: this,
             callback: this.setExaminers,
@@ -272,14 +301,114 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageExaminers
         var editRecord = this.createRecordFromStoreRecord(record);
         editRecord.data.fake_examiners = usernames;
         editRecord.save({
-            failure: function() {
-                console.error('Failed to save record');
+            scope: this,
+            callback: function(r, operation) {
+                this.setExaminerRecordCallback(record, operation, usernames, totalSelectedGroups);
+                if(this._finishedSavingGroupCount == totalSelectedGroups) {
+                    this.progressWindow.finish();
+                }
             }
         });
+    },
 
-        if(index == totalSelectedGroups) {
+    /**
+     * @private
+     */
+    setExaminerRecordCallback: function(record, operation, usernames, totalSelectedGroups) {
+        if(operation.success) {
+            var msg = this.successSetExaminerTpl.apply({
+                examiners: usernames
+            });
+            this.progressWindow.addSuccess(record, msg);
+        } else {
+            var msg = this.errorSetExaminerTpl.apply({
+                examiners: usernames,
+                status: operation.error.status,
+                statusText: operation.error.statusText
+            });
+            this.progressWindow.addError(record, msg);
+        }
+
+        this._finishedSavingGroupCount ++;
+        if(this._finishedSavingGroupCount == totalSelectedGroups) {
             this.loadFirstPage();
             this.getEl().unmask();
         }
+    },
+
+
+    onImportExaminersFromAnotherAssignmentInCurrentPeriod: function() {
+        //this.down('studentsmanager_studentsgrid').selModel.selectAll();
+        if(this.noneSelected()) {
+            this.onSelectNone();
+            return;
+        }
+        Ext.widget('window', {
+            title: 'Import examiners from another assignment in the current Period',
+            layout: 'fit',
+            width: 830,
+            height: 600,
+            modal: true,
+            items: {
+                xtype: 'importgroupsfromanotherassignment',
+                periodid: this.periodid,
+                help: '<section class="helpsection">Select the assignment you wish to import examiners from. When you click next, every selected assignemnt group in the current assignment with <strong>exactly</strong> the same members as in the selected assignment, will have their examiners copied into the current assignment.</section>',
+                listeners: {
+                    scope: this,
+                    next: this.importExaminersFromAnotherAssignmentInCurrentPeriod
+                }
+            }
+        }).show();
+    },
+
+    /**
+     * @private
+     */
+    importExaminersFromAnotherAssignmentInCurrentPeriod: function(importPanel, otherGroupRecords) {
+        importPanel.up('window').close();
+        this.progressWindow.start('Copy examiners from another assignment');
+        this.down('studentsmanager_studentsgrid').gatherSelectedRecordsInArray({
+            scope: this,
+            callback: function(currentGroupRecords) {
+                var matchingRecordPairs = this.findGroupsWithSameStudents(currentGroupRecords, otherGroupRecords);
+                this.copyExaminersFromOtherGroups(matchingRecordPairs);
+            }
+        });
+    },
+
+    findGroupsWithSameStudents: function(currentGroupRecords, otherGroupRecords) {
+        var matchingRecordPairs = [];
+        Ext.each(currentGroupRecords, function(currentRecord, index) {
+            var currentUsernames = currentRecord.data.candidates__student__username;
+            var matchFound = false;
+            this.getEl().mask(Ext.String.format('Finding groups with the same students {0}/{1}...', index, currentGroupRecords.length));
+            Ext.each(otherGroupRecords, function(otherRecord, index) {
+                var otherUsernames = otherRecord.data.candidates__student__username;
+                if(currentUsernames.length === otherUsernames.length) {
+                    var difference = Ext.Array.difference(currentUsernames, otherUsernames);
+                    if(difference.length === 0) {
+                        //console.log(otherUsernames, '===', currentUsernames);
+                        matchingRecordPairs.push({
+                            current: currentRecord,
+                            other: otherRecord
+                        });
+                        matchFound = true;
+                        return false; // break
+                    }
+                }
+            }, this);
+            if(!matchFound) {
+                this.progressWindow.addWarning(currentRecord, 'Group not found in the other assignment.');
+            }
+        }, this);
+        return matchingRecordPairs;
+    },
+
+
+    copyExaminersFromOtherGroups: function(matchingRecordPairs) {
+        this._finishedSavingGroupCount = 0;
+        Ext.each(matchingRecordPairs, function(recordPair, index) {
+            this.setExaminers(recordPair.current, index, matchingRecordPairs.length, recordPair.other.data.examiners__username, false);
+        }, this);
     }
 });

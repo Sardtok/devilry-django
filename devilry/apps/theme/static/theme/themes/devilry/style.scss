@@ -878,6 +878,11 @@ section {
     }
 }
 
+section.gradeeditorselector {
+    padding: 8px !important;
+    @include commonSectionElements();
+}
+
 
 section.treeheading {
     margin-bottom: 30px;

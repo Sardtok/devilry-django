@@ -82,14 +82,10 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageGroups', 
         var candidates = this.statics().getCandidateInfoFromGroupRecord(record);
 
         var candidatestrings = [];
+        var statics = this.statics();
         Ext.each(candidates, function(candidate, index) {
-            if(candidate.candidate_id == undefined || candidate.candidate_id == "candidate-id missing") {
-                candidatestrings.push(candidate.username);
-            } else {
-                candidatestrings.push(Ext.String.format('{0}:{1}', candidate.username, candidate.candidate_id));
-            }
+            candidatestrings.push(statics.formatCandidateInfoAsString(candidate));
         });
-
 
         var win = Ext.widget('window', {
             title: 'Select members',
@@ -150,6 +146,108 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageGroups', 
         });
     },
 
+    onDeleteGroups: function() {
+        //this.down('studentsmanager_studentsgrid').selModel.selectAll();
+        if(this.noneSelected()) {
+            this.onSelectNone();
+            return;
+        }
+        Ext.MessageBox.show({
+            title: 'Are you sure that you want to delete the selected groups',
+            msg: '<p>Are you sure you want to delete the selected groups?</p><p>If you are a <strong>superadmin</strong>, this will delete the group and all their related data on this assignment, including deliveries and feedback.</p><p>If you are a normal administrator, you will only be permitted to delete groups without any deliveries.</p>',
+            buttons: Ext.Msg.YESNO,
+            icon: Ext.Msg.WARNING,
+            scope: this,
+            fn: function(btn) {
+                if(btn == 'yes') {
+                    this.down('studentsmanager_studentsgrid').gatherSelectedRecordsInArray({
+                        scope: this,
+                        callback: this.deleteGroups
+                    });
+                }
+            }
+        });
+
+    },
+
+    /**
+     * @private
+     */
+    deleteGroups: function(groupRecords) {
+        this.progressWindow.start('Delete groups');
+        this._finishedSavingGroupCount = 0;
+        Ext.each(groupRecords, function(groupRecord, index) {
+            this.deleteGroup(groupRecord, index, groupRecords.length);
+        }, this);
+    },
+
+    /**
+     * @private
+     */
+    deleteGroup: function(record, index, totalSelectedGroups) {
+        var msg = Ext.String.format('Deleting group {0}/{1}',
+            index, totalSelectedGroups
+        );
+        this.getEl().mask(msg);
+
+        var editRecord = this.createRecordFromStoreRecord(record);
+        editRecord.destroy({
+            scope: this,
+            callback: function(r, operation) {
+                if(operation.success) {
+                    this.progressWindow.addSuccess(record, 'Group successfully deleted.');
+                } else {
+                    this.progressWindow.addErrorFromOperation(record, 'Failed to delete group.', operation);
+                }
+
+                this._finishedSavingGroupCount ++;
+                if(this._finishedSavingGroupCount == totalSelectedGroups) {
+                    this.loadFirstPage();
+                    this.getEl().unmask();
+                    this.progressWindow.finish();
+                }
+            }
+        });
+    },
+
+    
+    onImportGroupsFromAnotherAssignmentInCurrentPeriod: function() {
+        Ext.widget('window', {
+            title: 'Import from another assignment in the current Period',
+            layout: 'fit',
+            width: 830,
+            height: 600,
+            modal: true,
+            items: {
+                xtype: 'importgroupsfromanotherassignment',
+                periodid: this.periodid,
+                help: '<section class="helpsection">Select the assignment you wish to import assignment groups from, and click <em>Next</em> to further edit the selected groups.</section>',
+                listeners: {
+                    scope: this,
+                    next: this.importGroupsFromAnotherAssignmentInCurrentPeriod
+                }
+            }
+        }).show();
+    },
+
+    importGroupsFromAnotherAssignmentInCurrentPeriod: function(importPanel, assignmentGroupRecords) {
+        importPanel.up('window').close();
+        var statics = this.statics();
+        var groups = [];
+        Ext.each(assignmentGroupRecords, function(record, index) {
+            var candidates = statics.getCandidateInfoFromGroupRecord(record);
+            var groupString = '';
+            Ext.each(candidates, function(candidate, index) {
+                var candidateString = statics.formatCandidateInfoAsString(candidate);
+                if(index != candidates.length-1)
+                    candidateString += ', ';
+                groupString += candidateString;
+            });
+            groups.push(groupString);
+        });
+        this.showManuallyCreateUsersWindow(groups);
+    },
+
     statics: {
         getCandidateInfoFromGroupRecord: function(record) {
             var candidates = [];
@@ -161,6 +259,14 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManagerManageGroups', 
                 candidates.push(candidate);
             });
             return candidates;
+        },
+
+        formatCandidateInfoAsString: function(candidate) {
+            if(candidate.candidate_id == undefined || candidate.candidate_id == "candidate-id missing") {
+                return candidate.username;
+            } else {
+                return Ext.String.format('{0}:{1}', candidate.username, candidate.candidate_id);
+            }
         },
 
         parseCandidateSpec: function(candidateSpec) {

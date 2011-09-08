@@ -1,6 +1,9 @@
 Ext.define('devilry.administrator.studentsmanager.StudentsManager', {
     extend: 'devilry.extjshelpers.studentsmanager.StudentsManager',
     alias: 'widget.administrator_studentsmanager',
+    requires: [
+        'devilry.extjshelpers.studentsmanager.ImportGroupsFromAnotherAssignment'
+    ],
 
     mixins: {
         manageExaminers: 'devilry.administrator.studentsmanager.StudentsManagerManageExaminers',
@@ -30,6 +33,12 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManager', {
                     click: this.onOneGroupForEachRelatedStudent
                 }
             }, {
+                text: 'Import from another assignment',
+                listeners: {
+                    scope: this,
+                    click: this.onImportGroupsFromAnotherAssignmentInCurrentPeriod
+                }
+            }, {
                 text: 'Manually',
                 listeners: {
                     scope: this,
@@ -43,8 +52,60 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManager', {
 
     getToolbarItems: function() {
         var defaults = this.callParent();
-        Ext.Array.insert(defaults, 2, [this.addStudentsButton]);
+        Ext.Array.insert(defaults, 2, [this.addStudentsButton, {
+            xtype: 'button',
+            text: 'Set examiners',
+            scale: 'large',
+            menu: [{
+                text: 'Replace',
+                iconCls: 'icon-edit-16',
+                listeners: {
+                    scope: this,
+                    click: this.onReplaceExaminers
+                }
+            }, {
+                text: 'Add',
+                iconCls: 'icon-add-16',
+                listeners: {
+                    scope: this,
+                    click: this.onAddExaminers
+                }
+            }, {
+                text: 'Random distribute',
+                listeners: {
+                    scope: this,
+                    click: this.onRandomDistributeExaminers
+                }
+            }, {
+                text: 'Copy from another assignment',
+                listeners: {
+                    scope: this,
+                    click: this.onImportExaminersFromAnotherAssignmentInCurrentPeriod
+                }
+            }, {
+                text: 'Clear',
+                iconCls: 'icon-delete-16',
+                listeners: {
+                    scope: this,
+                    click: this.onClearExaminers
+                }
+            }]
+        }]);
         return defaults;
+    },
+
+    getFilters: function() {
+        var defaultFilters = this.callParent();
+        var me = this;
+        var adminFilters = ['-', {
+            text: 'Has no students',
+            handler: function() { me.setFilter('candidates__student__username:none'); }
+        }, {
+            text: 'Has no examiners',
+            handler: function() { me.setFilter('examiners__username:none'); }
+        }];
+        Ext.Array.insert(adminFilters, 0, defaultFilters);
+        return adminFilters;
     },
 
     getOnSingleMenuItems: function() {
@@ -85,42 +146,11 @@ Ext.define('devilry.administrator.studentsmanager.StudentsManager', {
             }
         });
         menu.push({
-            text: 'Change examiners',
-            menu: [{
-                text: 'Replace',
-                iconCls: 'icon-edit-16',
-                listeners: {
-                    scope: this,
-                    click: this.onReplaceExaminers
-                }
-            }, {
-                text: 'Add',
-                iconCls: 'icon-add-16',
-                listeners: {
-                    scope: this,
-                    click: this.onAddExaminers
-                }
-            }, {
-                text: 'Random distribute',
-                listeners: {
-                    scope: this,
-                    click: this.onRandomDistributeExaminers
-                }
-            }, {
-                text: 'Clear',
-                iconCls: 'icon-delete-16',
-                listeners: {
-                    scope: this,
-                    click: this.onClearExaminers
-                }
-            }]
-        });
-        menu.push({
             text: 'Delete',
             iconCls: 'icon-delete-16',
             listeners: {
                 scope: this,
-                click: function() { Ext.MessageBox.alert('Not available yet', 'Coming soon') }
+                click: this.onDeleteGroups
             }
         });
         return menu;

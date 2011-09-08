@@ -101,12 +101,14 @@ class JsonRegistryItem(RegistryItem):
             raise DraftValidationError('Could not decode config string as JSON.')
 
     @classmethod
-    def validate_gradeeditor_key(cls, draftdct, expectededitor):
+    def validate_gradeeditor_key(cls, draftdct, expectedid):
         if not 'gradeeditor' in draftdct:
             raise DraftValidationError('The draftdct must contain the "gradeeditor" key.')
         gradeeditor = draftdct['gradeeditor']
         if not 'id' in gradeeditor or not 'version' in gradeeditor:
             raise DraftValidationError('The gradeeditor key must contain an object with id and version as keys.')
+        if gradeeditor['id'] != expectedid:
+            raise DraftValidationError('The gradeeditor id must be "{0}"'.format(expectedid))
         return gradeeditor
 
     @classmethod
@@ -124,7 +126,7 @@ class JsonRegistryItem(RegistryItem):
             if not key in valuedict:
                 raise exceptioncls('{0} is required.'.format(key))
             if not isinstance(valuedict[key], typecls):
-                raise exceptioncls('{0} must be of type: {1}.'.format(key, typecls))
+                raise exceptioncls('{0} must be of type: {1}.'.format(key, str(typecls)[7:-2]))
 
 
 

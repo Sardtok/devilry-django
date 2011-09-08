@@ -11,8 +11,8 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManagerCreateFeedback',
     loadGradeEditorConfigModel: function() {
         this.gradeeditor_config_model.load(this.assignmentid, {
             scope: this,
-            success: function(record) {
-                this.gradeeditor_config_recordcontainer.setRecord(record);
+            success: function(configRecord) {
+                this.gradeeditor_config_recordcontainer.setRecord(configRecord);
                 this.loadRegistryItem();
             },
             failure: function() {
@@ -28,8 +28,8 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManagerCreateFeedback',
         var registryitem_model = Ext.ModelManager.getModel('devilry.gradeeditors.RestfulRegistryItem');
         registryitem_model.load(this.gradeeditor_config_recordcontainer.record.data.gradeeditorid, {
             scope: this,
-            success: function(record) {
-                this.registryitem_recordcontainer.setRecord(record);
+            success: function(registryItemRecord) {
+                this.registryitem_recordcontainer.setRecord(registryItemRecord);
             }
         });
     },
@@ -69,38 +69,80 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManagerCreateFeedback',
      */
     onPublishFeedback: function(feedbackdraftModelName, draftstring) {
         //this.down('studentsmanager_studentsgrid').selModel.selectAll();
-        this.down('studentsmanager_studentsgrid').performActionOnSelected({
+        this.progressWindow.start('Give feedback to many');
+        this._finishedSavingGroupCount = 0;
+        this.down('studentsmanager_studentsgrid').gatherSelectedRecordsInArray({
             scope: this,
-            callback: this.giveFeedbackToSelected,
-            extraArgs: [feedbackdraftModelName, draftstring]
+            callback: function(groupRecords) {
+                if(this.anyGroupHaveNoDeliveries(groupRecords)) {
+                    Ext.MessageBox.show({
+                        title: 'Selected groups with no deliveries',
+                        msg: 'One or more of the selected groups have no deliveries. You can only give feedback to groups with deliveries. Please review your selection and try again.',
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.ERROR
+                    });
+                } else {
+                    Ext.each(groupRecords, function(groupRecord, index) {
+                        this.giveFeedbackToSelected(groupRecord, index, groupRecords.length, feedbackdraftModelName, draftstring);
+                    }, this);
+                }
+            },
         });
     },
 
     /**
      * @private
      */
-    giveFeedbackToSelected: function(record, index, total, feedbackdraftModelName, draftstring) {
-        var msg = Ext.String.format('Setting feedback on group {0}/{1}', index, total);
+    anyGroupHaveNoDeliveries: function(groupRecords) {
+        for(i=0; i<groupRecords.length; i++) {
+            var groupRecord = groupRecords[i];
+            if(groupRecord.data.number_of_deliveries == 0) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    /**
+     * @private
+     */
+    giveFeedbackToSelected: function(assignmentGroupRecord, index, totalSelectedGroups, feedbackdraftModelName, draftstring) {
+        var msg = Ext.String.format('Setting feedback on group {0}/{1}', index, totalSelectedGroups);
         this.getEl().mask(msg);
 
-        if(record.data.latest_delivery_id != null) {
+        if(assignmentGroupRecord.data.latest_delivery_id == null)  {
+            this.progressWindow.addWarning(assignmentGroupRecord, 'Has no deliveries, and therefore we can not add any feedback.');
+            this._finishedSavingGroupCount ++;
+            this.checkIfFinishedGivingFeedback(totalSelectedGroups);
+        } else {
             var draftrecord = Ext.create(feedbackdraftModelName, {
                 draft: draftstring,
                 published: true,
-                delivery: record.data.latest_delivery_id
+                delivery: assignmentGroupRecord.data.latest_delivery_id
             });
             draftrecord.save({
                 scope: this,
-                failure: function() {
-                    console.error('Failed to save a draft');
-                    console.error(draftrecord);
+                callback: function(r, operation) {
+                    if(operation.success) {
+                        this.progressWindow.addSuccess(assignmentGroupRecord, 'Feedback successfully created.');
+                    } else {
+                        this.progressWindow.addErrorFromOperation(
+                            assignmentGroupRecord, 'Failed to create feedback', operation
+                        );
+                    }
+
+                    this._finishedSavingGroupCount ++;
+                    this.checkIfFinishedGivingFeedback(totalSelectedGroups);
                 }
             });
         }
+    },
 
-        if(index == total) {
+    checkIfFinishedGivingFeedback: function(totalSelectedGroups) {
+        if(this._finishedSavingGroupCount == totalSelectedGroups) {
             this.loadFirstPage();
             this.getEl().unmask();
+            this.progressWindow.finish();
         }
     }
 });
