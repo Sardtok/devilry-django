@@ -1,3 +1,4 @@
+# translation of django.po to Norsk bokmål
 # translation of django.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -7,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-04 16:37+0200\n"
-"PO-Revision-Date: 2011-09-04 16:38+0200\n"
-"Last-Translator: Larsen vestad Erlend\n"
-"Language-Team:  <i18n-nb@lister.ping.uio.no>\n"
+"POT-Creation-Date: 2011-12-16 10:41+0100\n"
+"PO-Revision-Date: 2011-12-16 10:43+0100\n"
+"Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
+"Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,7 +61,8 @@ msgstr "Statuser"
 msgid "Topic"
 msgstr "Tema"
 
-#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:79
+#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:81
+#: apps/trix/templates/trix/trixadmin/period.django.html:96
 msgid "Topics"
 msgstr "Temaer"
 
@@ -90,12 +92,12 @@ msgid "My Statistics"
 msgstr "Min statistikk"
 
 #: apps/trix/templates/trix/main.django.html:24
-#: apps/trix/templates/trix/main.django.html:124
+#: apps/trix/templates/trix/main.django.html:126
 msgid "Hide exercise"
 msgstr "Skjul oppgaven"
 
 #: apps/trix/templates/trix/main.django.html:27
-#: apps/trix/templates/trix/main.django.html:126
+#: apps/trix/templates/trix/main.django.html:128
 msgid "Show exercise"
 msgstr "Vis oppgaven"
 
@@ -104,47 +106,46 @@ msgid "Unsolved"
 msgstr "Ikke forsøkt"
 
 #: apps/trix/templates/trix/main.django.html:34
-#: apps/trix/templates/trix/main.django.html:142
+#: apps/trix/templates/trix/main.django.html:144
 msgid "Change status"
 msgstr "Endre status"
 
 #: apps/trix/templates/trix/main.django.html:35
-#: apps/trix/templates/trix/main.django.html:142
+#: apps/trix/templates/trix/main.django.html:144
 msgid "Reset status"
 msgstr "Nullstill status"
 
-#: apps/trix/templates/trix/main.django.html:72
-#: apps/trix/templates/trix/profile.django.html:28
+#: apps/trix/templates/trix/main.django.html:73
+#: apps/trix/templates/trix/profile.django.html:50
 msgid "Total points"
 msgstr "Totalt antall poeng"
 
-#: apps/trix/templates/trix/main.django.html:87
+#: apps/trix/templates/trix/main.django.html:89
+#: apps/trix/templates/trix/trixadmin/period.django.html:104
 msgid "Prerequisites"
 msgstr "Nødvendige forkunnskaper"
 
-#: apps/trix/templates/trix/main.django.html:134
+#: apps/trix/templates/trix/main.django.html:136
+#: apps/trix/templates/trix/trixadmin/period.django.html:127
 msgid "points"
 msgstr "poeng"
 
-#: apps/trix/templates/trix/main.django.html:153
+#: apps/trix/templates/trix/main.django.html:155
+#: apps/trix/templates/trix/trixadmin/main.django.html:103
 msgid "View period"
 msgstr "Vis periode"
 
-#: apps/trix/templates/trix/profile.django.html:38
+#: apps/trix/templates/trix/profile.django.html:60
 msgid "Name"
 msgstr "Navn"
 
-#: apps/trix/templates/trix/profile.django.html:39
+#: apps/trix/templates/trix/profile.django.html:61
 msgid "Username"
 msgstr "Brukernavn"
 
-#: apps/trix/templates/trix/profile.django.html:41
+#: apps/trix/templates/trix/profile.django.html:63
 msgid "last login"
 msgstr "Sist pålogget"
-
-#: apps/trix/templates/trix/profile.django.html:60
-msgid "New user"
-msgstr "Ny bruker"
 
 #: apps/trix/templates/trix/xpbar.django.html:5
 msgid "Level"
@@ -180,4 +181,20 @@ msgstr "Koble en oppgave med en periode."
 #: apps/trix/templates/trix/trixadmin/main.django.html:82
 msgid "Add exercise to period"
 msgstr "Legg oppgave til periode"
+
+#: apps/trix/templates/trix/trixadmin/period.django.html:52
+msgid "Error!"
+msgstr "Feil!"
+
+#: apps/trix/templates/trix/trixadmin/period.django.html:53
+msgid "Invalid exercise ID!"
+msgstr "Ugyldig oppgave-id!"
+
+#: apps/trix/templates/trix/trixadmin/period.django.html:121
+msgid "Edit"
+msgstr "Rediger"
+
+#: apps/trix/templates/trix/trixadmin/period.django.html:124
+msgid "Delete"
+msgstr "Delete"
 
