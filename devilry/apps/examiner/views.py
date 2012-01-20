@@ -12,10 +12,11 @@ import tarfile
 import os, glob
 import shutil
 import restful
+from devilry.defaults.encoding import ZIPFILE_FILENAME_CHARSET
 
 
 class MainView(TemplateView):
-    template_name='examiner/main.django.html'
+    template_name='examiner/main.django.js'
 
     def get_context_data(self):
         context = super(MainView, self).get_context_data()
@@ -73,13 +74,13 @@ class CompressedFileDownloadView(View):
                 for delivery in deadline.deliveries.all():
                     for filemeta in delivery.filemetas.all():
                         file_content = filemeta.deliverystore.read_open(filemeta)
-                        filenametpl = '{zip_rootdir_name}/group-{groupid}_{candidates}/deadline-{deadline}/delivery-{delivery_number}/{filename}'
+                        filenametpl = '{zip_rootdir_name}/{candidates}_group-{groupid}/deadline-{deadline}/delivery-{delivery_number}/{filename}'
                         filename = filenametpl.format(zip_rootdir_name=zip_rootdir_name,
                                                       groupid=assignmentgroup.id,
                                                       candidates=candidates,
-                                                      deadline=deadline.deadline.strftime("%d-%m-%Y"),
-                                                      delivery_number=delivery.number,
-                                                      filename = filemeta.filename)
+                                                      deadline=deadline.deadline.strftime("%Y-%m-%dT%H_%M_%S"),
+                                                      delivery_number="%.3d" % delivery.number,
+                                                      filename = filemeta.filename.encode(ZIPFILE_FILENAME_CHARSET))
                         zip_file.writestr(filename, file_content.read())
         zip_file.close()
 

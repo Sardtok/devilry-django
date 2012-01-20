@@ -1,6 +1,9 @@
 import json
 from django.db.models import fields
 
+from devilry.simplified import OneToMany
+
+
 
 def _djangofield_to_extjstype(field):
     """ Convert django field to extjs  field type. """
@@ -33,7 +36,9 @@ def _recurse_get_fkfield(modelcls, path):
 def _iter_fields(simplifiedcls, result_fieldgroups):
     meta = simplifiedcls._meta
     for fieldname in meta.resultfields.aslist(result_fieldgroups):
-        if "__" in fieldname:
+        if isinstance(fieldname, OneToMany):
+            yield fieldname.related_field, dict(type='auto')
+        elif "__" in fieldname:
             path = fieldname.split('__')
             yield fieldname, _recurse_get_fkfield(meta.model, path)
         else:
@@ -55,9 +60,12 @@ def get_extjs_modelname(restfulcls, modelnamesuffix=''):
         Suffixed to the generated model name.
     """
     simplified = restfulcls._meta.simplified
-    return '{module}.{name}{modelnamesuffix}'.format(module=simplified.__module__,
-                                                     name=simplified.__name__,
-                                                     modelnamesuffix=modelnamesuffix)
+    clsname = simplified.__name__
+    modulepath = simplified.__module__.replace('.' + clsname.lower(), '')
+    modelname = '{module}.{name}{modelnamesuffix}'.format(module=modulepath,
+                                                          name=clsname,
+                                                          modelnamesuffix=modelnamesuffix)
+    return modelname
 
 
 def restfulcls_to_extjsmodel(restfulcls, result_fieldgroups=[], modelnamesuffix=''):

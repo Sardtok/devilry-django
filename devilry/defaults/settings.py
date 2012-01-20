@@ -14,6 +14,7 @@ STATIC_ROOT = 'devilry-static-files'
 DATABASES = {}
 EMAIL_SUBJECT_PREFIX = '[Devilry] '
 ROOT_URLCONF = 'devilry.defaults.root_urlconf'
+AUTH_PROFILE_MODULE = 'core.DevilryUserProfile'
 
 
 INSTALLED_APPS = ['django.contrib.markup',
@@ -27,6 +28,7 @@ INSTALLED_APPS = ['django.contrib.markup',
                   'devilry.apps.core',
                   'devilry.apps.theme',
                   'devilry.apps.extjshelpers',
+                  'devilry.apps.extjsux',
                   'devilry.apps.developertools',
 
                   'devilry.apps.approved_gradeeditor',
@@ -34,6 +36,7 @@ INSTALLED_APPS = ['django.contrib.markup',
                   'devilry.apps.autograde_gradeeditor',
                   'devilry.apps.basicform_gradeeditor',
 
+                  'devilry.apps.statistics',
                   'devilry.apps.markup',
                   'devilry.apps.student',
                   'devilry.apps.examiner',

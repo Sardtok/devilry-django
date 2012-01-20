@@ -1,39 +1,51 @@
-{% extends "trix/base.django.html" %}
+{% extends "theme/common.django.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Log in" %}{% endblock %}
-{% block heading %}{% trans "Log in" %}{% endblock %}
+{% block title %}Log in{% endblock %}
 
-{% block breadcrumbs %}
+{% block onready %}
+    Ext.getBody().unmask();
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        style: 'background-color: transparent',
+        items: [{
+            region: 'north',
+            xtype: 'pageheader'
+        }, {
+            region: 'south',
+            xtype: 'pagefooter'
+        }, {
+            region: 'center',
+            xtype: 'box',
+            padding: {left: 20, right: 20},
+            html:
+                {% if login_failed %}
+                    '<p class="error">Invalid username or password.</p>' +
+                {% endif %}
+
+                {% if not register %}
+                '<form method="post" action="{% url login %}">' +
+                '  <table>' +
+		'    {{ form.as_table|escapejs}}' +
+                '  </table>' +
+                '  <p>' +
+                '    <input type="submit" name="login" value="{% trans "Log in" %}"/>' +
+                '    <input type="submit" name="registerlink" formaction="{% url register %}" value="{% trans "New User" %}" />' +
+                '  </p>' +
+                '</form>'
+                {% else %}
+                '<form method="post" action="{% url register %}">' +
+                '  <table>' +
+		'    {{ form.as_table|escapejs}}' +
+                '  </table>' +
+                '  <p>' +
+                '    <input type="submit" name="new_user" value="{% trans "Make new user" %}"/>' +
+                '  </p>' +
+                '</form>'
+                {% endif %}
+        }]
+    });
 {% endblock %}
 
-{% block main %}
-
-{% if login_failed %}
-	<p class='error'>{% trans "Invalid username or password." %}</p>
-{% endif %}
-
-{% if not register %}
-<form method='post' action='{% url login %}'>
-  <table>
-		{{ form.as_table}}
-	</table>
-	<p>
-		<input type='submit' name='login' value='{% trans "Log in" %}'/>
-	        <input type="submit" name="registerlink" formaction="{% url register %}" value="{% trans "New User" %}" />
-	</p>
-
-</form>
-{% else %}
-<form method='post' action='{% url register %}'>
-  <table>
-		{{ form.as_table}}
-	</table>
-	<p>
-		<input type='submit' name='new_user' value='{% trans "Make new user" %}'/>
-	</p>
-
-</form>
-{% endif %}
-
+{% block bodyContent %}
 {% endblock %}

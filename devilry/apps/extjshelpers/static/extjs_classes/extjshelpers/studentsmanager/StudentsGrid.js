@@ -4,9 +4,16 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
     cls: 'widget-studentsmanager_studentsgrid',
     sortableColumns: true,
 
+    requires: [
+        'devilry.extjshelpers.GridSelectionModel'
+    ],
+
     config: {
         assignmentid: undefined,
-        dockedItems: []
+        dockedItems: [],
+        isAdministrator: undefined,
+        isAnonymous: undefined,
+        assignmentrecord: undefined
     },
 
     mixins: {
@@ -14,7 +21,7 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
     },
 
     infoColTpl: Ext.create('Ext.XTemplate', 
-        '<section class="infocolumn">',
+        '<div class="section infocolumn">',
         '    <div>',
         '        <tpl if="is_open">',
         '           <span class="group_is_open">Open</span>',
@@ -28,23 +35,71 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
         '           <span class="has_no_deadlines">No deadlines</span>',
         '        </tpl>',
         '    </div>',
-        '</section>'
+        '</div>'
     ),
 
-    candidatesCol: Ext.create('Ext.XTemplate', 
-        '<ul class="candidatescolumn">',
+    candidatesCol_old: Ext.create('Ext.XTemplate', 
+        '<ul class="namecolumn">',
         '    <tpl for="candidates__identifier">',
+        '       <li>',
+        '           {.}',
+        '       </li>',
+        '    </tpl>',
+        '</ul>'
+    ),
+    candidatesCol: Ext.create('Ext.XTemplate', 
+        '<ul class="namecolumn">',
+        '    <tpl for="candidates">',
+        '       <li>',
+        '           {identifier}',
+        '       </li>',
+        '    </tpl>',
+        '</ul>'
+    ),
+    candFullNamesCol: Ext.create('Ext.XTemplate', 
+        '<ul class="namecolumn">',
+        '    <tpl for="candidates">',
+        '       <li>',
+        '           {full_name}',
+        '       </li>',
+        '    </tpl>',
+        '</ul>'
+    ),
+
+    realUsernamesCol: Ext.create('Ext.XTemplate', 
+        '<ul class="namecolumn">',
+        '    <tpl for="candidates__student__username">',
+        '       <li>{.}</li>',
+        '    </tpl>',
+        '</ul>'
+    ),
+
+    realFullnamesCol: Ext.create('Ext.XTemplate', 
+        '<ul class="namecolumn">',
+        '    <tpl for="candidates__student__devilryuserprofile__full_name">',
         '       <li>{.}</li>',
         '    </tpl>',
         '</ul>'
     ),
 
     examinersCol: Ext.create('Ext.XTemplate', 
-        '<ul class="examinerscolumn">',
-        '    <tpl for="examiners__username">',
+        '<ul class="namecolumn">',
+        '    <tpl for="examiners__user__username">',
         '       <li>{.}</li>',
         '    </tpl>',
         '</ul>'
+    ),
+
+    tagsColTpl: Ext.create('Ext.XTemplate', 
+        '<ul class="tagscolumn">',
+        '    <tpl for="tags__tag">',
+        '       <li>{.}</li>',
+        '    </tpl>',
+        '</ul>'
+    ),
+
+    activeDeadlineColTpl: Ext.create('Ext.XTemplate', 
+        '<span class="activedeadlinecol">{latest_deadline_deadline}</span>'
     ),
 
     deliveriesColTpl: Ext.create('Ext.XTemplate', 
@@ -70,7 +125,7 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
     ),
 
     gradeColTpl: Ext.create('Ext.XTemplate', 
-        '<section class="gradecolumn">',
+        '<div class="section gradecolumn">',
         '   <tpl if="feedback">',
         '        <div class="is_passing_grade">',
         '           <tpl if="feedback__is_passing_grade"><span class="passing_grade">Passed</span></tpl>',
@@ -80,7 +135,7 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
         '        <div class="delivery_type">',
         '            <tpl if="feedback__delivery__delivery_type == 0"><span class="electronic">Electronic</span></tpl>',
         '            <tpl if="feedback__delivery__delivery_type == 1"><span class="non-electronic">Non-electronic</span></tpl>',
-        '            <tpl if="feedback__delivery__delivery_type == 2"><span class="alias">From previous period</span></tpl>',
+        '            <tpl if="feedback__delivery__delivery_type == 2"><span class="alias">From previous period (semester)</span></tpl>',
         '            <tpl if="feedback__delivery__delivery_type &gt; 2"><span class="unknown">Unknown delivery type</span></tpl>',
         '       </div>',
         '   </tpl>',
@@ -89,7 +144,7 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
         '           No feedback',
         '        </div>',
         '    </tpl>',
-        '</section>'
+        '</div>'
     ),
 
     constructor: function(config) {
@@ -106,36 +161,66 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
         }]);
 
 
-        this.selModel = Ext.create('Ext.selection.CheckboxModel', {
-            checkOnly: true
+        this.selModel = Ext.create('devilry.extjshelpers.GridSelectionModel', {
+            checkOnly: false
         });
 
-        Ext.apply(this, {
-            //listeners: {
-                //scope: this,
-                //itemclick: function(grid, record) {
-                    //if(grid.getSelectionModel().isSelected(record)) {
-                        //grid.getSelectionModel().deselect(record);
-                    //} else {
-                        //grid.getSelectionModel().select(record, true);
-                    //}
-                //}
-            //},
+        var studentsCol;
+        if(this.isAdministrator) {
+            studentsCol = {
+                text: 'Students', dataIndex: 'id',
+                menuDisabled: true, sortable: false,
+                columns: [{
+                    text: 'Usernames', dataIndex: 'candidates__student__username', width: 90,
+                    menuDisabled: true, sortable: true,
+                    renderer: this.formatRealUsernamesCol
+                }, {
+                    text: 'Full names', dataIndex: 'candidates__student__devilryuserprofile__full_name', width: 155,
+                    menuDisabled: true, sortable: true,
+                    renderer: this.formatRealFullnamesCol
+                }]
+            };
+            if(this.isAnonymous) {
+                studentsCol.columns.push({
+                    text: 'Candidate ID', dataIndex: 'candidates__identifier',
+                    width: 90,
+                    menuDisabled: true, sortable: true,
+                    renderer: this.formatCandidatesCol_old
+                });
+            }
+        } else {
+            if(this.isAnonymous) {
+                studentsCol = {
+                    text: 'Students', dataIndex: 'candidates__identifier', flex: 4,
+                    menuDisabled: true,
+                    sortable: true,
+                    renderer: this.formatCandidatesCol
+                };
+            } else {
+                studentsCol = {
+                    text: 'Students', dataIndex: 'id',
+                    menuDisabled: true, sortable: false,
+                    columns: [{
+                        text: 'Usernames', dataIndex: 'candidates__identifier',
+                        width: 90,
+                        menuDisabled: true, sortable: true,
+                        renderer: this.formatCandidatesCol
+                    }, {
+                        text: 'Full names', dataIndex: 'candidates__full_name',
+                        width: 155,
+                        menuDisabled: true, sortable: true,
+                        renderer: this.formatCandFullNamesCol
+                    }]
+                };
+            }
+        }
 
+        Ext.apply(this, {
             columns: [{
                 text: '', dataIndex: 'is_open', width: 100,
                 menuDisabled: true,
                 renderer: this.formatInfoCol
-            }, {
-                text: 'Students', dataIndex: 'id', flex: 4,
-                menuDisabled: true,
-                sortable: false,
-                renderer: this.formatCandidatesCol
-            }, {
-                text: 'Deliveries', dataIndex: 'number_of_deliveries', flex: 2,
-                menuDisabled: true,
-                renderer: this.formatDeliveriesCol
-            }, {
+            }, studentsCol, {
                 text: 'Latest feedback',
                 menuDisabled: true,
                 sortable: false,
@@ -155,15 +240,34 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
                     renderer: this.formatGradeCol
                 }]
             }, {
-                text: 'Examiners', dataIndex: 'id', flex: 4,
+                text: 'Tags', dataIndex: 'tags__tag', flex: 2,
                 menuDisabled: true,
-                sortable: false,
-                renderer: this.formatExaminersCol
+                renderer: this.formatTagsCol
             }, {
                 text: 'Group name', dataIndex: 'name', flex: 3,
                 menuDisabled: true
             }]
         });
+        if(this.isAdministrator) {
+            Ext.Array.insert(this.columns, 3, [{
+                text: 'Examiners', dataIndex: 'examiners__username', flex: 3,
+                menuDisabled: true,
+                renderer: this.formatExaminersCol
+            }]);
+        }
+        if(this.assignmentrecord.get('delivery_types') != 1) {
+            this.columns.push({
+                text: 'Active deadline', dataIndex: 'latest_deadline_deadline', width: 125,
+                menuDisabled: true,
+                renderer: this.formatActiveDeadlineCol
+            });
+
+            Ext.Array.insert(this.columns, 2, [{
+                text: 'Deliveries', dataIndex: 'number_of_deliveries', flex: 2,
+                menuDisabled: true,
+                renderer: this.formatDeliveriesCol
+            }]);
+        }
 
         this.dockedItems.push({
             xtype: 'pagingtoolbar',
@@ -183,6 +287,19 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
     formatCandidatesCol: function(value, p, record) {
         return this.candidatesCol.apply(record.data);
     },
+    formatCandidatesCol_old: function(value, p, record) {
+        return this.candidatesCol_old.apply(record.data);
+    },
+    formatCandFullNamesCol: function(value, p, record) {
+        return this.candFullNamesCol.apply(record.data);
+    },
+
+    formatRealUsernamesCol: function(value, p, record) {
+        return this.realUsernamesCol.apply(record.data);
+    },
+    formatRealFullnamesCol: function(value, p, record) {
+        return this.realFullnamesCol.apply(record.data);
+    },
 
     formatExaminersCol: function(value, p, record) {
         return this.examinersCol.apply(record.data);
@@ -198,5 +315,13 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsGrid', {
 
     formatGradeCol: function(value, p, record) {
         return this.gradeColTpl.apply(record.data);
+    },
+
+    formatActiveDeadlineCol: function(value, p, record) {
+        return this.activeDeadlineColTpl.apply(record.data);
+    },
+
+    formatTagsCol: function(value, p, record) {
+        return this.tagsColTpl.apply(record.data);
     }
 });

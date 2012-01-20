@@ -2,8 +2,6 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.studentsmanager',
     cls: 'studentsmanager',
-    frame: false,
-    border: false,
 
     requires: [
         'devilry.extjshelpers.studentsmanager.FilterSelector',
@@ -12,45 +10,89 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
         'devilry.extjshelpers.SearchField',
         'devilry.extjshelpers.SetListOfUsers',
         'devilry.gradeeditors.EditManyDraftEditorWindow',
-        'devilry.extjshelpers.studentsmanager.MultiResultWindow'
+        'devilry.extjshelpers.studentsmanager.MultiResultWindow',
+        'devilry.extjshelpers.MenuHeader',
+        'devilry.extjshelpers.HelpWindow',
+        'Ext.ux.grid.Printer',
+        'devilry.extjshelpers.GridPrintButton'
     ],
 
     mixins: {
         createFeedback: 'devilry.extjshelpers.studentsmanager.StudentsManagerCreateFeedback',
         manageDeadlines: 'devilry.extjshelpers.studentsmanager.StudentsManagerManageDeadlines',
-        closeOpen: 'devilry.extjshelpers.studentsmanager.StudentsManagerCloseOpen'
+        closeOpen: 'devilry.extjshelpers.studentsmanager.StudentsManagerCloseOpen',
+        addDeliveries: 'devilry.administrator.studentsmanager.AddDeliveriesMixin'
     },
 
-    config: {
-        /**
-         * @cfg
-         * Use the administrator RESTful interface to store drafts? If this is
-         * ``false``, we use the examiner RESTful interface.
-         */
-        isAdministrator: false,
-        gradeeditor_config_model: undefined,
-        deadlinemodel: undefined,
-        assignmentid: undefined,
-        assignmentgroupstore: undefined,
+    /**
+    * @cfg
+    * Use the administrator RESTful interface to store drafts? If this is
+    * ``false``, we use the examiner RESTful interface.
+    */
+    isAdministrator: false,
 
-        periodid: undefined
-    },
+    /**
+     * @cfg
+     */
+    gradeeditor_config_model: undefined,
+
+    /**
+     * @cfg
+     */
+    deadlinemodel: undefined,
+
+    /**
+     * @cfg
+     */
+    assignmentid: undefined,
+
+    /**
+     * @cfg
+     */
+    assignmentrecord: undefined,
+
+    /**
+     * @cfg
+     */
+    assignmentgroupstore: undefined,
+
+    /**
+     * @cfg
+     */
+    periodid: undefined,
+
+
+    feedbackTooltip: Ext.create('Ext.XTemplate',
+        'Select one or more students/groups and click this button to give them feedback.',
+        '<tpl if="delivery_types == 0">',
+        '   You should only use this in simple cases.',
+        '   <tpl if="isAdministrator">',
+        '       We reccommend that you set yourself, or someone else, as examiner, and use the examiner interface.',
+        '   </tpl>',
+        '   <tpl if="!isAdministrator">',
+        '       We reccommend that you use the Todo-list unless you need to give feedback to many students in bulk.',
+        '   </tpl>',
+        '</tpl>'
+    ),
+
 
     constructor: function(config) {
-        this.callParent([config]);
-        this.initConfig(config);
+        this.callParent(arguments);
+        this.defaultPageSize = 30;
 
         this.role = this.isAdministrator? 'administrator': 'examiner';
         this.gradeeditor_config_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
         this.registryitem_recordcontainer = Ext.create('devilry.extjshelpers.SingleRecordContainer');
         this.registryitem_recordcontainer.addListener('setRecord', this.onLoadRegistryItem, this);
 
-        this.progressWindow = Ext.create('devilry.extjshelpers.studentsmanager.MultiResultWindow');
+        this.progressWindow = Ext.create('devilry.extjshelpers.studentsmanager.MultiResultWindow', {
+            isAdministrator: this.isAdministrator
+        });
     },
 
+
     initComponent: function() {
-        this.giveFeedbackButton = Ext.widget('button', {
-            scale: 'large',
+        this.giveFeedbackToSelectedArgs = {
             text: 'Give feedback to selected',
             listeners: {
                 scope: this,
@@ -59,19 +101,80 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
                     if(!this.registryitem_recordcontainer.record) {
                         button.getEl().mask('Loading'); // TODO: Only mask the affected buttons
                     }
+                    var tip = Ext.create('Ext.tip.ToolTip', {
+                        target: button.getEl(),
+                        title: 'Give feedback to selected',
+                        html: this.feedbackTooltip.apply({
+                            delivery_types: this.assignmentrecord.get('delivery_types'),
+                            isAdministrator: this.isAdministrator
+                        }),
+                        width: 350,
+                        anchor: 'top',
+                        dismissDelay: 30000 // Hide after 30 seconds hover
+                    });
                 }
             }
-        });
-
-        this.gridContextMenu = new Ext.menu.Menu({
-            items: this.getOnSingleMenuItems(),
-            listeners: {
-                scope: this,
-                hide: this.onGridContexMenuHide
-            }
-        });
+        };
+        this.giveFeedbackButton = Ext.widget('button', Ext.Object.merge({
+            scale: 'large',
+        }, this.giveFeedbackToSelectedArgs));
 
         var me = this;
+
+        var topBarItems = [{
+            xtype: 'searchfield',
+            width: 400,
+            emptyText: 'Search...'
+        }, {
+            xtype: 'button',
+            text: 'x',
+            handler: function() { me.setFilter(''); }
+        }, {
+            xtype: 'button',
+            text: 'Filter',
+            menu: {
+                xtype: 'menu',
+                plain: true,
+                items: this.getFilters()
+            }
+        }, {
+            xtype: 'button',
+            text: 'All on one page',
+            enableToggle: true,
+            listeners: {
+                scope: this,
+                toggle: function(btn, pressed) {
+                    this.assignmentgroupstore.pageSize = pressed? 100000: this.defaultPageSize;
+                    if(pressed) {
+                        this.assignmentgroupstore.currentPage = 1;
+                    }
+                    this.assignmentgroupstore.load();
+                }
+            }
+        }, '->'
+        //{
+            //xtype: 'gridprintbutton',
+            //listeners: {
+                //scope: this,
+                //print: this._onPrint,
+                //printformat: this._onPrintFormat
+            //}
+        //}
+        ];
+
+
+        if(this.assignmentrecord.get('delivery_types') == 0) {
+            topBarItems.push({
+                xtype: 'button',
+                text: 'Download all deliveries',
+                iconCls: 'icon-save-16',
+                listeners: {
+                    scope: this,
+                    click: this._onDownload
+                }
+            });
+        }
+
         Ext.apply(this, {
             layout: {
                 type: 'vbox',
@@ -87,22 +190,13 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
                     xtype: 'studentsmanager_studentsgrid',
                     store: this.assignmentgroupstore,
                     assignmentid: this.assignmentid,
+                    assignmentrecord: this.assignmentrecord,
+                    isAdministrator: this.isAdministrator,
+                    isAnonymous: this.assignmentrecord.data.anonymous,
                     dockedItems: [{
                         xtype: 'toolbar',
                         dock: 'top',
-                        items: [{
-                            xtype: 'searchfield',
-                            width: 500,
-                            emptyText: 'Search...'
-                        }, {
-                            xtype: 'button',
-                            text: 'x',
-                            handler: function() { me.setFilter(''); }
-                        }, {
-                            xtype: 'button',
-                            text: 'Filter',
-                            menu: this.getFilters()
-                        }]
+                        items: topBarItems
                     }]
                 }],
 
@@ -132,50 +226,71 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
         this.loadFirstPage();
     },
 
+    _onDownload: function() {
+        window.location.href = Ext.String.format('compressedfiledownload/{0}', this.assignmentid);
+    },
+
+    _onPrint: function() {
+        Ext.ux.grid.Printer.print(this.down('studentsmanager_studentsgrid'), true);
+    },
+
+    _onPrintFormat: function() {
+        Ext.ux.grid.Printer.print(this.down('studentsmanager_studentsgrid'), false);
+    },
 
     getFilters: function() {
-        return [{
+        var me = this;
+        var filters = [{xtype: 'menuheader', html: 'Open/closed'}, {
             text: 'Open',
             handler: function() { me.setFilter('is_open:yes'); }
         }, {
             text: 'Closed',
             handler: function() { me.setFilter('is_open:no'); }
-        }, '-', {
+        }, {xtype: 'menuheader', html: 'Grade'}, {
             text: 'Passing grade',
             handler: function() { me.setFilter('feedback__is_passing_grade:yes'); }
         }, {
             text: 'Failing grade',
             handler: function() { me.setFilter('feedback__is_passing_grade:no'); }
-        }, '-', {
+        }, {xtype: 'menuheader', html: 'Deliveries'}, {
             text: 'Has deliveries',
             handler: function() { me.setFilter('number_of_deliveries:>:0'); }
         }, {
             text: 'No deliveries',
             handler: function() { me.setFilter('number_of_deliveries:0'); }
-        }, '-', {
+        }, {xtype: 'menuheader', html: 'Feedback'}, {
             text: 'Has feedback',
             handler: function() { me.setFilter('feedback:>=:0'); }
         }, {
             text: 'No feedback',
             handler: function() { me.setFilter('feedback:none'); }
+        }, {xtype: 'menuheader', html: 'Delivery type'}, {
+            text: 'Electronic',
+            handler: function() { me.setFilter('feedback__delivery__delivery_type:0'); }
+        }, {
+            text: 'Non-electronic',
+            handler: function() { me.setFilter('feedback__delivery__delivery_type:1'); }
+        }, {
+            text: 'From previous period',
+            handler: function() { me.setFilter('feedback__delivery__delivery_type:2'); }
         }];
+        if(this.assignmentrecord.data.anonymous) {
+            filters.push({
+                xtype: 'menuheader', html: 'Candidate ID'
+            });
+            filters.push({
+                text: 'Missing candidate ID',
+                handler: function() { me.setFilter('candidates__identifier:none'); }
+            });
+        }
+        return filters;
     },
 
     getToolbarItems: function() {
-        var singleheader = {
-            xtype: 'box',
-            plain: true,
-            html:'<div class="menuheader">On single</div>'
-        };
-        var multiheader = {
-            xtype: 'box',
-            plain: true,
-            html:'<div class="menuheader">On multiple</div>'
-        };
         var advanced = Ext.Array.merge(
-            [singleheader], this.getOnSingleMenuItems(),
+            [{xtype: 'menuheader', html: 'On single group'}], this.getOnSingleMenuItems(),
             [{xtype: 'box', height: 12}],
-            [multiheader], this.getOnManyMenuItems()
+            [{xtype: 'menuheader', html: 'On one or more group'}], this.getOnManyMenuItems()
         );
 
         return [{
@@ -199,17 +314,30 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
     },
 
     getOnSingleMenuItems: function() {
-        return [{
+        menu = [{
             text: 'Open in examiner interface',
             listeners: {
                 scope: this,
                 click: this.onOpenExaminerInterface
             }
         }];
+
+        if(this.assignmentrecord.data.delivery_types === this.deliveryTypes.TYPE_ELECTRONIC) {
+            menu.push({
+                text: 'Add non-electronic delivery',
+                iconCls: 'icon-add-16',
+                listeners: {
+                    scope: this,
+                    click: this.onAddNonElectronicDelivery
+                }
+            });
+        }
+
+        return menu;
     },
 
     getOnManyMenuItems: function() {
-        return [{
+        var items = [{
             text: 'Close/open',
             menu: [{
                 text: 'Close',
@@ -224,53 +352,55 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
                     click: this.onOpenGroups
                 }
             }]
-        }, {
-            text: 'Add deadline',
-            iconCls: 'icon-add-16',
-            listeners: {
-                scope: this,
-                click: this.onAddDeadline
-            }
         }];
+        if(this.assignmentrecord.get('delivery_types') !== this.deliveryTypes.TYPE_NON_ELECTRONIC) {
+            items.push({
+                text: 'Add deadline',
+                iconCls: 'icon-add-16',
+                listeners: {
+                    scope: this,
+                    click: this.onAddDeadline
+                }
+            });
+        }
+        return items;
     },
 
     onHelp: function() {
-        var win = Ext.widget('window', {
+        Ext.widget('helpwindow', {
             title: 'Help',
-            modal: true,
-            width: 800,
-            height: 500,
             maximizable: true,
-            layout: 'fit',
-            items: {
-                xtype: 'box',
-                autoScroll: true,
-                html: Ext.create('Ext.XTemplate',
-                    '<section class="helpsection">',
-                    '   <h1>Search</h1>',
-                    '   <p>Use the search box to search for more or less anything. Examples are candidate IDs and usernames of students and examiners.</p>',
-                    '   <h1>About each column</h1>',
-                    '   <h2>The first column (with no header)</h2>',
-                    '       <p>Contains notifications. Unless something is wrong, you will see <em>open</em> or <em>close</em>. When a group is open, students can add more deliveries. When a group is closed, it is not possible to add more deliveries.</p>',
-                    '   <h2>Students</h2>',
-                    '       <p>Usernames of all students on each group. If the assignment is <em>anonymous</em>, this column shows the <em>cadidate ID</em> instead of the username.</p>',
-                    '   <h2>Deliveries</h2>',
-                    '       <p>Number of deliveries</p>',
-                    '   <h2>Latest feedback</h2>',
-                    '       <h3>Points</h3>',
-                    '       <p>Number of points achieved by the group on this assignment. Points are used for statistics, and they are not available to students.</p>',
-                    '       <h3>Grade</h3>',
-                    '       <p>The grade achieved by the group on this assignment. A grade columns cell has 3 parts:</p><ul>',
-                    '           <li>It is either passed or failed. If the status of this has any consequence for the students, depends on if the assignment must be passed or not.</li>',
-                    '           <li>A textual representation of the points. The format of this text depends on the <em>grade editor</em> used on this assignment.</li>',
-                    '           <li>Type of delivery. This may be <em>electronic</em>, <em>non-electronic</em> or <em>From previous period</em>. The last is for groups marked as delivered in a previous period.</li>',
-                    '   <h2>Examiners</h2>',
-                    '       <p>Usernames of examiners.</p>',
-                    '   <h2>Group name</h2>',
-                    '       <p>The name of the group. Group names are usually used for project assignments where each project has a specific name.</p>',
-                    '</section>'
-                ).apply({})
-            }
+            maximized: true,
+            helptpl: Ext.create('Ext.XTemplate',
+                '<div class="section helpsection">',
+                '   <h1>Guides</h1>',
+                '   <p>This is a complex view that supports a huge amount of different workflows. Please visit the <a href="{DevilrySettings.DEVILRY_HELP_URL}" target="_blank">primary help section</a> for guides and more help.</p>',
+                '   <h1>Search</h1>',
+                '   <p>Use the search box to search for more or less anything. Examples are candidate IDs and usernames of students and examiners.</p>',
+                '   <h1>About each column</h1>',
+                '   <h2>The first column (with no header)</h2>',
+                '       <p>Contains notifications. Unless something is wrong, you will see <em>open</em> or <em>close</em>. When a group is open, students can add more deliveries. When a group is closed, it is not possible to add more deliveries.</p>',
+                '   <h2>Students</h2>',
+                '       <p>Usernames of all students on each group. If the assignment is <em>anonymous</em>, this column shows the <em>cadidate ID</em> instead of the username.</p>',
+                '   <h2>Deliveries</h2>',
+                '       <p>Number of deliveries</p>',
+                '   <h2>Latest feedback</h2>',
+                '       <h3>Points</h3>',
+                '       <p>Number of points achieved by the group on this assignment. Points are used for statistics, and they are not available to students.</p>',
+                '       <h3>Grade</h3>',
+                '       <p>The grade achieved by the group on this assignment. A grade columns cell has 3 parts:</p><ul>',
+                '           <li>It is either passed or failed. If the status of this has any consequence for the students, depends on if the assignment must be passed or not.</li>',
+                '           <li>A textual representation of the points. The format of this text depends on the <em>grade editor</em> used on this assignment.</li>',
+                '           <li>Type of delivery. This may be <em>electronic</em>, <em>non-electronic</em> or <em>From previous period</em>. The last is for groups marked as delivered in a previous period.</li>',
+                '   <h2>Examiners</h2>',
+                '       <p>Usernames of examiners.</p>',
+                '   <h2>Active deadline</h2>',
+                '       <p>The deadline that students deliver on. Always the <em>latest</em> deadline.</p>',
+                '   <h2>Group name</h2>',
+                '       <p>The name of the group. Group names are usually used for project assignments where each project has a specific name.</p>',
+                '</div>'
+            ),
+            helpdata: {DevilrySettings: DevilrySettings}
         }).show();
     },
 
@@ -306,9 +436,9 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
      * @private
      */
     getSelection: function() {
-        if(this.contexSelectedItem) {
-            return [this.contexSelectedItem];
-        }
+        //if(this.contexSelectedItem) {
+            //return [this.contexSelectedItem];
+        //}
         return this.down('studentsmanager_studentsgrid').selModel.getSelection();
     },
 
@@ -353,16 +483,52 @@ Ext.define('devilry.extjshelpers.studentsmanager.StudentsManager', {
      */
     onGridContexMenu: function(grid, record, index, item, ev) {
         ev.stopEvent();
-        this.contexSelectedItem = record;
-        this.gridContextMenu.showAt(ev.xy);
+        var items;
+        if(this.noneSelected()) {
+            items = [{xtype: 'menuheader', html: 'Select at least one group'}];
+        } else {
+            items = this.getGridContextMenuItems();
+        }
+        var gridContextMenu = new Ext.menu.Menu({
+            plain: true,
+            items: items
+            //listeners: {
+                //scope: this,
+                //hide: this.onGridContexMenuHide
+                //}
+        });
+        gridContextMenu.showAt(ev.xy);
     },
 
     /**
      * @private
      */
-    onGridContexMenuHide: function(grid, record, index, item, ev) {
-        this.contexSelectedItem = undefined;
+    getGridContextMenuItems: function() {
+        if(this.singleSelected()) {
+            return this.getContexMenuSingleSelectItems();
+        } else {
+            return this.getContexMenuManySelectItems();
+        }
     },
+
+    getContexMenuManySelectItems: function() {
+        return Ext.Array.merge([this.giveFeedbackToSelectedArgs], this.getOnManyMenuItems());
+    },
+
+    getContexMenuSingleSelectItems: function() {
+        return Ext.Array.merge(
+            [{xtype: 'menuheader', html: 'On single group'}], this.getOnSingleMenuItems(),
+            [{xtype: 'box', height: 12}],
+            [{xtype: 'menuheader', html: 'On one or more group'}], this.getContexMenuManySelectItems()
+        );
+    },
+
+    /**
+     * @private
+     */
+    //onGridContexMenuHide: function(grid, record, index, item, ev) {
+        //this.contexSelectedItem = undefined;
+    //},
 
     
     /**

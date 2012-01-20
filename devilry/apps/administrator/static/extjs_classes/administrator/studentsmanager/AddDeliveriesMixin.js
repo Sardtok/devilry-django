@@ -40,50 +40,50 @@ Ext.define('devilry.administrator.studentsmanager.AddDeliveriesMixin', {
         ////this.refreshStore();
     //},
 
-    //onCreateDummyDelivery: function() {
-        //if(!this.singleSelected()) {
-            //this.onNotSingleSelected();
-            //return;
-        //}
-        //var groupRecord = this.getSelection()[0];
+    onAddNonElectronicDelivery: function() {
+        if(!this.singleSelected()) {
+            this.onNotSingleSelected();
+            return;
+        }
+        var groupRecord = this.getSelection()[0];
         
-        //var msg = Ext.create('Ext.XTemplate',
-            //'<p>Are you sure you want to create a dummy delivery for <em>',
-            //'    <tpl if="name">',
-            //'        {name}: ',
-            //'    </tpl>',
-            //'    <tpl for="candidates__identifier">',
-            //'        {.}<tpl if="xindex &lt; xcount">, </tpl>',
-            //'    </tpl>',
-            //'</em>?',
-            //'<tpl if="number_of_deliveries &gt; 0">',
-            //'   <p><strong>WARNING:</strong> One usually only creates dummy deliveries for groups with no ',
-            //'   deliveries, however this group has <strong>{number_of_deliveries}</strong> deliveries.</p>',
-            //'</tpl>'
-        //);
-        //var me = this;
-        //Ext.MessageBox.show({
-            //title: 'Confirm that you want to create dummy delivery',
-            //msg: msg.apply(groupRecord.data),
-            //animateTarget: this.deletebutton,
-            //buttons: Ext.Msg.YESNO,
-            //icon: (groupRecord.data.number_of_deliveries>0? Ext.Msg.WARNING: Ext.Msg.QUESTION),
-            //fn: function(btn) {
-                //if(btn == 'yes') {
-                    //me.createDummyDeliveryForSelected(groupRecord);
-                //}
-            //}
-        //});
-    //},
+        var msg = Ext.create('Ext.XTemplate',
+            '<p>Are you sure you want to create a dummy delivery for <em>',
+            '    <tpl if="name">',
+            '        {name}: ',
+            '    </tpl>',
+            '    <tpl for="candidates__identifier">',
+            '        {.}<tpl if="xindex &lt; xcount">, </tpl>',
+            '    </tpl>',
+            '</em>?',
+            '<tpl if="number_of_deliveries &gt; 0">',
+            '   <p><strong>WARNING:</strong> One usually only creates dummy deliveries for groups with no ',
+            '   deliveries, however this group has <strong>{number_of_deliveries}</strong> deliveries.</p>',
+            '</tpl>'
+        );
+        var me = this;
+        Ext.MessageBox.show({
+            title: 'Confirm that you want to create dummy delivery',
+            msg: msg.apply(groupRecord.data),
+            animateTarget: this.deletebutton,
+            buttons: Ext.Msg.YESNO,
+            icon: (groupRecord.data.number_of_deliveries>0? Ext.Msg.WARNING: Ext.Msg.QUESTION),
+            fn: function(btn) {
+                if(btn == 'yes') {
+                    me.addNonElectronicDelivery(groupRecord);
+                }
+            }
+        });
+    },
 
     /**
      * @private
      */
-    //createDummyDelivery: function(groupRecord) {
-        //var delivery = this.createDeliveryRecord(groupRecord, this.deliveryTypes.TYPE_ELECTRONIC);
-        //delivery.save();
-        //this.refreshStore();
-    //},
+    addNonElectronicDelivery: function(groupRecord) {
+        var delivery = this.createDeliveryRecord(groupRecord, this.deliveryTypes.TYPE_NON_ELECTRONIC);
+        delivery.save();
+        this.refreshStore();
+    },
 
 
     onPreviouslyPassed: function() {
@@ -110,14 +110,14 @@ Ext.define('devilry.administrator.studentsmanager.AddDeliveriesMixin', {
                 frame: false,
                 border: false,
                 html:
-                    '<section class="helpsection">' +
+                    '<div class="section helpsection">' +
                     '   <p>Marking a group as delivered in a previoud period/semester, does the following:</p>' +
                     '   <ul>' +
                     '       <li>Create a new <em>empty</em> delivery that is marked as imported from a previous semester. This is done automatically.</li>' +
                     '       <li>Create a feedback for the new <em>fake</em> delivery using the grade editor configured for this assignment.</li>' +
                     '   </ul>' +
                     '   <p>Click <em>next</em> to create the feedback. The feedback you select will be applied to each selected group.</p>' +
-                    '</section>'
+                    '</div>'
             },
 
             dockedItems: [{
@@ -241,11 +241,9 @@ Ext.define('devilry.administrator.studentsmanager.AddDeliveriesMixin', {
     },
 
 
-    /**
-     * @private
-     */
     createDeliveryRecord: function(groupRecord, deliveryType) {
-        return Ext.create('devilry.apps.administrator.simplified.SimplifiedDelivery', {
+        var modelname = Ext.String.format('devilry.apps.{0}.simplified.SimplifiedDelivery', this.role);
+        return Ext.create(modelname, {
             successful: true,
             deadline: groupRecord.data.latest_deadline_id,
             delivery_type: deliveryType

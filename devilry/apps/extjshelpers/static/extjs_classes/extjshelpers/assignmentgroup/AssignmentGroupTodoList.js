@@ -5,27 +5,25 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList', {
     requires: [
         'devilry.extjshelpers.formfields.StoreSearchField'
     ],
-    //frame: false,
-    //border: false,
 
     studentsColTpl: Ext.create('Ext.XTemplate',
-        '<section class="popuplistitem">',
+        '<div class="section popuplistitem">',
         '    <tpl if="name">',
         '        {name}: ',
         '    </tpl>',
         '    <ul style="display: inline-block;">',
-        '    <tpl for="candidates__identifier">',
-        '        <li>{.}</li>',
+        '    <tpl for="candidates">',
+        '       <li>{identifier} <tpl if="full_name">({full_name})</tpl></li>',
         '    </tpl>',
         '    </ul>',
         '    <tpl if="id == current_assignment_group_id">',
         '        &mdash; <strong>(currently selected)</strong>',
         '    </tpl>',
-        '</section>'
+        '</div>'
     ),
 
     deliveriesColTpl: Ext.create('Ext.XTemplate', 
-        '<section class="popuplistitem">',
+        '<div class="section popuplistitem">',
         '<span class="deliveriescol">',
         '    <tpl if="number_of_deliveries &gt; 0">',
         '       {number_of_deliveries}',
@@ -34,38 +32,41 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList', {
         '       <span class="nodeliveries">0</div>',
         '   </tpl>',
         '</span>',
-        '</section>'
+        '</div>'
     ),
 
     todohelptext: '<p>This is your to-do list on this assignment. It shows all <em>open</em> groups. An <em>open</em> group is a group that is still waiting for deliveries or feedback.</p>',
 
-    config: {
-        /**
-         * @cfg
-         * AssignmentGroup ``Ext.data.Store``. (Required).
-         */
-        store: undefined,
+    /**
+    * @cfg
+    * AssignmentGroup ``Ext.data.Store``. (Required).
+    */
+    store: undefined,
 
-        /**
-         * @cfg
-         * A {@link devilry.extjshelpers.SingleRecordContainer} for AssignmentGroup. (Optional).
-         *
-         * Used to show current assignmentgroup.
-         */
-        assignmentgroup_recordcontainer: undefined,
+    /**
+    * @cfg
+    * A {@link devilry.extjshelpers.SingleRecordContainer} for AssignmentGroup. (Optional).
+    *
+    * Used to show current assignmentgroup.
+    */
+    assignmentgroup_recordcontainer: undefined,
 
-        pageSize: 7,
-        toolbarExtra: undefined,
+    /**
+     * @cfg
+     */
+    pageSize: 7,
 
-        helpTpl: Ext.create('Ext.XTemplate',
-            '<section class="helpsection">{todohelptext}</section>'
-        )
-    },
+    /**
+     * @cfg
+     */
+    toolbarExtra: undefined,
 
-    constructor: function(config) {
-        this.initConfig(config);
-        this.callParent([config]);
-    },
+    /**
+     * @cfg
+     */
+    helpTpl: Ext.create('Ext.XTemplate',
+        '<div class="section helpsection">{todohelptext}</div>'
+    ),
 
 
     initComponent: function() {
@@ -74,7 +75,7 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList', {
             xtype: 'storesearchfield',
             emptyText: 'Search...',
             store: this.store,
-            pageSize: this.pageSize || 7, // TODO: Fix config order to avoid this hack
+            pageSize: this.pageSize,
             width: 300,
             autoLoadStore: false
         }];
@@ -87,7 +88,6 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList', {
                 type: 'hbox',
                 align: 'stretch'
             },
-            border: false,
             items: [{
                 flex: 6,
                 xtype: 'grid',
@@ -96,13 +96,13 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList', {
                 frame: false,
                 border: false,
                 sortableColumns: false,
+                autoScroll: true,
                 columns: [{
                     header: 'Students',
                     dataIndex: 'id',
                     flex: 2,
                     menuDisabled: true,
                     renderer: function(value, metaData, grouprecord) {
-                        //console.log(grouprecord.data);
                         var data = {};
                         if(me.assignmentgroup_recordcontainer) {
                             data.current_assignment_group_id = me.assignmentgroup_recordcontainer.record.data.id;
@@ -122,6 +122,7 @@ Ext.define('devilry.extjshelpers.assignmentgroup.AssignmentGroupTodoList', {
             }, {
                 xtype: 'box',
                 width: 300,
+                autoScroll: true,
                 flex: 4,
                 html: this.helpTpl.apply({todohelptext: this.todohelptext})
             }],

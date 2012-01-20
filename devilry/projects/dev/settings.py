@@ -14,8 +14,11 @@ DATABASES = {"default": {
             }
 
 INSTALLED_APPS += [
-                   #'devilry.apps.asminimalaspossible_gradeeditor',
+                   'devilry.apps.asminimalaspossible_gradeeditor',
+                   #'devilry.apps.autoset_empty_email_by_username',
+                   #'django_jenkins',
                    #'devilry.apps.gradeform_gradeeditor',
+                   #'devilry.projects.dev.apps.test',
 
                    # Not apps, but here for the Django test system to discover them:
                    'devilry.utils',
@@ -40,8 +43,10 @@ ROOT_URLCONF = 'devilry.projects.dev.urls'
 
 DEVILRY_SCHEME_AND_DOMAIN = 'https://devilry.example.com'
 
-DEVILRY_DELIVERY_STORE_BACKEND = 'devilry.apps.core.deliverystore.FsDeliveryStore'
-DELIVERY_STORE_ROOT = join(this_dir, 'deliverystore')
+DEVILRY_DELIVERY_STORE_BACKEND = 'devilry.apps.core.deliverystore.FsHierDeliveryStore'
+#DELIVERY_STORE_ROOT = join(this_dir, 'deliverystore')
+DEVILRY_FSHIERDELIVERYSTORE_ROOT = join(this_dir, 'deliverystorehier')
+DEVILRY_FSHIERDELIVERYSTORE_INTERVAL = 10
 DEVILRY_SYNCSYSTEM = 'FS (Felles Studentsystem)'
 
 
@@ -74,7 +79,7 @@ if profiler_middleware:
         'devilry.utils.profile.ProfilerMiddleware' # Enable profiling. Just add ?prof=yes to any url to see a profile report
     ]
 
-DELAY_MIDDLEWARE_TIME = 0.6 # Wait for this time before responding to each request when using DelayMiddleware
+DELAY_MIDDLEWARE_TIME = (20, 90) # Wait for randint(*DELAY_MIDDLEWARE_TIME)/100.0 before responding to each request when using DelayMiddleware
 delay_middleware = False
 if delay_middleware:
     MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [

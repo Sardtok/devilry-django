@@ -2,6 +2,8 @@
 proves useful outside this module, they should me moved to ``devilry.utils``. """
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields import FieldDoesNotExist
+from django.db.models import Max, Count
+from fieldspec import OneToMany
 
 
 def get_clspath(cls):
@@ -20,7 +22,10 @@ def get_field_from_fieldname(modelcls, fieldname, fkfield_as_idfield=False):
             return _recurse_get_modelfield(parentmodel, path)
         else:
             return field
-    return _recurse_get_modelfield(modelcls, fieldname.split('__'))
+    if isinstance(fieldname, OneToMany):
+        pass
+    else:
+        return _recurse_get_modelfield(modelcls, fieldname.split('__'))
 
 
 def _get_instanceattr(instance, fieldname):
@@ -68,11 +73,14 @@ def modelinstance_to_dict(instance, fieldnames):
 
     :param instance: A django model instance.
     :param fieldname: List of fieldname names. Can also be foreign keys, such as
-        ``parentnode__parentnode__short_name``.
+        ``parentnode__parentnode__short_name``, or :class:`devilry.simplified.OneToMany`.
     """
     dct = {}
     for fieldname in fieldnames:
-        if "__" in fieldname:
+        if isinstance(fieldname, OneToMany):
+            onetomany = fieldname
+            dct[onetomany.related_field] = onetomany.as_list(instance)
+        elif "__" in fieldname:
             path = fieldname.split('__')
             dct[fieldname] = _recurse_getmodelattr(instance, path)
         else:
@@ -82,5 +90,21 @@ def modelinstance_to_dict(instance, fieldnames):
                 dct[fieldname] = getattr(instance, fieldname) # This is an annotated field (or something is seriously wrong)
             except AttributeError:
                 # Annotated field
-                continue # If we fail here, it will not work to user this for both read (which does not support annotated fields) and search
+                continue # If we fail here, it will not work to use this for both read (which does not support annotated fields) and search
     return dct
+
+
+def fix_expected_data_missing_database_fields(test_groups, expected_res, search_res=None):
+    """ For internal test use ONLY. """
+    for i in xrange(len(test_groups)):
+        group = test_groups[i]
+        deadline = group.get_active_deadline()
+        expected_res[i]['latest_deadline_id'] = deadline.id
+        expected_res[i]['latest_deadline_deadline'] = deadline.deadline
+        expected_res[i]['number_of_deliveries'] = deadline.deliveries.all().count()
+        if deadline.deliveries.all().count() > 0:
+            max_id = deadline.deliveries.aggregate(Max("id"))
+            expected_res[i]['latest_delivery_id'] = deadline.deliveries.filter(id=max_id['id__max'])[0].id
+            #expected_res[i]['latest_delivery_id'] = deadline.deliveries.all()[0].id
+        else:
+            expected_res[i]['latest_delivery_id'] = None

@@ -1,6 +1,15 @@
+class OneToMany(object):
+    def __init__(self, related_field, fields=[]):
+        self.related_field = related_field
+        self.fields = fields
+
+    def as_list(self, instance):
+        relatedfield = getattr(instance, self.related_field)
+        qry = relatedfield.values(*self.fields)
+        return [x for x in qry]
 
 def _is_local_field(fieldname):
-    return not '__' in fieldname
+    return not isinstance(fieldname, OneToMany) and not '__' in fieldname
 
 class FieldSpec(object):
     """

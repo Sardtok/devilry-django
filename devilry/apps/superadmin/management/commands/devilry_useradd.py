@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
 from optparse import make_option
+import sys
 
 from devilry_usermod import UserModCommand
 
@@ -13,14 +14,10 @@ class Command(UserModCommand):
             dest='email',
             default='',
             help='Email address'),
-        make_option('--first_name',
-            dest='first_name',
+        make_option('--full_name',
+            dest='full_name',
             default='',
-            help='First name'),
-        make_option('--last_name',
-            dest='last_name',
-            default='',
-            help='Last name'),
+            help='Full name'),
         make_option('--superuser',
             action='store_true',
             dest='is_superuser',
@@ -34,12 +31,18 @@ class Command(UserModCommand):
         verbosity = int(options.get('verbosity', '1'))
         username = args[0]
         kw = {}
-        for attrname in ('email', 'first_name', 'last_name', 'is_superuser'):
+        for attrname in ('email', 'is_superuser'):
             kw[attrname] = options[attrname]
 
         if User.objects.filter(username=username).count() == 0:
             user = User(username=username, **kw)
             user.set_unusable_password()
             self.save_user(user, verbosity)
+
+            profile = user.get_profile()
+            full_name = options.get('full_name')
+            if full_name:
+                profile.full_name = unicode(full_name, sys.stdin.encoding)
+            self.save_profile(profile)
         else:
             raise CommandError('User "{0}" already exists.'.format(username))
