@@ -13,8 +13,6 @@
         {% if debug %}
         {% endif %}
 
-        <meta charset="utf-8" />
-
         <!-- ** ExtJS ** -->
         <link rel="stylesheet" type="text/css"
                 {# href="{{ DEVILRY_EXTJS_URL }}/resources/css/ext-all.css" /> #}
@@ -65,7 +63,7 @@
         </script>
 
         {% if not debug %}
-            <script type="text/javascript" src="{{ DEVILRY_STATIC_URL }}/devilry_all_uncompiled.js"></script>
+            <!-- <script type="text/javascript" src="{{ DEVILRY_STATIC_URL }}/devilry_all_uncompiled.js"></script> -->
         {% endif %}
 
         <script type="text/javascript">
@@ -74,64 +72,19 @@
                 Ext.require('devilry.extjshelpers.page.Footer');
             {% endblock %}
             {% block appjs %}{% endblock %}
+            Ext.onReady(function() {
+                {% block onready %}
+                    Ext.getBody().mask("Loading page", 'page-load-mask');
+                {% endblock%}
+            });
         </script>
+
+        {% block headextra %}
+        {% endblock %}
     </head>
 
     <body>
-        <header>
-            <div id="heading">
-                <h1>
-                    {% trans "Trix" %}
-                </h1>
-                <a href="http://devilry.org" id="projectlink">http://devilry.org</a>
-            </div>
-            <div id="version">
-                <span class="text">Version</span>
-                <span class="number">1.0-alpha</span>
-                <span class="codename"> &mdash; Kermit the frog</span>
-            </div>
-
-            <div id='authenticated-user-bar'>
-                {% if user.is_authenticated %}
-                    <span id='authenticated-user-info'>
-                        {{ user.username }}
-                    </span>
-                    | <a id='logout-link' href='{% url logout %}'>{% trans "Log out" %}</a>
-                {% else %}
-                    <a id='logout-link' href='{% url login %}'>{% trans "Log in" %}</a>
-                {% endif %}
-            </div>
-
-            <nav class="{% block nav-class %}{% endblock %}">
-                <ul>
-                  <!--
-                    <li class="student-navitem"><a href="{% url student %}">{% trans "Student" %}</a></li>
-                    <li class="examiner-navitem"><a href="{% url examiner %}">{% trans "Examiner" %}</a></li>
-                    <li class="administrator-navitem"><a href="{% url administrator %}">{% trans "Administrator" %}</a></li>
-                    -->
-                    <li class="trix-navitem"><a href="{% url trix %}">{% trans "Exercises" %}</a></li>
-		    <li class="student-navitem"><a href="{% url profile %}">{% trans "My Statistics" %}</a></li>
-		    {% if user.is_superuser %}
-		        <li class="administrator-navitem"><a href="{% url trixadmin %}">{% trans "Administrator" %}</a></li>
-		    {% endif %}
-		  </ul>
-            </nav>
-        </header>
-
-        <div id="topwrapper">
-          {% block top %}{{ page_top }}{% endblock %}
-        </div>
-
-        <div id="mainwrapper">
-        <div id="main">
-            {% block main %}{{ page_main }}{% endblock %}
-        </div>
-        </div id="mainwrapper">
-
-        <footer>
-            <a href='http://devilry.org'>Devilry</a> is an open source
-            general purpose delivery system.<br />
-            Fugue key icon by <a href="http://p.yusukekamiyamane.com/">Yusuke Kamiyamane</a>.
-        </footer>
+      {% block bodyContent %}
+      {% endblock %}
     </body>
 </html>

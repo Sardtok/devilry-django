@@ -1,6 +1,31 @@
 {% extends "trix/trixadmin/base.django.html" %}
 {% load extjs %}
 {% load i18n %}
+
+{% block imports %}
+    {{ block.super }}
+    Ext.require('devilry.extjshelpers.PermissionChecker');
+    Ext.require('devilry.examiner.ActiveAssignmentsView');
+    Ext.require('devilry.administrator.DashboardButtonBar');
+{% endblock %}
+
+{% block appjs %}
+    {{ block.super }}
+
+    {{ restfulapi.RestfulSimplifiedNode|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedSubject|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
+    {{ }};
+
+    var nodestore = {{ restfulapi.RestfulSimplifiedNode|extjs_store }};
+    var subjectstore = {{ restfulapi.RestfulSimplifiedSubject|extjs_store }};
+    var periodstore = {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
+    nodestore.pageSize = 1;
+    subjectstore.pageSize = 1;
+    periodstore.pageSize = 1;
+    var is_superuser = {{ user.is_superuser|lower }};
+{% endblock %}
+
 {% block headextra %}
 {{ block.super }}
 

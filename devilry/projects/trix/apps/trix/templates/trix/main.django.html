@@ -38,7 +38,6 @@
   {% endfor %}
 </script>
 <script src="{{DEVILRY_STATIC_URL}}/trix/setstatus.js"></script>
-<script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
 
 <script type="text/javascript">
   // Models
@@ -63,90 +62,106 @@
 </script>
 {% endblock %}
 
-{% block top %}
+{% block onready %}
+    Ext.getBody().unmask();
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        style: 'background-color: transparent',
+        items: [{
+            region: 'north',
+            xtype: 'pageheader'
+        }, {
+            region: 'south',
+            xtype: 'pagefooter'
+        }, {
+            region: 'center',
+            xtype: 'box',
+            padding: {left: 20, right: 20},
+            html:
+{% comment %}
 {% if user.is_authenticated %}
-<!--
-<div class="levelinfo">
+'<!--' +
+'<div class="levelinfo">'+
   {% include "trix/xpbar.django.html" %}
-  <div>{% trans "Total points" %}:
-    <span id="total_points">{{ level.total_points }}</span>
-  </div>
-</div>
--->
+'  <div>{% trans "Total points" %}:'+
+'    <span id="total_points">{{ level.total_points }}</span>'+
+'  </div>'+
+'</div>'+
+'-->'+
 {% endif %}
+{% endcomment %}
 
 {% if topics %}
-<div class="topics">{% trans "Topics" %}:
+'<div class="topics">{% trans "Topics" %}:' +
   {% for id, topic in topics.items %}
-  <a href="/trix/topic/{{ id }}">{{ topic.name }}</a>
+'  <a href="/trix/topic/{{ id }}">{{ topic.name }}</a>' +
   {% endfor %}
-</div>
+'</div>' +
 {% endif %}
 
 {% if prerequisites %}
-<div class="topics">{% trans "Prerequisites" %}:
+'<div class="topics">{% trans "Prerequisites" %}:' +
   {% for id, prerequisite in prerequisites.items %}
-  <a href="/trix/topic/{{ id }}">{{ prerequisite.name }}</a>
-  {% endfor %}</div>
+'  <a href="/trix/topic/{{ id }}">{{ prerequisite.name }}</a>' +
+  {% endfor %}
+'</div>' +
 {% endif %}
 
-<div id="perioddropdown"></div>
-{% endblock %}
-{% block main %}
+'<div id="perioddropdown"></div>'
 {% for p, p_excs in exercises.items %}
-<table class="exercises">
-  <caption>{{ p.long_name }}</caption>{% comment %}
-  <thead>
-    <tr>
-      <th
-         {% if statuses %}class="maincol"{% endif %}
-         >{% trans "Exercise" %}</th>
++ '<table class="exercises">' +
+'  <caption>{{ p.long_name }}</caption>{% comment %}' +
+'  <thead>' +
+'    <tr>' +
+'      <th' +
+'         {% if statuses %}class="maincol"{% endif %}' +
+'         >{% trans "Exercise" %}</th>' +
       {% if statuses %}
-      <th>{% trans "Status" %}</th>
+'      <th>{% trans "Status" %}</th>' +
       {% comment %}
       {% for status in statuses %}
-      <th class="statusbutton">{{ status.name }}</th>
+'      <th class="statusbutton">{{ status.name }}</th>' +
       {% endfor %}
-      <th class="statusbutton">{% trans "Unsolved" %}</th>
+'      <th class="statusbutton">{% trans "Unsolved" %}</th>' +
       {% endcomment %}{% comment %}
       {% endif %}
-    </tr>
-  </thead>{% endcomment %}
-  <tbody>
+'    </tr>' +
+'  </thead>{% endcomment %}' +
+'  <tbody>' +
     
     {% for e in p_excs.values %}
-    <tr>
-      <td {% if statuses %} class="maincol">
-        <a class="dispexc" href="javascript:void(0)" onClick="toggleExc(this)">
+'    <tr>' +
+'      <td {% if statuses %} class="maincol">' +
+'        <a class="dispexc" href="javascript:void(0)" onClick="toggleExc(this)">' +
           {% if e.status == -1 %}
-          {% trans "Hide exercise" %}
+'          {% trans "Hide exercise" %}' +
           {% else %}
-          {% trans "Show exercise" %}
+'          {% trans "Show exercise" %}' +
           {% endif %}
-        </a>
+'        </a>' +
         {% else %}>
         {% endif %}
-        <h3>
-          {{ e.number }}.&nbsp;{% if e.starred %}<img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />&nbsp;{% endif %}{{ e.title }}
+'        <h3>' +
+'          {{ e.number }}.&nbsp;{% if e.starred %}<img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />&nbsp;{% endif %}{{ e.title }}' +
           {% autoescape off %}
-          &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "points" %}</h3>
-        <div class="exctext" {% if statuses and e.status != -1 %}
-             style="display: none"{% endif %}>{{ e.text }}</div>
+'          &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "points" %}</h3>' +
+'        <div class="exctext" {% if statuses and e.status != -1 %}' +
+'             style="display: none"{% endif %}>{{ e.text }}</div>' +
         {% endautoescape %}
-      </td>
+'      </td>' +
       {% if statuses %}
-      <td class="statusbutton">
-        <div class="choices" {% if e.status != -1 %}style="display: none;"{% endif %}>{% for status in statuses %}<a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, {{status.id}})">{{status.name}}</a>&nbsp;{% endfor %}</div>
-        <div class="status" {% if e.status == -1 %}style="display: none;"{% endif %}>{{ e.status_name }} - <a href="javascript:void(0)" onclick="showChoices(this)">{% trans "Change status" %}</a> <a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, '-1')">{% trans "Reset status" %}</a></div>
-      </td>
+'      <td class="statusbutton">' +
+'        <div class="choices" {% if e.status != -1 %}style="display: none;"{% endif %}>{% for status in statuses %}<a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, {{status.id}})">{{status.name}}</a>&nbsp;{% endfor %}</div>' +
+'        <div class="status" {% if e.status == -1 %}style="display: none;"{% endif %}>{{ e.status_name }} - <a href="javascript:void(0)" onclick="showChoices(this)">{% trans "Change status" %}</a> <a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, '-1')">{% trans "Reset status" %}</a></div>' +
+'      </td>' +
       {% endif %}
-    </tr>
+'    </tr>' +
     {% endfor %}
-  </tbody>
-</table>
+'  </tbody>' +
+'</table>'
 {% endfor %}
-
-<script type="text/javascript">
+        }]
+    });
   Ext.create('devilry.extjshelpers.formfields.ForeignKeySelector', {
   fieldLabel: '{% trans "View period" %}',
   model: {{ RestfulSimplifiedPeriod|extjs_modelname }},
@@ -157,5 +172,6 @@
   document.location.href=("/trix/period/" + record.data.id);
   }
   });
-</script>
+{% endblock %}
+{% block bodyContent %}
 {% endblock %}
