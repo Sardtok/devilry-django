@@ -69,10 +69,11 @@
         style: 'background-color: transparent',
         items: [{
             region: 'north',
-            xtype: 'pageheader'
+            xtype: 'trixheader',
+            navclass: 'student'
         }, {
             region: 'south',
-            xtype: 'pagefooter'
+            xtype: 'trixfooter'
         }, {
             region: 'center',
             xtype: 'box',
@@ -139,7 +140,7 @@
 '          {% trans "Show exercise" %}' +
           {% endif %}
 '        </a>' +
-        {% else %}>
+        {% else %}>' +
         {% endif %}
 '        <h3>' +
 '          {{ e.number }}.&nbsp;{% if e.starred %}<img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />&nbsp;{% endif %}{{ e.title }}' +

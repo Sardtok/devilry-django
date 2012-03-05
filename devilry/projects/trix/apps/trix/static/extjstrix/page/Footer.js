@@ -1,9 +1,9 @@
-Ext.define('devilry.extjshelpers.page.Footer', {
+Ext.define('trix.page.Footer', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.pagefooter',
+    alias: 'widget.trixfooter',
     border: false,
     margins: '0 0 0 0',
-    height: 30,
+    height: 50,
 
     html: Ext.create('Ext.XTemplate',
         '<div class="footer">',

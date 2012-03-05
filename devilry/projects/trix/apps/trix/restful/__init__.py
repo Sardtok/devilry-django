@@ -7,4 +7,8 @@ from status import RestfulSimplifiedStatus
 from exercisestatus import RestfulSimplifiedExerciseStatus
 from period import RestfulSimplifiedPeriod
 from periodstats import RestfulPeriodStatistics
+from node import RestfulSimplifiedNode
+from subject import RestfulSimplifiedSubject
 from topicstats import RestfulTopicStatistics
+
+__all__ = ('RestfulSimplifiedNode', 'RestfulSimplifiedTopic', 'RestfulSimplifiedExercise', 'RestfulSimplifiedPeriod', 'RestfulSimplifiedPeriodExercise', 'RestfulSimplifiedSubject')

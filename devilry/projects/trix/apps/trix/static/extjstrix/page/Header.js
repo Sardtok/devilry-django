@@ -1,6 +1,6 @@
 Ext.define('trix.page.Header', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.pageheader',
+    alias: 'widget.trixheader',
     bodyStyle: 'background-color: transparent !important',
     border: false,
     margins: '0 0 0 0',
@@ -25,8 +25,8 @@ Ext.define('trix.page.Header', {
         '    </div>',
         '    <div class="nav {navclass}">',
         '        <ul>',
-        '            <li class="trix-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/">Trix</a></li>',
-        '            <li class="student-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/profile/">My Statistics</a></li>',
+        '            <li class="student-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/">Trix</a></li>',
+        '            <li class="examiner-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/profile/">My Statistics</a></li>',
         '            <li class="administrator-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/trixadmin/">Administrator</a></li>',
         '        </ul>',
         '    </div>',

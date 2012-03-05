@@ -5,18 +5,22 @@
 {% block imports %}
     {{ block.super }}
     Ext.require('devilry.extjshelpers.PermissionChecker');
-    Ext.require('devilry.examiner.ActiveAssignmentsView');
-    Ext.require('devilry.administrator.DashboardButtonBar');
+    Ext.require('trix.DashboardButtonBar');
 {% endblock %}
 
 {% block appjs %}
     {{ block.super }}
 
+    {{ restfulapi.RestfulSimplifiedExercise|extjs_model }},
+    {{ restfulapi.RestfulSimplifiedTopic|extjs_model }},
+    {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_model }},
     {{ restfulapi.RestfulSimplifiedNode|extjs_model }};
     {{ restfulapi.RestfulSimplifiedSubject|extjs_model }};
     {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
-    {{ }};
-
+ 
+    var exercisestore = {{ restfulapi.RestfulSimplifiedExercise|extjs_store }};
+    var topicstore = {{ restfulapi.RestfulSimplifiedTopic|extjs_store }};
+    var periodexercisestore = {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_store }};
     var nodestore = {{ restfulapi.RestfulSimplifiedNode|extjs_store }};
     var subjectstore = {{ restfulapi.RestfulSimplifiedSubject|extjs_store }};
     var periodstore = {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
@@ -26,118 +30,92 @@
     var is_superuser = {{ user.is_superuser|lower }};
 {% endblock %}
 
-{% block headextra %}
+{% block onready %}
 {{ block.super }}
 
-<script>
-    Ext.require('trix.DefaultEditWindow');
-    Ext.require('devilry.extjshelpers.RestfulSimplifiedEditPanel');
-    Ext.require('devilry.extjshelpers.ButtonBarButton');
-    Ext.require('devilry.extjshelpers.ButtonBar');
-    Ext.require('trix.forms.Exercise');
-    Ext.require('trix.forms.Topic');
-    Ext.require('trix.forms.PeriodExercise');
 
-    {{ RestfulSimplifiedExercise|extjs_model }},
-    {{ RestfulSimplifiedTopic|extjs_model }},
-    {{ RestfulSimplifiedPeriodExercise|extjs_model }},
-    {{ RestfulSimplifiedPeriod|extjs_model }};
+    var dashboard_periodmodel = {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }}
+    var permchecker = Ext.create('devilry.extjshelpers.PermissionChecker', {
+        stores: [nodestore, subjectstore, periodstore],
+        //renderTo: 'no-permissions-message',
+        emptyHtml: '<div class="section info-small extravisible-small"><h1>{{ DEVILRY_ADMINISTRATOR_NO_PERMISSION_MSG.title }}</h1>' +
+            '<p>{{ DEVILRY_ADMINISTRATOR_NO_PERMISSION_MSG.body }}</p></div>',
+        listeners: {
+            allLoaded: function(loadedItems, loadedWithRecords) {
+                Ext.getBody().unmask();
+/*                if(is_superuser || loadedWithRecords > 0) {
+                    var activePeriodsView = Ext.create('devilry.extjshelpers.ActivePeriodsGrid', {
+                        model: dashboard_periodmodel,
+                        dashboard_url: DASHBOARD_URL
+                    });
+                    Ext.getCmp('active-periods').add(activePeriodsView);
 
-    var exercisestore = {{ RestfulSimplifiedExercise|extjs_store }};
-    var topicstore = {{ RestfulSimplifiedTopic|extjs_store }};
-    var periodexercisestore = {{ RestfulSimplifiedPeriodExercise|extjs_store }};
-    var periodstore = {{ RestfulSimplifiedPeriod|extjs_store }};
+                    //searchwidget.show();
+                }*/
+            }
+        }
+    });
 
 
-    Ext.onReady(function(){
-        Ext.create('devilry.extjshelpers.ButtonBar', {
-            renderTo: 'createbuttonbar',
-            width: 600,
-            items: [{
-                xtype: 'buttonbarbutton',
-                text: '{% trans "Topic" %}',
-                iconCls: 'icon-add-32',
-                store: periodstore,
-                tooltipCfg: {
-                    title: '<span class="tooltip-title-current-item">{% trans "Topic" %}</span> &rArr; {% trans "Exercise" %} &rArr; {% trans "Link exercise and period" %}',
-                    body: "{% trans "A topic for exercise's topics and prerequisites." %}"
+    var buttonbar = Ext.create('trix.DashboardButtonBar', {
+        node_modelname: {{ restfulapi.RestfulSimplifiedNode|extjs_modelname }},
+        subject_modelname: {{ restfulapi.RestfulSimplifiedSubject|extjs_modelname }},
+        period_modelname: {{ restfulapi.RestfulSimplifiedPeriod|extjs_modelname }},
+        topic_modelname:  {{ restfulapi.RestfulSimplifiedTopic|extjs_modelname }},
+        exercise_modelname:  {{ restfulapi.RestfulSimplifiedExercise|extjs_modelname }},
+        periodexercise_modelname:  {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_modelname }},
+        is_superuser: is_superuser,
+        nodestore: nodestore,
+        subjectstore: subjectstore,
+        periodstore: periodstore,
+        topicstore: topicstore,
+        exercisestore: exercisestore,
+        periodexercisestore: periodexercisestore
+    });
+
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        style: 'background-color: transparent',
+        items: [{
+            region: 'north',
+            xtype: 'trixheader',
+            navclass: 'administrator'
+        }, {
+            region: 'south',
+            xtype: 'trixfooter'
+        }, {
+            region: 'center',
+            xtype: 'container',
+            border: false,
+            padding: {left: 20, right: 20},
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            items: [/*searchwidget, {xtype:'box', height: 20}, permchecker,*/ buttonbar/*, {
+                xtype: 'container',
+                flex: 1,
+                layout: {
+                    type: 'hbox',
+                    align: 'stretch'
                 },
-                handler: function() {
-                    Ext.create('trix.DefaultEditWindow', {
-                        title: '{% trans "Create new topic" %}',
-                        editpanel: Ext.ComponentManager.create({
-                            xtype: 'restfulsimplified_editpanel',
-                            model: {{ RestfulSimplifiedTopic|extjs_modelname }},
-                            editform: Ext.widget('administrator_topicform')
-                        }),
-                        successUrlTpl: Ext.create('Ext.XTemplate', '')
-                    }).show();
-                }
-            }, {
-                xtype: 'buttonbarbutton',
-                text: '{% trans "Exercise" %}',
-                iconCls: 'icon-add-32',
-                store: periodstore,
-                tooltipCfg: {
-                    title: '{% trans "Topic" %} &rArr; <span class="tooltip-title-current-item">{% trans "Exercise" %}</span> &rArr; {% trans "Link exercise and period" %}',
-                    body: '{% trans "An exercise that goes in the exercise database." %}'
-                },
-                handler: function() {
-                    Ext.create('trix.DefaultEditWindow', {
-                        title: '{% trans "Create new exercise" %}',
-                        editpanel: Ext.ComponentManager.create({
-                            xtype: 'restfulsimplified_editpanel',
-                            model: {{ RestfulSimplifiedExercise|extjs_modelname }},
-                            editform: Ext.widget('administrator_exerciseform')
-                        }),
-                        successUrlTpl: Ext.create('Ext.XTemplate', '')
-                    }).show();
-                }
-            },  {
-                xtype: 'buttonbarbutton',
-                text: '{% trans "Link exercise and period" %}',
-                iconCls: 'icon-add-32',
-                store: periodstore,
-                tooltipCfg: {
-                    title: '{% trans "Topic" %} &rArr; {% trans "Exercise" %} &rArr; <span class="tooltip-title-current-item">{% trans "Link exercise and period" %}</span>',
-                    body: '{% trans "Link an exercise and a period." %}'
-                },
-                handler: function() {
-                    Ext.create('trix.DefaultEditWindow', {
-                        title: '{% trans "Add exercise to period" %}',
-                        editpanel: Ext.ComponentManager.create({
-                            xtype: 'restfulsimplified_editpanel',
-                            model: {{ RestfulSimplifiedPeriodExercise|extjs_modelname }},
-                            editform: Ext.widget('administrator_periodexerciseform')
-                        }),
-                        successUrlTpl: Ext.create('Ext.XTemplate', '')
-                    }).show();
-                }
-            }]
-        });
+                items: [{
+                    xtype: 'panel',
+                    flex: 3,
+                    layout: 'fit',
+                    border: false,
+                    id: 'active-periods'
+                }]
+            }*/]
+        }]
+    });
+
+    nodestore.load();
+    subjectstore.load();
     periodstore.load();
-    Ext.QuickTips.init();
-});
-</script>
-<script type="text/javascript">
-  Ext.create('devilry.extjshelpers.formfields.ForeignKeySelector', {
-  fieldLabel: '{% trans "View period" %}',
-  model: {{ RestfulSimplifiedPeriod|extjs_modelname }},
-  renderTo: 'perioddropdown',
-  displayTpl: '{long_name}',
-  dropdownTpl: '{long_name}',
-  setRecordValue: function(record) {
-  document.location.href=("/trix/trixadmin/period/" + record.data.id);
-  }
-  });
-</script>
+    topicstore.load();
+    exercisestore.load();
+    periodexercisestore.load();
+
 {% endblock %}
 
-{% block onready %}
-{% endblock %}
-
-{% block bodyContent %}
-<div id="perioddropdown"></div>
-
-<div id="createbuttonbar"></div>
-{% endblock %}

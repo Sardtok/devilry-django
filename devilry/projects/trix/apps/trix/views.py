@@ -4,10 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 
+from devilry.utils.module import dump_all_into_dict
 from devilry.apps.core.models import Period
 from trix.apps.trix.models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
 
-from restful import RestfulSimplifiedExercise, RestfulSimplifiedPeriodExercise, RestfulSimplifiedStatus, RestfulSimplifiedExerciseStatus, RestfulSimplifiedTopic, RestfulSimplifiedPeriod, RestfulPeriodStatistics, RestfulTopicStatistics
+import restful
 
 def get_level(points=0):
     """
@@ -133,13 +134,13 @@ def main(request, period_id=-1, topic_id=-1):
                    'prerequisites': prerequisites,
                    'topicstats': topicstats,
                    'level': get_level(get_points(request.user)),
-                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
-                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
-                   'RestfulSimplifiedStatus': RestfulSimplifiedStatus,
-                   'RestfulSimplifiedExerciseStatus': RestfulSimplifiedExerciseStatus,
-                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
-                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod,
-                   'RestfulPeriodStatistics': RestfulPeriodStatistics})
+                   'RestfulSimplifiedExercise': restful.RestfulSimplifiedExercise,
+                   'RestfulSimplifiedPeriodExercise': restful.RestfulSimplifiedPeriodExercise,
+                   'RestfulSimplifiedStatus': restful.RestfulSimplifiedStatus,
+                   'RestfulSimplifiedExerciseStatus': restful.RestfulSimplifiedExerciseStatus,
+                   'RestfulSimplifiedTopic': restful.RestfulSimplifiedTopic,
+                   'RestfulSimplifiedPeriod': restful.RestfulSimplifiedPeriod,
+                   'RestfulPeriodStatistics': restful.RestfulPeriodStatistics})
 
 #                  {'exercises': Period.objects.all().exercises.all()})
 
@@ -169,11 +170,8 @@ def administrator(request):
     """
     Administrator page showing the administrator interface
     """
-    return render(request, 'trix/trixadmin/main.django.html',
-                  {'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
-                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
-                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
-                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod })
+    return render(request, 'trix/trixadmin/main.django.js',
+                  {'restfulapi': dump_all_into_dict(restful)})
 
 def periodadmin(request, period_id=-1):
     """
@@ -198,10 +196,10 @@ def periodadmin(request, period_id=-1):
                    'exercises': exercises,
                    'topics': topics,
                    'prerequisites': prerequisites,
-                   'RestfulSimplifiedTopic': RestfulSimplifiedTopic,
-                   'RestfulSimplifiedExercise': RestfulSimplifiedExercise,
-                   'RestfulSimplifiedPeriodExercise': RestfulSimplifiedPeriodExercise,
-                   'RestfulSimplifiedPeriod': RestfulSimplifiedPeriod}
+                   'RestfulSimplifiedTopic': restful.RestfulSimplifiedTopic,
+                   'RestfulSimplifiedExercise': restful.RestfulSimplifiedExercise,
+                   'RestfulSimplifiedPeriodExercise': restful.RestfulSimplifiedPeriodExercise,
+                   'RestfulSimplifiedPeriod': restful.RestfulSimplifiedPeriod}
                   )
 
 @login_required
