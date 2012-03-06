@@ -65,7 +65,7 @@ Ext.define('trix.DashboardButtonBar', {
                 store: this.nodestore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Node &rArr; <span class="tooltip-title-current-item">Subject</span> &rArr; Period &rArr; Assignment',
+                    title: 'Node &rArr; <span class="tooltip-title-current-item">Subject</span> &rArr; Period',
                     body: 'A Subject is often also called a course.'
                 },
                 handler: function() {
@@ -85,7 +85,7 @@ Ext.define('trix.DashboardButtonBar', {
                 store: this.subjectstore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Node &rArr; Subject &rArr; <span class="tooltip-title-current-item">Period</span> &rArr; Assignment',
+                    title: 'Node &rArr; Subject &rArr; <span class="tooltip-title-current-item">Period</span>',
                     body: 'A Period is a limited period in time, such as a semester.'
                 },
                 handler: function() {
@@ -105,8 +105,8 @@ Ext.define('trix.DashboardButtonBar', {
                 store: this.periodstore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Node &rArr; Subject &rArr; Period &rArr; <span class="tooltip-title-current-item">Assignment</span>',
-                    body: 'An Assignment, such as an obligatory assignment, an anoymous home examination or a semester assignment.'
+                    title: '<span class="tooltip-title-current-item">Topic</span> &rArr; Exercise &rArr; Link exercise to period',
+                    body: 'An exercise topic, e.g. Dynamic programming, pointers, or inheritance.'
                 },
                 handler: function() {
                     Ext.create('trix.DefaultEditWindow', {
@@ -124,8 +124,8 @@ Ext.define('trix.DashboardButtonBar', {
                 store: this.periodstore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Node &rArr; Subject &rArr; Period &rArr; <span class="tooltip-title-current-item">Assignment</span>',
-                    body: 'An Assignment, such as an obligatory assignment, an anoymous home examination or a semester assignment.'
+                    title: 'Topic &rArr; <span class="tooltip-title-current-item">Exercise</span> &rArr; Link exercise to period',
+                    body: 'An exercise that a student should complet to learn more about one or more topics.'
                 },
                 handler: function() {
                     Ext.create('trix.DefaultEditWindow', {
@@ -143,8 +143,8 @@ Ext.define('trix.DashboardButtonBar', {
                 store: this.exercisestore,
                 iconCls: 'icon-add-32',
                 tooltipCfg: {
-                    title: 'Node &rArr; Subject &rArr; Period &rArr; <span class="tooltip-title-current-item">Assignment</span>',
-                    body: 'An Assignment, such as an obligatory assignment, an anoymous home examination or a semester assignment.'
+                    title: 'Topic &rArr; Exercise &rArr; <span class="tooltip-title-current-item">Link exercise to period</span>',
+                    body: 'Lets you set an exercise to be given in a certain period.'
                 },
                 handler: function() {
                     Ext.create('trix.DefaultEditWindow', {
