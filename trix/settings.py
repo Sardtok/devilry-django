@@ -46,7 +46,7 @@ ADMINS = (
     )
 MANAGERS = ADMINS
 MEDIA_ROOT = join(this_dir, "filestore")
-ROOT_URLCONF = 'devilry.projects.trix.urls'
+ROOT_URLCONF = 'trix.urls'
 
 DEVILRY_SEND_EMAIL_TO_USERS = False
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
@@ -60,7 +60,7 @@ DELIVERY_STORE_ROOT = join(this_dir, 'deliverystore')
 
 
 MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [
-    'devilry.projects.trix.logexceptionsmiddleware.TracebackLoggingMiddleware',
+    'trix.logexceptionsmiddleware.TracebackLoggingMiddleware',
     #'devilry.utils.profile.ProfilerMiddleware' # Enable profiling. Just add ?prof=yes to any url to see a profile report
     ]
 
@@ -75,7 +75,7 @@ LOGGING = {
             }
         },
     'loggers': {
-        'devilry.projects.trix.logexceptionsmiddleware': {
+        'trix.logexceptionsmiddleware': {
             'handlers': ['console'],
             'level': 'DEBUG'
             }

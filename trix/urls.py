@@ -9,7 +9,7 @@ from devilry.defaults.urls import devilry_urls
 
 js_info_dict = {
     'domain': 'djangojs',
-    'packages': ('devilry.projects.trix',),
+    'packages': ('trix',),
 }
 
 class RedirectToFrontpage(View):
@@ -19,7 +19,7 @@ class RedirectToFrontpage(View):
 
 urlpatterns = patterns('',
                        # Custom urls for this project
-                       (r'^trix/', include('devilry.projects.trix.apps.trix.urls')),
+                       (r'^trix/', include('trix.apps.trix.urls')),
                        (r'^$', RedirectToFrontpage.as_view()),
                        (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
                        # Add the default Devilry urls
