@@ -7,8 +7,9 @@
 {% block nav-class %}trix{% endblock %}
 
 {% block headextra %}
-<link rel="stylesheet" media="print"
-      href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
+<link rel="stylesheet" href="{{DEVILRY_STATIC_URL }}/trix/print.css"
+      type="text/css" media="print" charset="utf-8"/>
+
 <script type="text/javascript">
   toggleExc = function(link) {
     elem = link;

@@ -9,6 +9,8 @@
 
         <link rel="stylesheet" href="{{DEVILRY_THEME_URL }}/common.css"
             type="text/css" media="screen" charset="utf-8"/>
+        <link rel="stylesheet" href="{{DEVILRY_STATIC_URL }}/trix/style.css"
+            type="text/css" media="screen" charset="utf-8"/>
 
         {% if debug %}
         {% endif %}
@@ -17,7 +19,6 @@
         <link rel="stylesheet" type="text/css"
                 {# href="{{ DEVILRY_EXTJS_URL }}/resources/css/ext-all.css" /> #}
                 href="{{ DEVILRY_EXTJS_URL }}/resources/css/ext-all-gray.css" />
-        <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
 
         <script type="text/javascript" src="{% url django.views.i18n.javascript_catalog %}"></script>
         <script type="text/javascript" src="{{ DEVILRY_EXTJS_URL }}/ext-all-debug.js"></script>
