@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django import http
 from django.core.urlresolvers import reverse
@@ -18,7 +19,7 @@ class LoginForm(forms.Form):
             required=False)
     password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
 
-class RegisterForm(auth.forms.UserCreationForm):
+class RegisterForm(UserCreationForm):
     email = forms.EmailField()
 
 def login(request):
