@@ -139,8 +139,7 @@ def main(request, period_id=-1, topic_id=-1):
                    'RestfulSimplifiedStatus': restful.RestfulSimplifiedStatus,
                    'RestfulSimplifiedExerciseStatus': restful.RestfulSimplifiedExerciseStatus,
                    'RestfulSimplifiedTopic': restful.RestfulSimplifiedTopic,
-                   'RestfulSimplifiedPeriod': restful.RestfulSimplifiedPeriod,
-                   'RestfulPeriodStatistics': restful.RestfulPeriodStatistics})
+                   'RestfulSimplifiedPeriod': restful.RestfulSimplifiedPeriod})
 
 #                  {'exercises': Period.objects.all().exercises.all()})
 
