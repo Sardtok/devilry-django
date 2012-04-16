@@ -153,8 +153,8 @@
 '      </td>' +
       {% if statuses %}
 '      <td class="statusbutton">' +
-'        <div class="choices" {% if e.status != -1 %}style="display: none;"{% endif %}>{% for status in statuses %}<a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, {{status.id}})">{{status.name}}</a>&nbsp;{% endfor %}</div>' +
-'        <div class="status" {% if e.status == -1 %}style="display: none;"{% endif %}>{{ e.status_name }} - <a href="javascript:void(0)" onclick="showChoices(this)">{% trans "Change status" %}</a> <a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, '-1')">{% trans "Reset status" %}</a></div>' +
+'        <div class="choices" {% if e.status != -1 %}style="display: none;"{% endif %}>{% for status in statuses %}<a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, {{status.id}})">{{status.name|escapejs}}</a>&nbsp;{% endfor %}</div>' +
+'        <div class="status" {% if e.status == -1 %}style="display: none;"{% endif %}>{{ e.status_name }} - <a href="javascript:void(0)" onclick="showChoices(this)">{% trans "Change status" %}</a> <a href="javascript:void(0)" onclick="setStatus(this, {{e.id}}, \'-1\')">{% trans "Reset status" %}</a></div>' +
 '      </td>' +
       {% endif %}
 '    </tr>' +
