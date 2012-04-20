@@ -1,24 +1,40 @@
 {% extends "trix/base.django.html" %}
-
+{% load extjs %}
 {% load i18n %}
 
-{% load extjs %}
-
-{% block title %}Profile{% endblock %}
+{% block title %}{% trans "Profile" %}{% endblock %}
 
 {% block nav-class %}student{% endblock %}
 
 {% block headextra %}
-  <link rel="stylesheet" href="{{ DEVILRY_STATIC_URL }}/trix/style.css" />
-  <link rel="stylesheet" media="print"
-        href="{{ DEVILRY_STATIC_URL }}/trix/print.css" />
-
-  <script type="text/javascript"src="{{DEVILRY_STATIC_URL}}/extjstrix/profilestats.js"></script>
+<link rel="stylesheet" href="{{DEVILRY_STATIC_URL }}/trix/print.css"
+      type="text/css" media="print" charset="utf-8"/>
   <script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/Barchart.js"></script>
+{% endblock %}
+{% block onready %}
+    Ext.getBody().unmask();
+
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        style: 'background-color: transparent',
+        items: [{
+            region: 'north',
+            xtype: 'trixheader',
+            navclass: 'student'
+        }, {
+            region: 'south',
+            xtype: 'trixfooter'
+        }, {
+            region: 'center',
+            xtype: 'trixchart'
+        }]
+    });
+{% endblock %}
+{% block bodyContent %}
 {% endblock %}
 
-{% block top %}
-
+{% comment %}
 <div class="stats">
 <div id="grid" class="grid">
   <strong>Tabell</strong><br />
@@ -65,3 +81,4 @@
 -->
 
 {% endblock %}
+{% endcomment %}
