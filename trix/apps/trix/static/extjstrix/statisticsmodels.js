@@ -58,3 +58,6 @@ Ext.create('Ext.data.Store', {
     remoteSort: true,
     autoSync: true
 });
+
+var topicstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
+var periodstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.periodstats.RestfulPeriodStatisticsStore').load();

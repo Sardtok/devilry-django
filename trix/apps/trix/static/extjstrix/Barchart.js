@@ -1,5 +1,3 @@
-var topicstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.topicstats.RestfulTopicStatisticsStore').load();
-var periodstore = Ext.data.StoreManager.lookup('trix.apps.trix.restful.periodstats.RestfulPeriodStatisticsStore').load();
 var baseColor = '#eee';
 var colors = ['#77B300',
 	      '#0077B3',
@@ -99,39 +97,43 @@ function getPercentageBarChart(id, title, x_title, x_field, y_title, y_field, mo
     }
 }
 
+/**
+ * Theme to color bars and make them bounce.
+ */
 Ext.define('Ext.chart.theme.Fancy', {
     extend: 'Ext.chart.theme.Base',
     
     constructor: function(config) {
-        this
-            .callParent([Ext.apply({
-                axis: {
-                    fill: this.baseColor,
-                    stroke: this.base
-                },
-                axisLabelLeft: {
-                    fill: this.baseColor
-                },
-                axisLabelBottom: {
-                    fill: this.baseColor
-                },
-                axisTitleLeft: {
-                    fill: this.baseColor
-                },
-                axisTitleBottom: {
-                    fill: this.baseColor
-                },
-                colors: this.colors
-            }, config)]);
+        this.callParent([Ext.apply({
+            axis: {
+                fill: baseColor,
+                stroke: baseColor
+            },
+            axisLabelLeft: {
+                fill: baseColor
+            },
+            axisLabelBottom: {
+                fill: baseColor
+            },
+            axisTitleLeft: {
+                fill: baseColor
+            },
+            axisTitleBottom: {
+                fill: baseColor
+            },
+            colors: colors
+        }, config)]);
     }
 });
 
+/**
+ * A bar chart for periods and topics.
+ */
 Ext.define('trix.Barchart', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.trixchart',
     title: gettext('Statistics'),
     layout: 'fit',
-    margins: '0 0 0 0',
     autoHeight: true,
 
     items: [{
@@ -139,6 +141,8 @@ Ext.define('trix.Barchart', {
 	title: gettext('Periods'),
 	plain: true,
 	padding: 3,
+        autoHeight: true,
+        layout: 'fit',
 	//id: 'periods',
 	items: [
 	    getPercentageBarChart('exercise_period', gettext('Effort'), gettext('Period'), 'long_name', gettext('Exercises'), 'done_percent', 'exercises_done', 'exercises', gettext(' exercises done'), periodstore),
