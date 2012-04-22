@@ -11,6 +11,10 @@
       type="text/css" media="print" charset="utf-8"/>
   <script src="{{DEVILRY_STATIC_URL}}/extjstrix/statisticsmodels.js"></script>
   <script src="{{DEVILRY_STATIC_URL}}/extjstrix/Barchart.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/Periodgrid.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/Topicgrid.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/StatisticsTable.js"></script>
+  <script src="{{DEVILRY_STATIC_URL}}/extjstrix/StatisticsPanel.js"></script>
 {% endblock %}
 {% block onready %}
     Ext.getBody().unmask();
@@ -27,7 +31,7 @@
             xtype: 'trixfooter'
         }, {
             region: 'center',
-            xtype: 'trixchart'
+            xtype: 'trixstats',
         }]
     });
 {% endblock %}
