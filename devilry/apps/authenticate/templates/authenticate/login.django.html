@@ -1,5 +1,4 @@
 {% extends "theme/common.django.html" %}
-{% load i18n %}
 
 {% block title %}Log in{% endblock %}
 
@@ -22,27 +21,14 @@
                 {% if login_failed %}
                     '<p class="error">Invalid username or password.</p>' +
                 {% endif %}
-
-                {% if not register %}
                 '<form method="post" action="{% url login %}">' +
-                '  <table>' +
-		'    {{ form.as_table|escapejs}}' +
-                '  </table>' +
-                '  <p>' +
-                '    <input type="submit" name="login" value="{% trans "Log in" %}"/>' +
-                '    <input type="submit" name="registerlink" formaction="{% url register %}" value="{% trans "New User" %}" />' +
-                '  </p>' +
+                '    <table>' +
+                '    {{ form.as_table|escapejs }}' +
+                '    </table>' +
+                '    <p>' +
+                '       <input type="submit" name="login" value="Log in"/>' +
+                '    </p>' +
                 '</form>'
-                {% else %}
-                '<form method="post" action="{% url register %}">' +
-                '  <table>' +
-		'    {{ form.as_table|escapejs}}' +
-                '  </table>' +
-                '  <p>' +
-                '    <input type="submit" name="new_user" value="{% trans "Make new user" %}"/>' +
-                '  </p>' +
-                '</form>'
-                {% endif %}
         }]
     });
 {% endblock %}
