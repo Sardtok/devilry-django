@@ -6,6 +6,9 @@ from django.db.models import Q
 from model_utils import Etag
 from abstract_is_admin import AbstractIsAdmin
 from node import Node
+from devilryuserprofile import DevilryUserProfile
+
+
 
 class Candidate(models.Model, Etag, AbstractIsAdmin):
     """
@@ -35,7 +38,7 @@ class Candidate(models.Model, Etag, AbstractIsAdmin):
     assignment_group = models.ForeignKey('AssignmentGroup',
                                          related_name='candidates')
 
-    candidate_id = models.CharField(max_length=30, blank=True, null=True)
+    candidate_id = models.CharField(max_length=30, blank=True, null=True, help_text='An optinal candidate id. This can be anything as long as it is less than 30 characters.')
     identifier = models.CharField(max_length=30,
                                   help_text='The candidate_id if this is a candidate on an anonymous assignment, and username if not.')
     full_name = models.CharField(max_length=300, blank=True, null=True,
@@ -83,3 +86,15 @@ def sync_candidate_with_user_on_change(sender, **kwargs):
 
 post_save.connect(sync_candidate_with_user_on_change,
                   sender=User)
+
+
+def sync_candidate_with_userprofile_on_change(sender, **kwargs):
+    """
+    Signal handler which is invoked when a DevilryUserProfile is saved.
+    """
+    userprofile = kwargs['instance']
+    for candidate in Candidate.objects.filter(student=userprofile.user):
+        candidate.save()
+
+post_save.connect(sync_candidate_with_userprofile_on_change,
+                  sender=DevilryUserProfile)
