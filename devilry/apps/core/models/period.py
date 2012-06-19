@@ -65,7 +65,7 @@ class Period(models.Model, BaseNode, AbstractIsExaminer, AbstractIsCandidate, Et
         verbose_name = _('Period')
         verbose_name_plural = _('Periods')
         unique_together = ('short_name', 'parentnode')
-        ordering = ['short_name']
+        ordering = ['-end_time', '-start_time', 'short_name']
 
     short_name = ShortNameField()
     long_name = LongNameField()
