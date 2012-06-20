@@ -41,29 +41,40 @@
 <script src="{{DEVILRY_STATIC_URL}}/trix/setstatus.js"></script>
 
 <script type="text/javascript">
+    var DASHBOARD_URL = '{{ DEVILRY_URLPATH_PREFIX }}/trix/';
   // Models
-  {{ RestfulSimplifiedPeriod|extjs_model }};
-  {% comment %}
-  {{ RestfulSimplifiedTopic|extjs_model }};
-  {{ RestfulSimplifiedExercise|extjs_model }};
-  {{ RestfulSimplifiedPeriodExercise|extjs_model }};
-  {{ RestfulSimplifiedStatus|extjs_model }};
-  {{ RestfulSimplifiedExerciseStatus|extjs_model }};
-  {% endcomment %}
+  {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
+  {{ restfulapi.RestfulSimplifiedTopic|extjs_model }};
+{{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_model:"exercise,period" }};
+{% comment %}
+  {{ restfulapi.RestfulSimplifiedExercise|extjs_model }};
+  {{ restfulapi.RestfulSimplifiedStatus|extjs_model }};
+  {{ restfulapi.RestfulSimplifiedExerciseStatus|extjs_model }};
+{% endcomment %}
 
   // Test extjs_store
-  {{ RestfulSimplifiedPeriod|extjs_store }};
-  {% comment %}
-  {{ RestfulSimplifiedTopic|extjs_store }};
-  {{ RestfulSimplifiedStatus|extjs_store }};
-  {{ RestfulSimplifiedExercise|extjs_store }};
-  {{ RestfulSimplifiedPeriodExercise|extjs_store }};
-  {{ RestfulSimplifiedExerciseStatus|extjs_store }};
-  {% endcomment %}
+  {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
+  {{ restfulapi.RestfulSimplifiedTopic|extjs_store }};
+  {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_store }};
+{% comment %}
+  {{ restfulapi.RestfulSimplifiedStatus|extjs_store }};
+  {{ restfulapi.RestfulSimplifiedExercise|extjs_store }};
+  {{ restfulapi.RestfulSimplifiedExerciseStatus|extjs_store }};
+{% endcomment %}
 </script>
 {% endblock %}
 
 {% block onready %}
+    var searchwidget = Ext.create('trix.TrixSearchWidget', {
+    //renderTo: 'searchwidget-container',
+        hidden: true,
+        urlPrefix: DASHBOARD_URL,
+        periodRowTpl: '{{ restfulapi.RestfulSimplifiedPeriod.ExtjsModelMeta.combobox_tpl|escapejs }}',
+        topicRowTpl: '{{ restfulapi.RestfulSimplifiedTopic.ExtjsModelMeta.combobox_tpl|escapejs }}',
+        exerciseRowTpl: '{{ restfulapi.RestfulSimplifiedPeriodExercise.ExtjsModelMeta.combobox_tpl|escapejs }}',
+    });
+    searchwidget.loadInitialValues();
+
     Ext.getBody().unmask();
     Ext.create('Ext.container.Viewport', {
         layout: 'border',
@@ -77,10 +88,20 @@
             xtype: 'trixfooter'
         }, {
             region: 'center',
-            xtype: 'box',
+            xtype: 'container',
+            border: false,
+            region: 'center',
             padding: {left: 20, right: 20},
-            autoScroll: true,
-            html:
+            flex: 2,
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            items: [searchwidget, {xtype: 'box', height: 20}, {
+                xtype: 'box',
+                flex: 1,
+                autoScroll: true,
+                html:
 {% comment %}
 {% if user.is_authenticated %}
 '<!--' +
@@ -113,7 +134,7 @@
 '<div id="perioddropdown"></div>'
 {% for p, p_excs in exercises.items %}
 + '<table class="exercises">' +
-'  <caption>{{ p.long_name|escapejs }}</caption>{% comment %}' +
+'  <caption>{{ p.parentnode.long_name|escapejs }} - {{ p.long_name|escapejs }}</caption>{% comment %}' +
 '  <thead>' +
 '    <tr>' +
 '      <th' +
@@ -163,11 +184,15 @@
 '  </tbody>' +
 '</table>'
 {% endfor %}
+            }]
         }]
     });
+
+  searchwidget.show();
+
   Ext.create('devilry.extjshelpers.formfields.ForeignKeySelector', {
   fieldLabel: '{% trans "View period" %}',
-  model: {{ RestfulSimplifiedPeriod|extjs_modelname }},
+  model: {{ restfulapi.RestfulSimplifiedPeriod|extjs_modelname }},
   renderTo: 'perioddropdown',
   displayTpl: '{long_name}',
   dropdownTpl: '{long_name}',
