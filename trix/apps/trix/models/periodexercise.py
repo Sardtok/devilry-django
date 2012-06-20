@@ -30,8 +30,7 @@ class PeriodExercise(models.Model):
 
     class Meta:
         app_label = 'trix'
-        unique_together = ('period', 'exercise')
-        unique_together = ('period', 'number')
+        unique_together = (('period', 'exercise'), ('period', 'number'))
         ordering = ['number']
 
     period = models.ForeignKey(Period, related_name="exercises",
