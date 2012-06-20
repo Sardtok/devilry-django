@@ -18,5 +18,11 @@ class RestfulSimplifiedPeriodExercise(AuthorizationMixin):
 
     class ExtjsModelMeta:
         combobox_displayfield = 'exercise__long_name'
-        combobox_tpl = ('<div class="important">{exercise__short_name}</div>'
-                        '<div class="unimportant">{exercise__long_name}</div>')
+        combobox_tpl = ('<div class="section popuplistitem">'
+                        '    <p class="path">{period__long_name} - '
+                        '    <tpl for="exercise__topics__name">{.}'
+                        '    <tpl if="xindex &lt; xcound">-</tpl>'
+                        '    </tpl>'
+                        '    </p>'
+                        '    <h1>{exercise__long_name}</h1>'
+                        '</div>')

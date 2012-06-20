@@ -14,4 +14,4 @@ class RestfulSimplifiedTopic(AuthorizationMixin):
 
     class ExtjsModelMeta:
         combobox_displayfield = 'name'
-        combobox_tpl = ('<div class="important">{name}</div>')
+        combobox_tpl = ('<div class="section popuplistitem"><h1>{name}</h1></div>')

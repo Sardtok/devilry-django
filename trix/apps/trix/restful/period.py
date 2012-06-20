@@ -15,8 +15,9 @@ class RestfulSimplifiedPeriod(AuthorizationMixin):
         foreignkey_fields = {'parentnode': RestfulSimplifiedSubject}
 
     class ExtjsModelMeta:
+        combobox_fieldgroups = ['subject']
         combobox_displayfield = 'short_name'
         combobox_tpl = ('<div class="section popuplistitem">'
-                        '    <p class="path">{parentnode__short_name}</div>'
+                        '    <p class="path">{parentnode__long_name}</p>'
                         '    <h1>{long_name:ellipsis(40)}</h1>'
                         '</div>')
