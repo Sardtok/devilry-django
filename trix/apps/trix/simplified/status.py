@@ -15,3 +15,4 @@ class SimplifiedStatus(AuthorizationMixin):
         searchfields = FieldSpec('name',
                                  'active')
         methods = ['read', 'search']
+
