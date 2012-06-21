@@ -65,6 +65,7 @@
 {% endblock %}
 
 {% block onready %}
+{{ block.super }}
     var searchwidget = Ext.create('trix.TrixSearchWidget', {
     //renderTo: 'searchwidget-container',
         hidden: true,
