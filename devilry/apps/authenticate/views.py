@@ -20,6 +20,9 @@ class LoginForm(forms.Form):
 
 def login(request):
     login_failed = False
+    if request.user.is_authenticated():
+        return http.HttpResponseRedirect(next)
+
     if request.POST:
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -35,8 +38,6 @@ def login(request):
                     return http.HttpResponseForbidden("Acount is not active")
             else:
                 login_failed = True
-    elif request.user.is_authenticated():
-        return http.HttpResponseRedirect(next)
     else:
         form = LoginForm(initial={'next': request.GET.get('next')})
     return render(request,
