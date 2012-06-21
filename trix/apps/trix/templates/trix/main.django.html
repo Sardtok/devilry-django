@@ -41,12 +41,7 @@
 <script src="{{DEVILRY_STATIC_URL}}/trix/setstatus.js"></script>
 
 <script type="text/javascript">
-</script>
-{% endblock %}
-
-{% block onready %}
-{{ block.super }}
-  var DASHBOARD_URL = '{{ DEVILRY_URLPATH_PREFIX }}/trix/';
+    var DASHBOARD_URL = '{{ DEVILRY_URLPATH_PREFIX }}/trix/';
   // Models
   {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
   {{ restfulapi.RestfulSimplifiedTopic|extjs_model }};
@@ -66,7 +61,11 @@
   {{ restfulapi.RestfulSimplifiedExercise|extjs_store }};
   {{ restfulapi.RestfulSimplifiedExerciseStatus|extjs_store }};
 {% endcomment %}
+</script>
+{% endblock %}
 
+{% block onready %}
+{{ block.super }}
     var searchwidget = Ext.create('trix.TrixSearchWidget', {
     //renderTo: 'searchwidget-container',
         hidden: true,
