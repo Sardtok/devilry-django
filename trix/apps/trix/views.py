@@ -65,7 +65,7 @@ def get_points(user):
         points_total += int(stats.exercise.points * stats.status.percentage)
     return points_total
 
-def main(request, period_id=-1, topic_id=-1):
+def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
     """
     Main page showing current exercises.
     """
@@ -77,6 +77,9 @@ def main(request, period_id=-1, topic_id=-1):
 
     if topic_id != -1:
         all_exercises = PeriodExercise.objects.filter(exercise__topics=topic_id)
+
+    if exercise_id != -1:
+        all_exercises = PeriodExercise.objects.filter(id=exercise_id)
 
     if all_exercises is None:
         all_exercises = PeriodExercise.objects.filter(period__start_time__lte
@@ -106,7 +109,6 @@ def main(request, period_id=-1, topic_id=-1):
         for p in ps:
             prerequisites.setdefault(p.id, p)
         
-
         if request.user.is_authenticated():
             try:
                 stats = exercise.student_results.get(student=request.user)
@@ -134,12 +136,7 @@ def main(request, period_id=-1, topic_id=-1):
                    'prerequisites': prerequisites,
                    'topicstats': topicstats,
                    'level': get_level(get_points(request.user)),
-                   'RestfulSimplifiedExercise': restful.RestfulSimplifiedExercise,
-                   'RestfulSimplifiedPeriodExercise': restful.RestfulSimplifiedPeriodExercise,
-                   'RestfulSimplifiedStatus': restful.RestfulSimplifiedStatus,
-                   'RestfulSimplifiedExerciseStatus': restful.RestfulSimplifiedExerciseStatus,
-                   'RestfulSimplifiedTopic': restful.RestfulSimplifiedTopic,
-                   'RestfulSimplifiedPeriod': restful.RestfulSimplifiedPeriod})
+                   'restfulapi': dump_all_into_dict(restful)})
 
 #                  {'exercises': Period.objects.all().exercises.all()})
 
