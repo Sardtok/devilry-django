@@ -1,5 +1,5 @@
 from trix.apps.trix.models import PeriodExercise
-from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
+from devilry.simplified import FieldSpec, FilterSpec, FilterSpecs, simplified_modelapi, SimplifiedModelApi
 from authorization import AuthorizationMixin
 
 @simplified_modelapi
@@ -23,4 +23,5 @@ class SimplifiedPeriodExercise(AuthorizationMixin):
                                  'exercise__short_name',
                                  'exercise__long_name',
                                  'exercise__topics__name')
+        filters = FilterSpecs(FilterSpec('exercise'), FilterSpec('period'))
         methods = ['create', 'read', 'update', 'delete', 'search']
