@@ -1,6 +1,7 @@
 Ext.define('trix.page.Footer', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.trixfooter',
+    componentCls: 'trixfooter',
     border: false,
     margins: '0 0 0 0',
     height: 50,

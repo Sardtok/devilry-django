@@ -1,6 +1,7 @@
 Ext.define('trix.page.Header', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.trixheader',
+    componentCls: 'trixheader',
     bodyStyle: 'background-color: transparent !important',
     border: false,
     margins: '0 0 0 0',
