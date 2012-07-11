@@ -63,7 +63,9 @@ function getPercentageBarChart(id, title, x_title, x_field, y_title, y_field, mo
 	    },
             renderer: function(sprite, storeItem, barAttr, i, store) {
 		//barAttr.fill = colors[i % colors.length];
-		if (storeItem.data[y_field] > 66) {
+                if (storeItem.data[y_field] == 100) {
+                    barAttr.fill = colors[0];
+		} else if (storeItem.data[y_field] > 66) {
 		    if (storeItem.data['starred_done'] > 0)
 			barAttr.fill = colors[0];
 		    else
