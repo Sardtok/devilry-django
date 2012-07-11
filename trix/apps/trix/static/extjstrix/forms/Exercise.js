@@ -42,14 +42,14 @@ Ext.define('trix.forms.Exercise', {
             xtype: 'numberfield'
         }]
     }, {
-            xtype: 'container',
-            anchor: '100%',
-            layout: 'column',
-            items: [{
-                name: "fake_topics",
-                fieldLabel: gettext("Topic"),
-                xtype: 'foreignkeyselector',
-                model: 'trix.apps.trix.simplified.topic.SimplifiedTopic',
+        xtype: 'container',
+        anchor: '100%',
+        layout: 'column',
+        items: [{
+            name: "fake_topics",
+            fieldLabel: gettext("Topic"),
+            xtype: 'foreignkeyselector',
+            model: 'trix.apps.trix.simplified.topic.SimplifiedTopic',
             emptyText: gettext('Select a topic'),
             displayTpl: '{name}',
             dropdownTpl: '<div class="important">{name}</div>'

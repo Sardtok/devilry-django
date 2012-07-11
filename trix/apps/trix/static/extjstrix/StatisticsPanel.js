@@ -5,6 +5,7 @@ Ext.define('trix.StatisticsPanel', {
         type: 'hbox',
         align: 'stretch'
     },
+    border: 0,
     autoHeight: true,
     items: [
         { xtype: 'trixstatstable', flex: 1, margins: '0 5 0 5'},
