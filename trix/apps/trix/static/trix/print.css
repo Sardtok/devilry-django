@@ -1,14 +1,21 @@
-header { display: none; }
-footer { display: none; }
-table { width: 100%; }
+.header, .trixheader, .footer, .trixfooter,
+.widget-searchwidget, .statusbutton, .dispexc, .levelinfo { display: none; }
+
+* { width: auto !important; overflow: visible !important; font-size: 12pt; }
 caption { font-size: 110%; font-weight: bold; }
 thead { display: none; }
-.statusbutton { display: none; }
-.dispexc { display: none; }
-.exctext { display: block !important; page-break-before: avoid; }
-.levelinfo { display: none; }
+.exctext { display: inline !important; page-break-before: avoid; }
 .exercises { clear: none; page-break-before: avoid; }
 #perioddropdown { display: none; }
 #periodoverview { display: none; }
 #topwrapper { page-break-after: avoid; background-color: #fff !important;}
 table table { page-break-inside: avoid; }
+
+h1    { font-weight: bold; font-size: 150%; margin: 0.25em 0; }
+h2    { font-weight: bold; font-size: 130%; margin: 0.25em 0; }
+h3    { font-weight: bold; font-style: italic; font-size: 130%; margin: 0.25em 0; }
+h4    { font-weight: bold; font-size: 120%; margin: 0.25em 0; }
+h5    { font-weight: bold; font-style: italic; font-size: 120%; margin: 0.25em 0; }
+h6    { font-weight: bold; font-size: 110%; margin: 0.25em 0; }
+h7    { font-weight: bold; font-style: italic; font-size: 110%; margin: 0.25em 0; }
+.topiclist { margin-bottom: 0.5em; margin-top: -0.25em; }
