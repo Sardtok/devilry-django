@@ -36,14 +36,29 @@ Ext.define('trix.PeriodView', {
         var upButton = this.upButton;
         var downButton = this.downButton;
         var viewButton = this.viewButton;
+        var grid = this.grid;
+        var selection = this.getSelection();
+        if (selection) {
+            selection = selection.get('id');
+        }
 
         return function() {
-            store.load();
             editExerciseButton.setDisabled(true);
             deleteButton.setDisabled(true);
             upButton.setDisabled(true);
             downButton.setDisabled(true);
             viewButton.setDisabled(true);
+
+            store.load(function(records, operations, success) {
+                if (success && selection) {
+                    for (x in records) {
+                        if (records[x].get('id') == selection) {
+                            grid.getSelectionModel().select(records[x]);
+                            break;
+                        }
+                    }
+                }
+            });
         };
     },
 
