@@ -14,7 +14,7 @@
         {% endif %}
 
         <!-- ** ExtJS ** -->
-        <link rel="stylesheet" type="text/css"
+        <link rel="stylesheet" type="text/css" media="screen"
                 {# href="{{ DEVILRY_EXTJS_URL }}/resources/css/ext-all.css" /> #}
                 href="{{ DEVILRY_EXTJS_URL }}/resources/css/ext-all-gray.css" />
 
@@ -81,8 +81,10 @@
         {% block headextra %}
         {% endblock %}
 
-        <link rel="stylesheet" href="{{DEVILRY_STATIC_URL }}/trix/style.css"
-            type="text/css" media="screen" charset="utf-8"/>
+        <link rel="stylesheet" href="{{DEVILRY_STATIC_URL}}/trix/style.css"
+              type="text/css" media="screen" charset="utf-8"/>
+        <link rel="stylesheet" href="{{DEVILRY_STATIC_URL}}/trix/print.css"
+              type="text/css" media="print" charset="utf-8"/>
     </head>
 
     <body>
