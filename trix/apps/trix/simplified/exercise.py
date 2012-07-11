@@ -7,7 +7,7 @@ class SimplifiedExercise(AuthorizationMixin):
     """ Simplified wrapper for :class:`trix.apps.trix.models.Exercise`. """
     class Meta(object):
         model = Exercise
-        searchfields = FieldSpec('short_name', 'long_name')
+        searchfields = FieldSpec('short_name', 'long_name', 'topics__name')
         resultfields = FieldSpec('id', 'short_name', 'long_name', 'text', 'points',
                                  'topics__id', 'prerequisites__id',
                                  topics=['topics__name'], prerequisites=['prerequisites__name'])
