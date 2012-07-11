@@ -1,4 +1,5 @@
 from datetime import datetime
+from time import localtime
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
@@ -8,7 +9,19 @@ from devilry.utils.module import dump_all_into_dict
 from devilry.apps.core.models import Period
 from trix.apps.trix.models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
 
+from django.dispatch import receiver
+from django.core.signals import request_started, request_finished
+
+import logging
+
 import restful
+
+@receiver(request_started, weak=False)
+@receiver(request_finished, weak=False)
+def status_checker(sender, **kwargs):
+    logger = logging.getLogger('sauce');
+    logger.debug("%s - Status count: %d", unicode(localtime()), Status.objects.count())
+
 
 def get_level(points=0):
     """
@@ -99,17 +112,24 @@ def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
              'status': -1,
              'status_name': '',
              'points': exercise.points,
-             'starred': exercise.starred}
+             'starred': exercise.starred,
+             'topics': exercise.exercise.topics.all(),
+             'prerequisites': exercise.exercise.prerequisites.all()}
 
-        ts = exercise.exercise.topics.exclude(id__in=topics.keys)
-        for t in ts:
-            topics.setdefault(t.id, t)
+        for topic in e['topics']:
+            if not topicstats.has_key(topic.id):
+                topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
+        for topic in e['prerequisites']:
+            if not topicstats.has_key(topic.id):
+                topicstats.setdefault(topic.id, get_topic_points(topic, request.user))        
 
         ps = exercise.exercise.prerequisites.exclude(id__in=prerequisites.keys)
         for p in ps:
             prerequisites.setdefault(p.id, p)
         
+        print request.user.username
         if request.user.is_authenticated():
+            print " is authenticated."
             try:
                 stats = exercise.student_results.get(student=request.user)
                 e.update([['status', stats.status.id]])
@@ -119,21 +139,17 @@ def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
         exercises.setdefault(exercise.period, {}).update([[exercise.number, e]])
 
     statuses = []
+    print request.user
     if request.user.is_authenticated():
+        print "getting sauce!"
+        print Status.objects.all()
         statuses = Status.objects.filter(active=True)
 
-    for topic in topics.values():
-        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
-    for topic in prerequisites.values():
-        if (topicstats.has_key(topic.id)):
-            continue
-        topicstats.setdefault(topic.id, get_topic_points(topic, request.user))
+    print statuses
 
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'statuses': statuses,
-                   'topics': topics,
-                   'prerequisites': prerequisites,
                    'topicstats': topicstats,
                    'level': get_level(get_points(request.user)),
                    'restfulapi': dump_all_into_dict(restful)})
@@ -149,7 +165,7 @@ def get_portrait(level):
     image_type = 'png'
     if level > 10:
         return ''.join([portrait_class, '10', '.', image_type])
-
+    
     return ''.join([portrait_class, (str(level)), '.', image_type])
 
 @login_required
@@ -169,34 +185,37 @@ def administrator(request):
     return render(request, 'trix/trixadmin/main.django.js',
                   {'restfulapi': dump_all_into_dict(restful)})
 
+@login_required
 def periodadmin(request, period_id=-1):
     """
     Administrator interface for periods,
     allowing an admin to change a period's exercises.
     """
-    period = get_object_or_404(Period, pk=period_id)
-    exercises = PeriodExercise.objects.filter(period=period)
-    topics = {}
-    prerequisites = {}
-    for exercise in exercises:
-        ts = exercise.exercise.topics.exclude(id__in=topics.keys)
-        for t in ts:
-            topics.setdefault(t.id, t)
-
-        ps = exercise.exercise.prerequisites.exclude(id__in=prerequisites.keys)
-        for p in ps:
-            prerequisites.setdefault(p.id, p)
-
     return render(request, 'trix/trixadmin/period.django.html',
-                  {'period': period,
-                   'exercises': exercises,
-                   'topics': topics,
-                   'prerequisites': prerequisites,
-                   'RestfulSimplifiedTopic': restful.RestfulSimplifiedTopic,
-                   'RestfulSimplifiedExercise': restful.RestfulSimplifiedExercise,
-                   'RestfulSimplifiedPeriodExercise': restful.RestfulSimplifiedPeriodExercise,
-                   'RestfulSimplifiedPeriod': restful.RestfulSimplifiedPeriod}
-                  )
+                  {'objectid': period_id,
+                   'restfulapi': dump_all_into_dict(restful)
+                   })
+
+@login_required
+def exerciseadmin(request, exercise_id=-1):
+    """
+    Administrator interface for exercises,
+    allowing an admin to edit exercises.
+    """
+    return render(request, 'trix/trixadmin/exercise.django.html',
+                  {'objectid': exercise_id,
+                   'restfulapi': dump_all_into_dict(restful)
+                   })
+@login_required
+def topicadmin(request, topic_id=-1):
+    """
+    Administrator interface for topics,
+    allowing an admin to edit topics.
+    """
+    return render(request, 'trix/trixadmin/topic.django.html',
+                  {'objectid': topic_id,
+                   'restfulapi': dump_all_into_dict(restful)
+                   })
 
 @login_required
 def exercisestatus(request, exercise=-1):
