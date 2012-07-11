@@ -5,7 +5,7 @@
 {% block appjs %}
     {{ block.super }}
     var DASHBOARD_URL = '{{ DEVILRY_URLPATH_PREFIX }}/trix/trixadmin/';
-
+    Ext.SSL_SECURE_URL = 'javascript:""';
     {% for RestfulCls in restfulapi.values %}
         {{ RestfulCls|extjs_combobox_model:"Search" }};
         {{ RestfulCls|extjs_store:"Search" }};
@@ -14,16 +14,16 @@
 
 {% block onready %}
     {{ block.super }}
-/*
-    var searchwidget = Ext.create('devilry.administrator.AdministratorSearchWidget', {
+
+    var searchwidget = Ext.create('trix.AdminSearchWidget', {
         //renderTo: 'searchwidget-container',
         hidden: true,
         urlPrefix: DASHBOARD_URL,
-        nodeRowTpl: '{{ restfulapi.RestfulSimplifiedNode.ExtjsModelMeta.combobox_tpl|escapejs }}',
-        subjectRowTpl: '{{ restfulapi.RestfulSimplifiedSubject.ExtjsModelMeta.combobox_tpl|escapejs }}',
         periodRowTpl: '{{ restfulapi.RestfulSimplifiedPeriod.ExtjsModelMeta.combobox_tpl|escapejs }}',
+        topicRowTpl: '{{ restfulapi.RestfulSimplifiedTopic.ExtjsModelMeta.combobox_tpl|escapejs }}',
+        exerciseRowTpl: '{{ restfulapi.RestfulSimplifiedExercise.ExtjsModelMeta.combobox_tpl|escapejs }}',
     });
     searchwidget.loadInitialValues();
-*/
+
 {% endblock %}
 
