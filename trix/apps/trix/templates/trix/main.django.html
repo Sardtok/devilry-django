@@ -101,6 +101,7 @@
                 xtype: 'box',
                 flex: 1,
                 autoScroll: true,
+                componentCls: 'exercises',
                 html:
 {% comment %}
 {% if user.is_authenticated %}
@@ -115,26 +116,10 @@
 {% endif %}
 {% endcomment %}
 
-{% if topics %}
-'<div class="topics">{% trans "Topics" %}:' +
-  {% for id, topic in topics.items %}
-'  <a href="/trix/topic/{{ id }}">{{ topic.name }}</a>' +
-  {% endfor %}
-'</div>' +
-{% endif %}
-
-{% if prerequisites %}
-'<div class="topics">{% trans "Prerequisites" %}:' +
-  {% for id, prerequisite in prerequisites.items %}
-'  <a href="/trix/topic/{{ id }}">{{ prerequisite.name }}</a>' +
-  {% endfor %}
-'</div>' +
-{% endif %}
-
 '<div id="perioddropdown"></div>'
 {% for p, p_excs in exercises.items %}
 + '<table class="exercises">' +
-'  <caption>{{ p.parentnode.long_name|escapejs }} - {{ p.long_name|escapejs }}</caption>{% comment %}' +
+'  <caption><div>{{ p.parentnode.long_name|escapejs }}</div><h2>{{ p.long_name|escapejs }}</h2></caption>{% comment %}' +
 '  <thead>' +
 '    <tr>' +
 '      <th' +
@@ -166,11 +151,29 @@
         {% else %}>' +
         {% endif %}
 '        <h3>' +
-'          {{ e.number }}.&nbsp;{% if e.starred %}<img src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />&nbsp;{% endif %}{{ e.title|escapejs }}' +
+'          {{ e.number }}.&nbsp;{% if e.starred %}<img class="star" src="{{DEVILRY_STATIC_URL}}/trix/icons/star.png" />&nbsp;{% endif %}{{ e.title|escapejs }}' +
           {% autoescape off %}
 '          &mdash;&nbsp;{{ e.points }}&nbsp;{% trans "points" %}</h3>' +
+'        <div class="topiclist"><div>{% trans "Topics" %}:' +
+      {% for topic in e.topics %}
+'          <a href="/trix/topic/{{ topic.id }}">{{ topic.name }}</a>' +
+        {% if not forloop.last %}
+', ' +
+        {% endif %}
+      {% endfor %}
+      {% if e.prerequisites %}
+'        </div><div>{% trans "Prerequisites" %}:' +
+      {% for topic in e.prerequisites %}
+'          <a href="/trix/topic/{{ topic.id }}">{{ topic.name }}</a>' +
+        {% if not forloop.last %}
+', ' +
+        {% endif %}
+      {% endfor %}
+      {% endif %}
+'        </div></div>' +
+
 '        <div class="exctext" {% if statuses and e.status != -1 %}' +
-'             style="display: none"{% endif %}>{{ e.text|escapejs }}</div>' +
+'             style="display: none"{% endif %}> {{ e.text|escapejs }}</div>' +
         {% endautoescape %}
 '      </td>' +
       {% if statuses %}
@@ -189,17 +192,6 @@
     });
 
   searchwidget.show();
-
-  Ext.create('devilry.extjshelpers.formfields.ForeignKeySelector', {
-  fieldLabel: '{% trans "View period" %}',
-  model: {{ restfulapi.RestfulSimplifiedPeriod|extjs_modelname }},
-  renderTo: 'perioddropdown',
-  displayTpl: '{long_name}',
-  dropdownTpl: '{long_name}',
-  setRecordValue: function(record) {
-  document.location.href=("/trix/period/" + record.data.id);
-  }
-  });
 {% endblock %}
 {% block bodyContent %}
 {% endblock %}
