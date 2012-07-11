@@ -4,7 +4,6 @@
 
 {% block imports %}
     {{ block.super }}
-    Ext.require('devilry.extjshelpers.PermissionChecker');
     Ext.require('trix.DashboardButtonBar');
 {% endblock %}
 
@@ -35,25 +34,9 @@
 
 
     var dashboard_periodmodel = {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }}
-    var permchecker = Ext.create('devilry.extjshelpers.PermissionChecker', {
-        stores: [nodestore, subjectstore, periodstore],
-        //renderTo: 'no-permissions-message',
-        emptyHtml: '<div class="section info-small extravisible-small"><h1>{{ DEVILRY_ADMINISTRATOR_NO_PERMISSION_MSG.title }}</h1>' +
+    var permchecker = Ext.create('Ext.Component', {
+        html: '<div class="section info-small extravisible-small"><h1>{{ DEVILRY_ADMINISTRATOR_NO_PERMISSION_MSG.title }}</h1>' +
             '<p>{{ DEVILRY_ADMINISTRATOR_NO_PERMISSION_MSG.body }}</p></div>',
-        listeners: {
-            allLoaded: function(loadedItems, loadedWithRecords) {
-                Ext.getBody().unmask();
-/*                if(is_superuser || loadedWithRecords > 0) {
-                    var activePeriodsView = Ext.create('devilry.extjshelpers.ActivePeriodsGrid', {
-                        model: dashboard_periodmodel,
-                        dashboard_url: DASHBOARD_URL
-                    });
-                    Ext.getCmp('active-periods').add(activePeriodsView);
-
-                    //searchwidget.show();
-                }*/
-            }
-        }
     });
 
 
@@ -92,7 +75,7 @@
                 type: 'vbox',
                 align: 'stretch'
             },
-            items: [/*searchwidget, {xtype:'box', height: 20}, permchecker,*/ buttonbar/*, {
+            items: [searchwidget, {xtype:'box', height: 20}, permchecker, buttonbar/*, {
                 xtype: 'container',
                 flex: 1,
                 layout: {
@@ -116,6 +99,16 @@
     topicstore.load();
     exercisestore.load();
     periodexercisestore.load();
+
+ if (!is_superuser) {
+     buttonbar.hide();
+     permchecker.show();
+} else {
+    permchecker.hide();
+    searchwidget.show();
+}
+Ext.getBody().unmask();
+
 
 {% endblock %}
 
