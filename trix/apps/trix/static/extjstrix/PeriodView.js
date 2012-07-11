@@ -32,7 +32,7 @@ Ext.define('trix.PeriodView', {
     reloadExercises: function() {
         var store = this.periodexercisestore;
         var editExerciseButton = this.editExerciseButton;
-        var deleteButton = this.deleteButton;
+        var deleteExerciseButton = this.deleteExerciseButton;
         var upButton = this.upButton;
         var downButton = this.downButton;
         var viewButton = this.viewButton;
@@ -44,7 +44,7 @@ Ext.define('trix.PeriodView', {
 
         return function() {
             editExerciseButton.setDisabled(true);
-            deleteButton.setDisabled(true);
+            deleteExerciseButton.setDisabled(true);
             upButton.setDisabled(true);
             downButton.setDisabled(true);
             viewButton.setDisabled(true);
