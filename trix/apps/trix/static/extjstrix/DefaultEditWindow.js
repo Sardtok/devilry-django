@@ -10,10 +10,15 @@ Ext.define('trix.DefaultEditWindow', {
          * ``Ext.XTemplate`` for the url to visit on successful save. The
          * template gets the record data as input.
          */
-        successUrlTpl: undefined
+        successUrlTpl: undefined,
+        successfn: undefined
     },
 
     onSaveSuccess: function(record) {
+        if(this.successfn) {
+            this.successfn(record);
+        }
+        
         this.close();
     }
 });
