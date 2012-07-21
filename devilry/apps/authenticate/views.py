@@ -21,7 +21,10 @@ class LoginForm(forms.Form):
 def login(request):
     login_failed = False
     if request.user.is_authenticated():
-        return http.HttpResponseRedirect(next)
+        next = http.REQUEST['next']
+        if next is None:
+            next = reverse('trix')
+        return http.HttpResponseRedirect()
 
     if request.POST:
         form = LoginForm(request.POST)
