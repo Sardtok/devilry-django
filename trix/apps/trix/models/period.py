@@ -4,10 +4,10 @@ from django.db import models
 
 from periodgroup import PeriodGroup
 
-from devilry.apps.core.models import period
+from devilry.apps.core.models.period import Period as DevilryPeriod
 from devilry.apps.core.models.custom_db_fields import ShortNameField, LongNameField
 
-class Period(period.Period):
+class Period(DevilryPeriod):
     """
     A wrapper for Devilry's periods to add period grouping.
     
@@ -26,7 +26,6 @@ class Period(period.Period):
         """
         Ensures that the group is not added to other subjects.
         """
-        print self.group
         if self.group is not None and self.group.subject is not self.parentnode:
             raise ValidationError(_('Periods cannot be added to a different subject\'s groups.'))
         

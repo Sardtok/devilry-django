@@ -1,8 +1,6 @@
 from django.utils.translation import ugettext as _
 from django.db import models
 
-from devilry.apps.core.models.period import Period
-
 from exercise import Exercise
 
 class Status(models.Model):
