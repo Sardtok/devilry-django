@@ -2,7 +2,7 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from devilry.apps.core.models.period import Period
+from period import Period
 from devilry.apps.core.models.custom_db_fields import ShortNameField, LongNameField
 
 from exercise import Exercise
