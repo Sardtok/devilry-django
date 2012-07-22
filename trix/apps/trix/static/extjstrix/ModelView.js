@@ -82,7 +82,6 @@ Ext.define('trix.ModelView', {
             success: this.onModelLoadSuccess,
             failure: this.onModelLoadFailure
         });
-
     },
 
     onModelLoadSuccess: function(record) {

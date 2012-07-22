@@ -215,7 +215,7 @@ Ext.define('trix.PeriodView', {
         this.editButton = Ext.create('Ext.button.Button', {
             text: 'Edit', scope: this, margin: '0 5 20 0',
             handler: function() {
-                var window = Ext.create('trix.DefaultEditWindow', {
+                Ext.create('trix.DefaultEditWindow', {
                     title: 'Edit period',
                     successfn: this.refreshWrapper(),
                     editpanel: Ext.ComponentManager.create({

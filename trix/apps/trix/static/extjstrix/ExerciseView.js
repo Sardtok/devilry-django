@@ -100,6 +100,7 @@ Ext.define('trix.ExerciseView', {
         this.box = Ext.widget('box', {
             autoScroll: true,
             flex: 1,
+            scope: this,
             tpl: Ext.create('Ext.XTemplate',
                             '<div class="topiclist">',
                             '<tpl if="topics__name"><div>Topics: ',
@@ -110,13 +111,7 @@ Ext.define('trix.ExerciseView', {
                             '<tpl for="prerequisites__name">',
                             '<a href="{[this.dashboardUrl]}topic/{[parent.prerequisites__id[xindex-1]]}">{.}</a>',
                             '<span id="prerequisite-{[parent.prerequisites__id[xindex-1]]}"></span></tpl></div></tpl></div>',
-                            '<div class="exctext">{text}',
-                            {
-                                getNumber: function(index, ids) {
-                                    alert(ids);
-                                },
-                                dashboardUrl: this.dashboardUrl}
-                           )
+                            '<div class="exctext">{text}')
         });
 
         Ext.apply(this, { items: [this.editButton, this.deleteButton,
