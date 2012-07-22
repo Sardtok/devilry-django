@@ -1,0 +1,61 @@
+{% extends "trix/trixadmin/base.django.html" %}
+{% load extjs %}
+{% load i18n %}
+
+{% block imports %}
+{{ block.super }}
+{% endblock %}
+
+{% block appjs %}
+{{ block.super }}
+    Ext.require('devilry.extjshelpers.RestfulSimplifiedEditWindowBase');
+    Ext.require('devilry.extjshelpers.RestfulSimplifiedEditPanel');
+    Ext.require('devilry.extjshelpers.ButtonBarButton');
+    Ext.require('devilry.extjshelpers.ButtonBar');
+    Ext.require('trix.forms.PeriodGroup');
+    Ext.require('trix.PeriodGroupView');
+  {{ restfulapi.RestfulSimplifiedPeriod|extjs_model }},
+  {{ restfulapi.RestfulSimplifiedSubject|extjs_model }},
+  {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_model:"periods" }};
+
+  var periodstore = {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
+  var periodgroupstore = {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_store }};
+{% endblock %}
+
+{% block onready %}
+{{ block.super }}
+    Ext.create('Ext.container.Viewport', {
+        layout: 'border',
+        style: 'background-color: transparent',
+        items: [{
+            region: 'north',
+            xtype: 'trixheader',
+            navclass: 'administrator'
+        }, {
+            region: 'south',
+            xtype: 'trixfooter',
+        }, {
+            region: 'center',
+            xtype: 'container',
+            region: 'center',
+            padding: {left: 20, right: 20},
+            flex: 2,
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+            items: [searchwidget, {
+                xtype: 'periodgroupview',
+                modelname: {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_modelname }},
+                objectid: {{ objectid }},
+                periodstore: periodstore,
+                dashboardUrl: DASHBOARD_URL,
+                static_url: '{{DEVILRY_STATIC_URL}}',
+                flex: 1
+            }]
+        }]
+    });
+
+    searchwidget.show();
+    Ext.getBody().unmask();
+{% endblock %}
