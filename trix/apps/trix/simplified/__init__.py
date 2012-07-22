@@ -2,8 +2,10 @@ from authorization import AuthorizationMixin
 from topic import SimplifiedTopic
 from exercise import SimplifiedExercise
 from periodexercise import SimplifiedPeriodExercise
+from periodgroup import SimplifiedPeriodGroup
 from status import SimplifiedStatus
 from exercisestatus import SimplifiedExerciseStatus
 from node import SimplifiedNode
 from period import SimplifiedPeriod
 from subject import SimplifiedSubject
+from student import SimplifiedStudent
