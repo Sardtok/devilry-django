@@ -6,6 +6,7 @@ Ext.define('trix.DashboardButtonBar', {
         'trix.forms.Node',
         'trix.forms.Subject',
         'trix.forms.Period',
+        'trix.forms.PeriodGroup',
         'trix.forms.Topic',
         'trix.forms.Exercise',
         'trix.forms.PeriodExercise',
@@ -18,6 +19,7 @@ Ext.define('trix.DashboardButtonBar', {
         node_modelname: undefined,
         subject_modelname: undefined,
         period_modelname: undefined,
+        periodgroup_modelname: undefined,
         topic_modelname: undefined,
         exercise_modelname: undefined,
         periodexercise_modelname: undefined,
@@ -25,6 +27,7 @@ Ext.define('trix.DashboardButtonBar', {
         nodestore: undefined,
         subjectstore: undefined,
         periodstore: undefined,
+        periodgroupstore: undefined,
         topicstore: undefined,
         exercisestore: undefined,
         periodexercisestore: undefined
@@ -97,6 +100,25 @@ Ext.define('trix.DashboardButtonBar', {
                             editform: Ext.widget('administrator_periodform')
                         }),
                         successUrlTpl: Ext.create('Ext.XTemplate', 'period/{id}')
+                    }).show();
+                }
+            }, {
+                xtype: 'buttonbarbutton',
+                text: 'Period group',
+                store: this.periodstore,
+                iconCls: 'icon-add-32',
+                tooltipCfg: {
+                    title: 'Period &rArr; <span class="tooltip-title-current-item">Period group</span> &rArr; Exercise &rArr; Link exercise to period',
+                    body: 'A group of shorter periods that make up a semester.'
+                },
+                handler: function() {
+                    Ext.create('trix.DefaultEditWindow', {
+                        title: 'Create new period group',
+                        editpanel: Ext.ComponentManager.create({
+                            xtype: 'restfulsimplified_editpanel',
+                            model: me.periodgroup_modelname,
+                            editform: Ext.widget('administrator_periodgroupform')
+                        }),
                     }).show();
                 }
             }, {
