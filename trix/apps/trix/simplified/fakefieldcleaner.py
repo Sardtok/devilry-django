@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+
 def fakefieldcleaner(original_class):
     """
     Class decorator to add general support for adding stuff to ManyToManyFields
@@ -41,6 +43,16 @@ def fakefieldcleaner(original_class):
                 
                 if fake_val > 0:
                     manager.add(x)
+
+                    # Note that we cannot be sure that adding x is safe
+                    # Raising an exception here breaks the restful protocol currently
+                    # fakefieldcleaner should probably add a custom version of EditForm
+                    # that handles the fake fields and raises FieldErrors
+                    try:
+                        x.full_clean()
+                    except ValidationError:
+                        manager.remove(x)
+                        continue
                 else:
                     manager.remove(x)
                     
@@ -50,6 +62,11 @@ def fakefieldcleaner(original_class):
                 manager.clear()
                 for x in real[1].objects.filter(**{foreign_field: fake_val}):
                     manager.add(x)
+                    try:
+                        x.full_clean()
+                    except ValidationError:
+                        manager.remove(x)
+                        continue
             
         return original_post_save(user, obj)
         
