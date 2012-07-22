@@ -1,8 +1,8 @@
 from devilry.restful import restful_modelapi, ModelRestfulView, RestfulManager
 from devilry.apps.extjshelpers import extjs_restful_modelapi
-from devilry.apps.student.restful import RestfulSimplifiedPeriod
 
 from trix.apps.trix.simplified import SimplifiedPeriodExercise
+from period import RestfulSimplifiedPeriod
 from exercise import RestfulSimplifiedExercise
 from manager import trix_manager
 from authorization import AuthorizationMixin

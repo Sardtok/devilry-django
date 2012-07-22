@@ -1,25 +1,22 @@
 from devilry.restful import restful_modelapi, ModelRestfulView, RestfulManager
 from devilry.apps.extjshelpers import extjs_restful_modelapi
 
-from trix.apps.trix.simplified import SimplifiedPeriod
+from trix.apps.trix.simplified import SimplifiedPeriodGroup
 from manager import trix_manager
 from authorization import AuthorizationMixin
 from subject import RestfulSimplifiedSubject
-from periodgroup import RestfulSimplifiedPeriodGroup
 
 @trix_manager.register
 @extjs_restful_modelapi
 @restful_modelapi
-class RestfulSimplifiedPeriod(AuthorizationMixin):
+class RestfulSimplifiedPeriodGroup(AuthorizationMixin):
     class Meta:
-        simplified = SimplifiedPeriod
-        foreignkey_fields = {'parentnode': RestfulSimplifiedSubject,
-                             'group': RestfulSimplifiedPeriodGroup}
+        simplified = SimplifiedPeriodGroup
+        foreignkey_fields = {'subject': RestfulSimplifiedSubject}
 
     class ExtjsModelMeta:
-        combobox_fieldgroups = ['subject']
-        combobox_displayfield = 'short_name'
+        combobox_displayfield = 'long_name'
         combobox_tpl = ('<div class="section popuplistitem">'
-                        '    <p class="path">{parentnode__long_name}</p>'
+                        '    <p class="path">{subject__long_name}</p>'
                         '    <h1>{long_name:ellipsis(40)}</h1>'
                         '</div>')
