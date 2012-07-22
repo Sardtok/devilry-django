@@ -30,6 +30,12 @@ Ext.define('trix.AdminSearchWidget', {
 
         /**
          * @cfg
+         * ``Ext.XTemplate`` for rows of period group results.
+         */
+        periodgroupRowTpl:'',
+
+        /**
+         * @cfg
          * ``Ext.XTemplate`` for rows of exercise results.
          */
         exerciseRowTpl:''
@@ -54,20 +60,6 @@ Ext.define('trix.AdminSearchWidget', {
                 }
             }, {
                 xtype: 'searchresults',
-                title: 'Topics',
-                store: Ext.data.StoreManager.lookup('trix.apps.trix.simplified.topic.SimplifiedTopicStoreSearch'),
-                filterconfig: {
-                    type: 'topic'
-                },
-                resultitemConfig: {
-                    tpl: this.topicRowTpl,
-                    defaultbutton: {
-                        text: 'View',
-                        clickLinkTpl: this.urlPrefix + 'topic/{id}'
-                    }
-                }
-            }, {
-                xtype: 'searchresults',
                 title: 'Exercises',
                 store: Ext.data.StoreManager.lookup('trix.apps.trix.simplified.exercise.SimplifiedExerciseStoreSearch'),
                 filterconfig: {
@@ -78,6 +70,35 @@ Ext.define('trix.AdminSearchWidget', {
                     defaultbutton: {
                         text: 'View',
                         clickLinkTpl: this.urlPrefix + 'exercise/{id}'
+                    }
+                }
+            }, {
+                xtype: 'searchresults',
+                title: 'Period groups',
+                store: Ext.data.StoreManager.lookup('trix.apps.trix.simplified.periodgroup.SimplifiedPeriodGroupStoreSearch'),
+                filterconfig: {
+                    type: 'periodgroup'
+                },
+                resultitemConfig: {
+                    tpl: this.periodgroupRowTpl,
+                    defaultbutton: {
+                        text: 'View',
+                        clickLinkTpl: this.urlPrefix + 'periodgroup/{id}'
+                    }
+                }
+
+            }, {
+                xtype: 'searchresults',
+                title: 'Topics',
+                store: Ext.data.StoreManager.lookup('trix.apps.trix.simplified.topic.SimplifiedTopicStoreSearch'),
+                filterconfig: {
+                    type: 'topic'
+                },
+                resultitemConfig: {
+                    tpl: this.topicRowTpl,
+                    defaultbutton: {
+                        text: 'View',
+                        clickLinkTpl: this.urlPrefix + 'topic/{id}'
                     }
                 }
             }]
