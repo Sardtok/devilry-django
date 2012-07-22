@@ -196,6 +196,19 @@ def periodadmin(request, period_id=-1):
                    'restfulapi': dump_all_into_dict(restful)
                    })
 
+
+@login_required
+def periodgroupadmin(request, periodgroup_id=-1):
+    """
+    Administrator interface for period groups,
+    allowing an admin to add periods.
+    """
+    return render(request, 'trix/trixadmin/periodgroup.django.html',
+                  {'objectid': periodgroup_id,
+                   'restfulapi': dump_all_into_dict(restful)
+                   })
+
+
 @login_required
 def exerciseadmin(request, exercise_id=-1):
     """
