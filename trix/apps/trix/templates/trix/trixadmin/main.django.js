@@ -16,6 +16,7 @@
     {{ restfulapi.RestfulSimplifiedNode|extjs_model }};
     {{ restfulapi.RestfulSimplifiedSubject|extjs_model }};
     {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
+    {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_model }};
  
     var exercisestore = {{ restfulapi.RestfulSimplifiedExercise|extjs_store }};
     var topicstore = {{ restfulapi.RestfulSimplifiedTopic|extjs_store }};
@@ -23,6 +24,7 @@
     var nodestore = {{ restfulapi.RestfulSimplifiedNode|extjs_store }};
     var subjectstore = {{ restfulapi.RestfulSimplifiedSubject|extjs_store }};
     var periodstore = {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
+    var periodgroupstore = {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_store }};
     nodestore.pageSize = 1;
     subjectstore.pageSize = 1;
     periodstore.pageSize = 1;
@@ -44,6 +46,7 @@
         node_modelname: {{ restfulapi.RestfulSimplifiedNode|extjs_modelname }},
         subject_modelname: {{ restfulapi.RestfulSimplifiedSubject|extjs_modelname }},
         period_modelname: {{ restfulapi.RestfulSimplifiedPeriod|extjs_modelname }},
+        periodgroup_modelname: {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_modelname }},
         topic_modelname:  {{ restfulapi.RestfulSimplifiedTopic|extjs_modelname }},
         exercise_modelname:  {{ restfulapi.RestfulSimplifiedExercise|extjs_modelname }},
         periodexercise_modelname:  {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_modelname }},
@@ -51,6 +54,7 @@
         nodestore: nodestore,
         subjectstore: subjectstore,
         periodstore: periodstore,
+        periodgroupstore: periodgroupstore,
         topicstore: topicstore,
         exercisestore: exercisestore,
         periodexercisestore: periodexercisestore
