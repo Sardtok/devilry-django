@@ -1,5 +1,5 @@
 from trix.apps.trix.models import Exercise, Topic
-from devilry.simplified import FieldSpec, simplified_modelapi, SimplifiedModelApi
+from devilry.simplified import (FieldSpec, simplified_modelapi, SimplifiedModelApi, FilterSpec, FilterSpecs)
 from authorization import AuthorizationMixin
 from fakefieldcleaner import fakefieldcleaner
 
@@ -18,6 +18,6 @@ class SimplifiedExercise(AuthorizationMixin):
         fake_editablefields = ('fake_topics', 'fake_prerequisites')
         fake_real_map =  {'fake_topics': ('topics', Topic, 'pk', 'name')}
                           #'fake_prerequisites': ('prerequisites', Topic, 'pk', 'name')}
-
+        filters = FilterSpecs(FilterSpec('topics__id'))
         methods = ['create', 'read', 'update', 'delete', 'search']
 
