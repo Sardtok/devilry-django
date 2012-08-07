@@ -26,7 +26,7 @@ class Period(DevilryPeriod):
         """
         Ensures that the group is not added to other subjects.
         """
-        if self.group is not None and self.group.subject is not self.parentnode:
+        if self.group is not None and self.group.subject_id != self.parentnode_id:
             raise ValidationError(_('Periods cannot be added to a different subject\'s groups.'))
         
         super(Period, self).clean(*args, **kwargs)
