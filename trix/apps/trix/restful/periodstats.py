@@ -2,12 +2,10 @@ from devilry.restful import restful_api, RestfulView, RestfulManager
 from devilry.restful.restview import extjswrap
 from devilry.restful.serializers import SerializableResult, ErrorMsgSerializableResult
 
-from devilry.apps.core.models import Period
-
 from django.db.models import Count, Sum
 from django.http import HttpResponseBadRequest
 
-from trix.apps.trix.models import PeriodExercise, ExerciseStatus
+from trix.apps.trix.models import Period, PeriodExercise, ExerciseStatus
 from manager import trix_manager
 
 @trix_manager.register
