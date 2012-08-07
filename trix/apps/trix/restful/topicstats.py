@@ -66,7 +66,7 @@ class RestfulTopicStatistics(RestfulView):
             if 'limit' in request.GET:
                 limit = request.GET['limit']
         
-        topics = Topic.objects.filter(exercises__isnull=False).filter(exercises__periods__isnull=False)[start:start+limit]
+        topics = Topic.objects.filter(exercises__isnull=False).filter(exercises__periods__isnull=False).distinct()[start:start+limit]
 
         data = []
         for topic in topics:
