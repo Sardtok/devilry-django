@@ -3,13 +3,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Sigmund Hansen <sigmunha@student.uio.no>, 2011.
+# Sigmund Hansen <sigmunha@student.uio.no>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: django\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-16 10:41+0100\n"
-"PO-Revision-Date: 2011-12-16 10:43+0100\n"
+"POT-Creation-Date: 2012-08-06 22:46+0200\n"
+"PO-Revision-Date: 2012-08-06 22:53+0200\n"
 "Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -19,25 +19,24 @@ msgstr ""
 
 #: apps/trix/models/exercise.py:27 apps/trix/models/exercisestatus.py:38
 #: apps/trix/models/periodexercise.py:40
-#: apps/trix/templates/trix/trixadmin/main.django.html:37
-#: apps/trix/templates/trix/trixadmin/main.django.html:53
-#: apps/trix/templates/trix/trixadmin/main.django.html:57
-#: apps/trix/templates/trix/trixadmin/main.django.html:77
+#: apps/trix/templates/trix/main.django.html:145
+#: apps/trix/templates/trix/trixadmin/main.django.html:40
+#: apps/trix/templates/trix/trixadmin/main.django.html:56
+#: apps/trix/templates/trix/trixadmin/main.django.html:60
+#: apps/trix/templates/trix/trixadmin/main.django.html:80
 msgid "Exercise"
 msgstr "Oppgave"
 
-#: apps/trix/models/exercise.py:28
-#: apps/trix/templates/trix/base.django.html:85
-#: apps/trix/templates/trix/main.django.html:5
+#: apps/trix/models/exercise.py:28 apps/trix/templates/trix/main.django.html:5
 msgid "Exercises"
 msgstr "Oppgaver"
 
 #: apps/trix/models/exercisestatus.py:36
-#: apps/trix/templates/trix/base.django.html:81
 msgid "Student"
 msgstr "Student"
 
-#: apps/trix/models/exercisestatus.py:40 apps/trix/models/status.py:23
+#: apps/trix/models/exercisestatus.py:40 apps/trix/models/status.py:21
+#: apps/trix/templates/trix/main.django.html:147
 msgid "Status"
 msgstr "Status"
 
@@ -45,105 +44,97 @@ msgstr "Status"
 msgid "The status that was set is not active: %b"
 msgstr "Den valgte statusen er ikke aktiv: %b"
 
+#: apps/trix/models/period.py:23
+msgid "Period Group"
+msgstr "Periodegruppe"
+
+#: apps/trix/models/period.py:30
+msgid "Periods cannot be added to a different subject's groups."
+msgstr "Perioder kan ikke legges til andre emners grupper."
+
 #: apps/trix/models/periodexercise.py:38
 msgid "Period"
 msgstr "Periode"
 
-#: apps/trix/models/status.py:24
+#: apps/trix/models/periodgroup.py:19
+msgid "Subject"
+msgstr "Emne"
+
+#: apps/trix/models/periodgroup.py:21
+msgid "Followers"
+msgstr "Følgere"
+
+#: apps/trix/models/periodgroup.py:23
+msgid "Students"
+msgstr "Studenter"
+
+#: apps/trix/models/status.py:22
 msgid "Statuses"
 msgstr "Statuser"
 
 #: apps/trix/models/topic.py:20
-#: apps/trix/templates/trix/trixadmin/main.django.html:33
-#: apps/trix/templates/trix/trixadmin/main.django.html:37
-#: apps/trix/templates/trix/trixadmin/main.django.html:57
-#: apps/trix/templates/trix/trixadmin/main.django.html:77
+#: apps/trix/templates/trix/trixadmin/main.django.html:36
+#: apps/trix/templates/trix/trixadmin/main.django.html:40
+#: apps/trix/templates/trix/trixadmin/main.django.html:60
+#: apps/trix/templates/trix/trixadmin/main.django.html:80
 msgid "Topic"
 msgstr "Tema"
 
-#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:81
-#: apps/trix/templates/trix/trixadmin/period.django.html:96
+#: apps/trix/models/topic.py:21 apps/trix/templates/trix/main.django.html:176
 msgid "Topics"
 msgstr "Temaer"
 
-#: apps/trix/templates/trix/base.django.html:57
-msgid "Trix"
-msgstr "Trix"
-
-#: apps/trix/templates/trix/base.django.html:72
-msgid "Log out"
-msgstr "Logg ut"
-
-#: apps/trix/templates/trix/base.django.html:74
-msgid "Log in"
-msgstr "Logg inn"
-
-#: apps/trix/templates/trix/base.django.html:82
-msgid "Examiner"
-msgstr "Retter"
-
-#: apps/trix/templates/trix/base.django.html:83
-#: apps/trix/templates/trix/base.django.html:88
-msgid "Administrator"
-msgstr "Administrator"
-
-#: apps/trix/templates/trix/base.django.html:86
-msgid "My Statistics"
-msgstr "Min statistikk"
-
-#: apps/trix/templates/trix/main.django.html:24
-#: apps/trix/templates/trix/main.django.html:126
+#: apps/trix/templates/trix/main.django.html:25
+#: apps/trix/templates/trix/main.django.html:165
 msgid "Hide exercise"
 msgstr "Skjul oppgaven"
 
-#: apps/trix/templates/trix/main.django.html:27
-#: apps/trix/templates/trix/main.django.html:128
+#: apps/trix/templates/trix/main.django.html:28
+#: apps/trix/templates/trix/main.django.html:167
 msgid "Show exercise"
 msgstr "Vis oppgaven"
 
-#: apps/trix/templates/trix/main.django.html:33
+#: apps/trix/templates/trix/main.django.html:34
+#: apps/trix/templates/trix/main.django.html:152
 msgid "Unsolved"
 msgstr "Ikke forsøkt"
 
-#: apps/trix/templates/trix/main.django.html:34
-#: apps/trix/templates/trix/main.django.html:144
+#: apps/trix/templates/trix/main.django.html:35
+#: apps/trix/templates/trix/main.django.html:201
 msgid "Change status"
 msgstr "Endre status"
 
-#: apps/trix/templates/trix/main.django.html:35
-#: apps/trix/templates/trix/main.django.html:144
+#: apps/trix/templates/trix/main.django.html:36
+#: apps/trix/templates/trix/main.django.html:201
 msgid "Reset status"
 msgstr "Nullstill status"
 
-#: apps/trix/templates/trix/main.django.html:73
-#: apps/trix/templates/trix/profile.django.html:50
+#: apps/trix/templates/trix/main.django.html:129
+#: apps/trix/templates/trix/profile.django.html:70
 msgid "Total points"
 msgstr "Totalt antall poeng"
 
-#: apps/trix/templates/trix/main.django.html:89
-#: apps/trix/templates/trix/trixadmin/period.django.html:104
-msgid "Prerequisites"
-msgstr "Nødvendige forkunnskaper"
-
-#: apps/trix/templates/trix/main.django.html:136
-#: apps/trix/templates/trix/trixadmin/period.django.html:127
+#: apps/trix/templates/trix/main.django.html:175
 msgid "points"
 msgstr "poeng"
 
-#: apps/trix/templates/trix/main.django.html:155
-#: apps/trix/templates/trix/trixadmin/main.django.html:103
-msgid "View period"
-msgstr "Vis periode"
+#: apps/trix/templates/trix/main.django.html:184
+msgid "Prerequisites"
+msgstr "Nødvendige forkunnskaper"
 
-#: apps/trix/templates/trix/profile.django.html:60
+#: apps/trix/templates/trix/profile.django.html:5
+msgid "Profile"
+msgstr "Profil"
+
+#: apps/trix/templates/trix/profile.django.html:80
 msgid "Name"
 msgstr "Navn"
 
-#: apps/trix/templates/trix/profile.django.html:61
+#: apps/trix/templates/trix/profile.django.html:81
 msgid "Username"
 msgstr "Brukernavn"
 
-#: apps/trix/templates/trix/profile.django.html:63
+#: apps/trix/templates/trix/profile.django.html:83
 msgid "last login"
 msgstr "Sist pålogget"
 
@@ -151,50 +142,34 @@ msgstr "Sist pålogget"
 msgid "Level"
 msgstr "Nivå"
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:37
-#: apps/trix/templates/trix/trixadmin/main.django.html:57
-#: apps/trix/templates/trix/trixadmin/main.django.html:73
-#: apps/trix/templates/trix/trixadmin/main.django.html:77
+#: apps/trix/templates/trix/trixadmin/main.django.html:40
+#: apps/trix/templates/trix/trixadmin/main.django.html:60
+#: apps/trix/templates/trix/trixadmin/main.django.html:76
+#: apps/trix/templates/trix/trixadmin/main.django.html:80
 msgid "Link exercise and period"
 msgstr "Koble oppgave med periode"
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:38
+#: apps/trix/templates/trix/trixadmin/main.django.html:41
 msgid "A topic for exercise's topics and prerequisites."
 msgstr "Et tema for oppgaver og nødvendige forkunnskaper."
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:42
+#: apps/trix/templates/trix/trixadmin/main.django.html:45
 msgid "Create new topic"
 msgstr "Lag et nytt tema"
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:58
+#: apps/trix/templates/trix/trixadmin/main.django.html:61
 msgid "An exercise that goes in the exercise database."
 msgstr "En oppgave til oppgavedatabasen."
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:62
+#: apps/trix/templates/trix/trixadmin/main.django.html:65
 msgid "Create new exercise"
 msgstr "Lag en ny oppgave"
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:78
+#: apps/trix/templates/trix/trixadmin/main.django.html:81
 msgid "Link an exercise and a period."
 msgstr "Koble en oppgave med en periode."
 
-#: apps/trix/templates/trix/trixadmin/main.django.html:82
+#: apps/trix/templates/trix/trixadmin/main.django.html:85
 msgid "Add exercise to period"
 msgstr "Legg oppgave til periode"
-
-#: apps/trix/templates/trix/trixadmin/period.django.html:52
-msgid "Error!"
-msgstr "Feil!"
-
-#: apps/trix/templates/trix/trixadmin/period.django.html:53
-msgid "Invalid exercise ID!"
-msgstr "Ugyldig oppgave-id!"
-
-#: apps/trix/templates/trix/trixadmin/period.django.html:121
-msgid "Edit"
-msgstr "Rediger"
-
-#: apps/trix/templates/trix/trixadmin/period.django.html:124
-msgid "Delete"
-msgstr "Delete"
 

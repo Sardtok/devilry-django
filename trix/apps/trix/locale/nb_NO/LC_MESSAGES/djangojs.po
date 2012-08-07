@@ -1,148 +1,202 @@
+# translation of djangojs.po to Norsk bokmål
 # translation of djangojs.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Sigmund Hansen <sigmunha@student.uio.no>, 2011.
+# Sigmund Hansen <sigmunha@student.uio.no>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: djangojs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-15 15:32+0200\n"
-"PO-Revision-Date: 2011-08-15 15:38+0200\n"
-"Last-Translator: Larsen vestad Erlend\n"
-"Language-Team:  <i18n-nb@lister.ping.uio.no>\n"
+"POT-Creation-Date: 2012-08-07 01:26+0200\n"
+"PO-Revision-Date: 2012-08-07 01:26+0200\n"
+"Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
+"Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: apps/trix/static/extjstrix/DefaultCreateWindow.js:7
-msgid "Create new"
-msgstr "Lag ny"
-
-#: apps/trix/static/extjstrix/DefaultCreateWindow.js:20
-msgid "Success"
-msgstr "Fullført"
-
-#: apps/trix/static/extjstrix/DefaultCreateWindow.js:20
-msgid "Data saved successfully!"
-msgstr "Dataene ble lagret!"
-
-#: apps/trix/static/extjstrix/profilestats.js:46
-msgid "Statistics"
-msgstr "Statistikk"
-
-#: apps/trix/static/extjstrix/profilestats.js:53
-#: apps/trix/static/extjstrix/profilestats.js:93
-msgid "Topics"
-msgstr "Temaer"
-
-#: apps/trix/static/extjstrix/profilestats.js:56
-#: apps/trix/static/extjstrix/profilestats.js:64
-#: apps/trix/static/extjstrix/profilestats.js:76
-#: apps/trix/static/extjstrix/profilestats.js:97
-#: apps/trix/static/extjstrix/forms/Exercise.js:41
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:51
-msgid "Points"
-msgstr "Poeng"
-
-#: apps/trix/static/extjstrix/profilestats.js:56
-#: apps/trix/static/extjstrix/profilestats.js:57
-#: apps/trix/static/extjstrix/profilestats.js:96
-#: apps/trix/static/extjstrix/forms/Exercise.js:50
-msgid "Topic"
-msgstr "Tema"
-
-#: apps/trix/static/extjstrix/profilestats.js:56
-#: apps/trix/static/extjstrix/profilestats.js:64
-msgid " possible points"
-msgstr " mulige poeng"
-
-#: apps/trix/static/extjstrix/profilestats.js:57
-#: apps/trix/static/extjstrix/profilestats.js:65
-msgid "Effort"
-msgstr "Innsats"
-
-#: apps/trix/static/extjstrix/profilestats.js:57
-#: apps/trix/static/extjstrix/profilestats.js:65
-msgid "Exercises"
-msgstr "Oppgaver"
-
-#: apps/trix/static/extjstrix/profilestats.js:57
-#: apps/trix/static/extjstrix/profilestats.js:65
-msgid " exercises done"
-msgstr " oppgaver gjort"
-
-#: apps/trix/static/extjstrix/profilestats.js:61
-#: apps/trix/static/extjstrix/profilestats.js:72
-msgid "Periods"
-msgstr "Perioder"
-
-#: apps/trix/static/extjstrix/profilestats.js:64
-#: apps/trix/static/extjstrix/profilestats.js:65
-#: apps/trix/static/extjstrix/profilestats.js:75
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:27
-msgid "Period"
-msgstr "Periode"
-
-#: apps/trix/static/extjstrix/profilestats.js:78
-#: apps/trix/static/extjstrix/profilestats.js:82
-#: apps/trix/static/extjstrix/profilestats.js:86
-#: apps/trix/static/extjstrix/profilestats.js:99
-#: apps/trix/static/extjstrix/profilestats.js:103
-#: apps/trix/static/extjstrix/profilestats.js:107
-#: apps/trix/static/extjstrix/profilestats.js:249
+#: static/extjstrix/Barchart.js:91 static/extjstrix/Periodgrid.js:10
+#: static/extjstrix/Periodgrid.js.py:14 static/extjstrix/Periodgrid.js:18
+#: static/extjstrix/Topicgrid.js:10 static/extjstrix/Topicgrid.js.py:14
+#: static/extjstrix/Topicgrid.js:18 static/extjstrix/profilestats.js:86
+#: static/extjstrix/profilestats.js:90 static/extjstrix/profilestats.js:94
+#: static/extjstrix/profilestats.js:105 static/extjstrix/profilestats.js:109
+#: static/extjstrix/profilestats.js:113 static/extjstrix/profilestats.js:267
 msgid " of "
 msgstr " av "
 
-#: apps/trix/static/extjstrix/profilestats.js:80
-#: apps/trix/static/extjstrix/profilestats.js:101
+#: static/extjstrix/Barchart.js:137 static/extjstrix/profilestats.js:48
+msgid "Statistics"
+msgstr "Statistikk"
+
+#: static/extjstrix/Barchart.js:143 static/extjstrix/Periodgrid.js:4
+#: static/extjstrix/profilestats.js:56 static/extjstrix/profilestats.js:80
+msgid "Periods"
+msgstr "Perioder"
+
+#: static/extjstrix/Barchart.js:150 static/extjstrix/Barchart.js.py:161
+#: static/extjstrix/profilestats.js:61 static/extjstrix/profilestats.js:72
+msgid "Effort"
+msgstr "Innsats"
+
+#: static/extjstrix/Barchart.js:150 static/extjstrix/Barchart.js.py:151
+#: static/extjstrix/Periodgrid.js:7 static/extjstrix/profilestats.js:61
+#: static/extjstrix/profilestats.js:62 static/extjstrix/profilestats.js:83
+#: static/extjstrix/forms/AddPeriod.js:22
+#: static/extjstrix/forms/PeriodExercise.js:27
+msgid "Period"
+msgstr "Periode"
+
+#: static/extjstrix/Barchart.js:150 static/extjstrix/Barchart.js.py:161
+#: static/extjstrix/TopicView.js:96 static/extjstrix/profilestats.js:61
+#: static/extjstrix/profilestats.js:72
+msgid "Exercises"
+msgstr "Oppgaver"
+
+#: static/extjstrix/Barchart.js:150 static/extjstrix/Barchart.js.py:161
+#: static/extjstrix/profilestats.js:61 static/extjstrix/profilestats.js:72
+msgid " exercises done"
+msgstr " oppgaver gjort"
+
+#: static/extjstrix/Barchart.js:151 static/extjstrix/Barchart.js.py:162
+#: static/extjstrix/Periodgrid.js:8 static/extjstrix/TopicView.js:87
+#: static/extjstrix/Topicgrid.js:8 static/extjstrix/profilestats.js:62
+#: static/extjstrix/profilestats.js:73 static/extjstrix/profilestats.js:84
+#: static/extjstrix/profilestats.js:103 static/extjstrix/forms/Exercise.js:41
+#: static/extjstrix/forms/PeriodExercise.js:51
+msgid "Points"
+msgstr "Poeng"
+
+#: static/extjstrix/Barchart.js:151 static/extjstrix/Barchart.js.py:162
+#: static/extjstrix/profilestats.js:62 static/extjstrix/profilestats.js:73
+msgid " possible points"
+msgstr " mulige poeng"
+
+#: static/extjstrix/Barchart.js:156 static/extjstrix/Topicgrid.js:4
+#: static/extjstrix/profilestats.js:67 static/extjstrix/profilestats.js:99
+msgid "Topics"
+msgstr "Temaer"
+
+#: static/extjstrix/Barchart.js:161 static/extjstrix/Barchart.js.py:162
+#: static/extjstrix/Topicgrid.js:7 static/extjstrix/profilestats.js:72
+#: static/extjstrix/profilestats.js:73 static/extjstrix/profilestats.js:102
+#: static/extjstrix/forms/AddTopic.js:22 static/extjstrix/forms/Exercise.js:50
+msgid "Topic"
+msgstr "Tema"
+
+#: static/extjstrix/GroupList.js:83
+msgid "Remove period group"
+msgstr "Fjern en periodegruppe"
+
+#: static/extjstrix/GroupList.js:93 static/extjstrix/GroupList.js.py:94
+msgid "Add period group"
+msgstr "Følg periodegruppe"
+
+#: static/extjstrix/Periodgrid.js:12 static/extjstrix/Topicgrid.js:12
+#: static/extjstrix/profilestats.js:88 static/extjstrix/profilestats.js:107
 msgid "Exercises done"
 msgstr "Oppgaver gjort"
 
-#: apps/trix/static/extjstrix/profilestats.js:84
-#: apps/trix/static/extjstrix/profilestats.js:105
+#: static/extjstrix/Periodgrid.js:16 static/extjstrix/Topicgrid.js:16
+#: static/extjstrix/profilestats.js:92 static/extjstrix/profilestats.js:111
 msgid "Key exercises"
 msgstr "Nøkkeloppgaver"
 
-#: apps/trix/static/extjstrix/profilestats.js:116
+#: static/extjstrix/StatisticsTable.js:4 static/extjstrix/profilestats.js:120
 msgid "Overview"
 msgstr "Oversikt"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:27
-msgid "Long name"
-msgstr "Fullt navn"
+#: static/extjstrix/TopicView.js:54
+msgid "Confirm removal"
+msgstr "Bekreft fjerning"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:29
-msgid "Example: Hello World"
-msgstr "Eksempel: Hallo, verden!"
+#: static/extjstrix/TopicView.js:55
+msgid "Are you sure you want to remove this topic?"
+msgstr "Vil du fjerne dette temaet?"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:36
-msgid "Short name"
-msgstr "Kort navn"
+#: static/extjstrix/TopicView.js:77
+msgid "View exercise"
+msgstr "Vis oppgave"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:38
-msgid "Example: output1"
-msgstr "Eksempel: utskrift1"
+#: static/extjstrix/TopicView.js:85
+msgid "Title"
+msgstr "Tittel"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:53
-#: apps/trix/static/extjstrix/forms/Exercise.js:61
-msgid "Select a topic"
-msgstr "Velg et tema"
+#: static/extjstrix/forms/AddFollowing.js:22
+#: static/extjstrix/forms/AddGroup.js:22
+msgid "Period group"
+msgstr "Periodegruppe"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:58
+#: static/extjstrix/forms/AddFollowing.js:25
+#: static/extjstrix/forms/AddGroup.js:25
+msgid "Select a period group"
+msgstr "Velg en periodegruppe"
+
+#: static/extjstrix/forms/AddFollowing.js:30
+#: static/extjstrix/forms/AddGroup.js:30
+msgid "<strong>Period group</strong> is the group you want to follow."
+msgstr "<strong>Periodegruppe</strong> er periodegruppen du vil følge."
+
+#: static/extjstrix/forms/AddPeriod.js:25
+#: static/extjstrix/forms/PeriodExercise.js:30
+msgid "Select a period"
+msgstr "Velg en periode"
+
+#: static/extjstrix/forms/AddPeriod.js:30
+msgid "<strong>Period</strong> is the period to add to this group."
+msgstr "<strong>Periode</strong> er perioden du skal legge til gruppen."
+
+#: static/extjstrix/forms/AddPrerequisite.js:22
+#: static/extjstrix/forms/Exercise.js:58
 msgid "Prerequisite"
 msgstr "Forkunnskap"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:67
+#: static/extjstrix/forms/AddPrerequisite.js:25
+#: static/extjstrix/forms/AddTopic.js:25 static/extjstrix/forms/Exercise.js:53
+#: static/extjstrix/forms/Exercise.js:61
+msgid "Select a topic"
+msgstr "Velg et tema"
+
+#: static/extjstrix/forms/AddPrerequisite.js:30
+#: static/extjstrix/forms/Exercise.js:78
+msgid ""
+"<strong>Prerequisite</strong> is a topic the student should know before "
+"doing the exercise."
+msgstr ""
+"<strong>Forkunnskap</strong> er et tema studenten bør kunne før han/hun gjør "
+"oppgaven."
+
+#: static/extjstrix/forms/AddTopic.js:30 static/extjstrix/forms/Exercise.js:77
+msgid "<strong>Topic</strong> is a topic for the exercise."
+msgstr "<strong>Tema</strong> er et oppgavetema."
+
+#: static/extjstrix/forms/Exercise.js:27
+msgid "Long name"
+msgstr "Fullt navn"
+
+#: static/extjstrix/forms/Exercise.js:29
+msgid "Example: Hello World"
+msgstr "Eksempel: Hallo, verden!"
+
+#: static/extjstrix/forms/Exercise.js:36
+msgid "Short name"
+msgstr "Kort navn"
+
+#: static/extjstrix/forms/Exercise.js:38
+msgid "Example: output1"
+msgstr "Eksempel: utskrift1"
+
+#: static/extjstrix/forms/Exercise.js:67
 msgid "Exercise text"
 msgstr "Oppgavetekst"
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:74
+#: static/extjstrix/forms/Exercise.js:74
 msgid "<strong>Long name</strong> is a longer descriptive exercise title."
 msgstr "<strong>Fullt navn</strong> er en lengre beskrivende tittel."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:75
+#: static/extjstrix/forms/Exercise.js:75
 msgid ""
 "<strong>Short name</strong> is a short name used when the long name takes to "
 "much space. Short name can only contain english lower-case letters, numbers "
@@ -152,75 +206,79 @@ msgstr ""
 "tar for mye plass. Korte navn kan kun inneholde bokstaver fra det engelske "
 "alfabetet, tall og understrek (_)."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:76
+#: static/extjstrix/forms/Exercise.js:76
 msgid "<strong>Points</strong> is the default number of points for this exercise"
 msgstr ""
 "<strong>Poeng</strong> er poengsummen som gis som standard for denne "
 "oppgaven."
 
-#: apps/trix/static/extjstrix/forms/Exercise.js:77
-msgid "<strong>Topic</strong> is a topic for the exercise."
-msgstr "<strong>Tema</strong> er et oppgavetema."
-
-#: apps/trix/static/extjstrix/forms/Exercise.js:78
-msgid ""
-"<strong>Prerequisite</strong> is a topic the student should know before "
-"doing the exercise."
-msgstr ""
-"<strong>Forkunnskap</strong> er et tema studenten bør kunne før han/hun gjør "
-"oppgaven."
-
-#: apps/trix/static/extjstrix/forms/Exercise.js:79
+#: static/extjstrix/forms/Exercise.js:79
 msgid "<strong>Exercise text</strong> is the exercise itself."
 msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:30
-msgid "Select a period"
-msgstr "Velg en periode"
-
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:35
+#: static/extjstrix/forms/PeriodExercise.js:35
 msgid "Exercise"
 msgstr "Oppgave"
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:47
+#: static/extjstrix/forms/PeriodExercise.js:47
 msgid "Number"
 msgstr "Nummer"
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:56
+#: static/extjstrix/forms/PeriodExercise.js:56
 msgid "Key exercise"
 msgstr "Nøkkeloppgave"
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:62
+#: static/extjstrix/forms/PeriodExercise.js:62
 msgid "<strong>Period</strong> is the period in which an exercise should be given."
 msgstr "<strong>Periode</strong> er perioden oppgaven skal gis."
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:63
+#: static/extjstrix/forms/PeriodExercise.js:63
 msgid "<strong>Exercise</strong> is the exercise to be given."
 msgstr "<strong>Oppgave</strong> er oppgaven som skal gis."
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:64
+#: static/extjstrix/forms/PeriodExercise.js:64
 msgid "<strong>Number</strong> the number of the exercise this period."
 msgstr "<strong>Nummer</strong> nummeret til oppgaven denne perioden"
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:65
+#: static/extjstrix/forms/PeriodExercise.js:65
 msgid ""
 "<strong>Points</strong> can be filled in to override the number of points "
 "for this exercise."
-msgstr "<strong>Poeng</strong> kan fylles in for å overstyre antall poeng for denne oppgaven"
+msgstr ""
+"<strong>Poeng</strong> kan fylles in for å overstyre antall poeng for denne "
+"oppgaven"
 
-#: apps/trix/static/extjstrix/forms/PeriodExercise.js:66
+#: static/extjstrix/forms/PeriodExercise.js:66
 msgid "<strong>Key exercise</strong> marks exercises that are important."
 msgstr "<strong>Nøkkeloppgave</strong> merker oppgaven som viktig."
 
-#: apps/trix/static/extjstrix/forms/Topic.js:26
+#: static/extjstrix/forms/PeriodGroup.js:27
+msgid "Subject"
+msgstr "Emne"
+
+#: static/extjstrix/forms/PeriodGroup.js:30
+msgid "Select a subject"
+msgstr "Velg et emne"
+
+#: static/extjstrix/forms/PeriodGroup.js:35 static/extjstrix/forms/Topic.js:26
 msgid "Name"
 msgstr "Navn"
 
-#: apps/trix/static/extjstrix/forms/Topic.js:28
+#: static/extjstrix/forms/PeriodGroup.js:41
+msgid ""
+"<strong>Subject</strong> is the subject whose periods this group will "
+"contain."
+msgstr "<strong>Emne</strong> er emnet hvis perioder denne gruppen skal inneholde."
+
+#: static/extjstrix/forms/PeriodGroup.js:42
+msgid "<strong>Name</strong> is the name of this period group."
+msgstr "<strong>Navn</strong> er gruppens navn."
+
+#: static/extjstrix/forms/Topic.js:28
 msgid "Example: Arrays"
 msgstr "Eksempel: Rekker"
 
-#: apps/trix/static/extjstrix/forms/Topic.js:32
+#: static/extjstrix/forms/Topic.js:32
 msgid "<strong>Name</strong> the name of the topic."
 msgstr "<strong>Navn</strong> er temaets navn."
 
