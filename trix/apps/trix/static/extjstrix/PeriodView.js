@@ -163,7 +163,7 @@ Ext.define('trix.PeriodView', {
                                       scope: this,
                                       handler: function() {
                                           var record = this.getSelection();
-                                          window.open(this.dashboardUrl + "exercise/" + record.data.exercise);
+                                          window.open(this.dashboardUrl + "exercise/" + record.get('exercise'));
                                       }
                                      });
         this.editExerciseButton = Ext.create('Ext.button.Button',
