@@ -25,3 +25,4 @@ class SimplifiedPeriodExercise(AuthorizationMixin):
                                  'exercise__topics__name')
         filters = FilterSpecs(FilterSpec('exercise'), FilterSpec('period'))
         methods = ['create', 'read', 'update', 'delete', 'search']
+
