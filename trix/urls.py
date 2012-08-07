@@ -8,8 +8,7 @@ from devilry.apps.core import pluginloader
 from devilry.defaults.urls import devilry_urls
 
 js_info_dict = {
-    'domain': 'djangojs',
-    'packages': ('trix',),
+   'packages': ('trix.apps.trix',),
 }
 
 class RedirectToFrontpage(View):
