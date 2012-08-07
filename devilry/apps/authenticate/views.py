@@ -8,7 +8,7 @@ from django.shortcuts import render
 
 def logout(request):
     auth.logout(request)
-    return http.HttpResponseRedirect(settings.DEVILRY_URLPATH_PREFIX)
+    return http.HttpResponseRedirect(settings.DEVILRY_URLPATH_PREFIX or '/')
 
 
 class LoginForm(forms.Form):
@@ -21,7 +21,10 @@ class LoginForm(forms.Form):
 def login(request):
     login_failed = False
     if request.user.is_authenticated():
-        next = request.GET['next'] or settings.DEVILRY_URLPATH_PREFIX
+        next = settings.DEVILRY_URLPATH_PREFIX or '/'
+        if 'next' in request.GET:
+            next = request.GET['next']
+
         return http.HttpResponseRedirect(next)
 
     if request.POST:
