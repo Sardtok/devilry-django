@@ -17,6 +17,8 @@
     Ext.require('trix.ModelView');
     Ext.require('trix.TopicView');
     {{ restfulapi.RestfulSimplifiedTopic|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedExercise|extjs_model }};
+    var exercisestore = {{ restfulapi.RestfulSimplifiedExercise|extjs_store }};
 {% endblock %}
 
 {% block onready %}
@@ -46,6 +48,7 @@
                 xtype: 'topicview',
                 modelname: {{ restfulapi.RestfulSimplifiedTopic|extjs_modelname }},
                 objectid: {{ objectid }},
+                exercisestore: exercisestore,
                 dashboardUrl: DASHBOARD_URL,
                 flex: 1
             }]
