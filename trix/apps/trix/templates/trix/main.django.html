@@ -43,19 +43,23 @@
 <script type="text/javascript">
     var DASHBOARD_URL = '{{ DEVILRY_URLPATH_PREFIX }}/trix/';
   // Models
-  {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
-  {{ restfulapi.RestfulSimplifiedTopic|extjs_model }};
-{{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_model:"exercise,period" }};
-{% comment %}
-  {{ restfulapi.RestfulSimplifiedExercise|extjs_model }};
-  {{ restfulapi.RestfulSimplifiedStatus|extjs_model }};
-  {{ restfulapi.RestfulSimplifiedExerciseStatus|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedPeriod|extjs_model:"subject" }};
+    {{ restfulapi.RestfulSimplifiedTopic|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_model:"exercise,period" }};
+    {{ restfulapi.RestfulSimplifiedStudent|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_model }};
+    {% comment %}
+    {{ restfulapi.RestfulSimplifiedExercise|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedStatus|extjs_model }};
+    {{ restfulapi.RestfulSimplifiedExerciseStatus|extjs_model }};
 {% endcomment %}
 
   // Test extjs_store
-  {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
-  {{ restfulapi.RestfulSimplifiedTopic|extjs_store }};
-  {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_store }};
+    {{ restfulapi.RestfulSimplifiedPeriod|extjs_store }};
+    {{ restfulapi.RestfulSimplifiedTopic|extjs_store }};
+    {{ restfulapi.RestfulSimplifiedPeriodExercise|extjs_store }};
+    {{ restfulapi.RestfulSimplifiedStudent|extjs_store }};
+    groupstore = {{ restfulapi.RestfulSimplifiedPeriodGroup|extjs_store }};
 {% comment %}
   {{ restfulapi.RestfulSimplifiedStatus|extjs_store }};
   {{ restfulapi.RestfulSimplifiedExercise|extjs_store }};
@@ -64,7 +68,19 @@
 </script>
 {% endblock %}
 
+{% block imports %}
+    {{ block.super }}
+    Ext.require('trix.GroupList');
+{% endblock %}
+
 {% block onready %}
+{{ block.super }}
+
+    var grouplist = Ext.create('trix.GroupList', {
+        modelname: {{ restfulapi.RestfulSimplifiedStudent|extjs_modelname }},
+        {% if user.id %}objectid: {{ user.id }},{% endif %}
+        groupstore: groupstore
+    });
     var searchwidget = Ext.create('trix.TrixSearchWidget', {
     //renderTo: 'searchwidget-container',
         hidden: true,
@@ -97,12 +113,14 @@
                 type: 'vbox',
                 align: 'stretch'
             },
-            items: [searchwidget, {xtype: 'box', height: 20}, {
-                xtype: 'box',
-                flex: 1,
-                autoScroll: true,
-                componentCls: 'exercises',
-                html:
+            items: [searchwidget, {xtype: 'box', height: 20},
+                {% if user.is_authenticated %}grouplist,{% endif %}
+                {
+                   xtype: 'box',
+                   flex: 1,
+                   autoScroll: true,
+                   componentCls: 'exercises',
+                   html:
 {% comment %}
 {% if user.is_authenticated %}
 '<!--' +
@@ -116,9 +134,9 @@
 {% endif %}
 {% endcomment %}
 
-'<div id="perioddropdown"></div>'
+''
 {% for p, p_excs in exercises.items %}
-+ '<table class="exercises">' +
++ '<table class="exercises {% if p in followedperiods %}followed{% else %}unfollowed{% endif %}">' +
 '  <caption><div>{{ p.parentnode.long_name|escapejs }}</div><h2>{{ p.long_name|escapejs }}</h2></caption>{% comment %}' +
 '  <thead>' +
 '    <tr>' +
@@ -138,7 +156,7 @@
 '  </thead>{% endcomment %}' +
 '  <tbody>' +
     
-    {% for e in p_excs.values %}
+    {% for k, e in p_excs.items %}
 '    <tr>' +
 '      <td {% if statuses %} class="maincol">' +
 '        <a class="dispexc" href="javascript:void(0)" onClick="toggleExc(this)">' +
@@ -193,5 +211,5 @@
 
   searchwidget.show();
 {% endblock %}
-{% block bodyContent %}
+{% block bodycontent %}
 {% endblock %}
