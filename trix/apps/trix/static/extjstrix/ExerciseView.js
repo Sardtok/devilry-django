@@ -111,7 +111,8 @@ Ext.define('trix.ExerciseView', {
                             '<tpl for="prerequisites__name">',
                             '<a href="{[this.dashboardUrl]}topic/{[parent.prerequisites__id[xindex-1]]}">{.}</a>',
                             '<span id="prerequisite-{[parent.prerequisites__id[xindex-1]]}"></span></tpl></div></tpl></div>',
-                            '<div class="exctext">{text}')
+                            '<div class="exctext">{text}',
+                            {dashboardUrl: this.dashboardUrl})
         });
 
         Ext.apply(this, { items: [this.editButton, this.deleteButton,
