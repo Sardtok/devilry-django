@@ -7,7 +7,7 @@ from django.http import HttpResponse, Http404
 
 from devilry.utils.module import dump_all_into_dict
 from devilry.apps.core.models import Period
-from trix.apps.trix.models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise
+from trix.apps.trix.models import Status, Exercise, Topic, ExerciseStatus, PeriodExercise, PeriodGroup
 
 from django.dispatch import receiver
 from django.core.signals import request_started, request_finished
@@ -60,13 +60,13 @@ def get_topic_points(topic, user):
     stats = []
     for e in exercises:
         stats.extend(ExerciseStatus.objects.filter(student=user,
-                                                        exercise__in=e.periods.all()))
+                                                   exercise__in=e.periods.all()))
 
     points = 0
     for stat in stats:
         points += int(stat.exercise.points * stat.status.percentage)
     return points
-    
+
 def get_points(user):
     """
     Gets the total number of points a user has acquired.
@@ -88,13 +88,13 @@ def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
     if period_id != -1:
         all_exercises = PeriodExercise.objects.filter(period__id=period_id)
 
-    if topic_id != -1:
+    elif topic_id != -1:
         all_exercises = PeriodExercise.objects.filter(exercise__topics=topic_id)
 
-    if exercise_id != -1:
+    elif exercise_id != -1:
         all_exercises = PeriodExercise.objects.filter(id=exercise_id)
 
-    if all_exercises is None:
+    else:
         all_exercises = PeriodExercise.objects.filter(period__start_time__lte
                                                       =datetime.now(),
                                                       period__end_time__gte
@@ -104,6 +104,14 @@ def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
     topics = {}
     prerequisites = {}
     topicstats = {}
+    followedperiods = []
+    followedgroups = []
+    if request.user.is_authenticated():
+        followedgroups = request.user.followedgroups.values_list('id', flat=True)
+    if not followedgroups:
+        followedgroups = PeriodGroup.objects.values_list('id', flat=True)
+
+    # This should be switched out with javascript logic that looks up exercises
     for exercise in all_exercises:
         e = {'id': exercise.id,
              'number': exercise.number,
@@ -114,7 +122,8 @@ def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
              'points': exercise.points,
              'starred': exercise.starred,
              'topics': exercise.exercise.topics.all(),
-             'prerequisites': exercise.exercise.prerequisites.all()}
+             'prerequisites': exercise.exercise.prerequisites.all()
+             }
 
         for topic in e['topics']:
             if not topicstats.has_key(topic.id):
@@ -127,30 +136,27 @@ def main(request, period_id=-1, topic_id=-1, exercise_id=-1):
         for p in ps:
             prerequisites.setdefault(p.id, p)
         
-        print request.user.username
         if request.user.is_authenticated():
-            print " is authenticated."
             try:
                 stats = exercise.student_results.get(student=request.user)
-                e.update([['status', stats.status.id]])
-                e.update([['status_name', stats.status.name]])
+                e.update({'status': stats.status.id, 'status_name': stats.status.name})
             except ExerciseStatus.DoesNotExist:
                 pass
+
         exercises.setdefault(exercise.period, {}).update([[exercise.number, e]])
+        if (exercise.period not in followedperiods and period_id != -1
+            or exercise_id != -1 or exercise.period.group_id in followedgroups):
+            followedperiods.append(exercise.period)
 
     statuses = []
-    print request.user
     if request.user.is_authenticated():
-        print "getting sauce!"
-        print Status.objects.all()
         statuses = Status.objects.filter(active=True)
-
-    print statuses
 
     return render(request,'trix/main.django.html',
                   {'exercises': exercises,
                    'statuses': statuses,
                    'topicstats': topicstats,
+                   'followedperiods': followedperiods,
                    'level': get_level(get_points(request.user)),
                    'restfulapi': dump_all_into_dict(restful)})
 
