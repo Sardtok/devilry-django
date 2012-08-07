@@ -1,4 +1,4 @@
-.header, .trixheader, .footer, .trixfooter,
+.header, .trixheader, .footer, .trixfooter, .grouplist,
 .widget-searchwidget, .statusbutton, .dispexc, .levelinfo { display: none; }
 
 * { width: auto !important; overflow: visible !important; font-size: 12pt; }

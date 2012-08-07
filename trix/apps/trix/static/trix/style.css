@@ -31,7 +31,9 @@ a { font-size: 100% !important; }
     border-color: #D7D7D7;
 }
 
-.exercises { clear: both; }
+.unfollowed { visibility: hidden; }
+
+.exercises { clear: both; margin-bottom: 2em; }
 .exercises th    { font-weight: bold; font-size: 100%; padding: 0.3em; }
 .exercises td    { padding: 0.5em 0.3em; }
 .exctext { padding-top: 0.5em; }
