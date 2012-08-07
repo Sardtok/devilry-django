@@ -5,6 +5,7 @@ h4    { font-weight: bold; font-size: 120%; }
 h5    { font-weight: bold; font-style: italic; font-size: 120%; }
 h6    { font-weight: bold; font-size: 110%; }
 h7    { font-weight: bold; font-style: italic; font-size: 110%; }
+p     { margin: 0.5em 0; }
 i     { font-style: italic; }
 li { padding: 0.5em 0; }
 strong, b     { font-weight: bold; }
