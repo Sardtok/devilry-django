@@ -13,6 +13,8 @@ Ext.define('trix.ExerciseView', {
         'devilry.extjshelpers.formfields.ForeignKeySelector'
     ],
 
+    autoScroll: true,
+
     headerTpl: Ext.create('Ext.XTemplate',
                           '<h1>{long_name} &mdash;&nbsp;{points}&nbsp;points</h1>'),
 
