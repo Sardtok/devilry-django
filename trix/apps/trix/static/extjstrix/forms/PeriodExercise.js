@@ -35,9 +35,9 @@ Ext.define('trix.forms.PeriodExercise', {
         fieldLabel: gettext("Exercise"),
         xtype: 'foreignkeyselector',
         model: 'trix.apps.trix.simplified.exercise.SimplifiedExercise',
-        emptyText: 'Select an exercise',
+        emptyText: gettext('Select an exercise'),
         displayTpl: '{short_name}',
-        dropdownTpl: '<div class="important">{short_name}</div> <div>{long_name}</div>'
+        dropdownTpl: '<div class="important">{short_name} - {points} ' + gettext("points") + '</div> <div>{long_name}</div>'
     }, {
         xtype: 'container',
         anchor: '100%',
