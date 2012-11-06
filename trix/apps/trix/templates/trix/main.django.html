@@ -76,11 +76,11 @@
 {% block onready %}
 {{ block.super }}
 
-    var grouplist = Ext.create('trix.GroupList', {
+/*    var grouplist = Ext.create('trix.GroupList', {
         modelname: {{ restfulapi.RestfulSimplifiedStudent|extjs_modelname }},
         {% if user.id %}objectid: {{ user.id }},{% endif %}
         groupstore: groupstore
-    });
+    });*/
     var searchwidget = Ext.create('trix.TrixSearchWidget', {
     //renderTo: 'searchwidget-container',
         hidden: true,
@@ -114,7 +114,7 @@
                 align: 'stretch'
             },
             items: [searchwidget, {xtype: 'box', height: 20},
-                {% if user.is_authenticated %}grouplist,{% endif %}
+                {% if user.is_authenticated %}/*grouplist,*/{% endif %}
                 {
                    xtype: 'box',
                    flex: 1,
