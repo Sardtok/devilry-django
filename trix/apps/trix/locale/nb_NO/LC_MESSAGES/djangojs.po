@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: djangojs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-07 01:26+0200\n"
-"PO-Revision-Date: 2012-08-07 01:26+0200\n"
+"POT-Creation-Date: 2012-11-08 23:52+0100\n"
+"PO-Revision-Date: 2012-11-08 23:53+0100\n"
 "Last-Translator: Sigmund Hansen <sigmunha@student.uio.no>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -50,8 +50,8 @@ msgid "Period"
 msgstr "Periode"
 
 #: static/extjstrix/Barchart.js:150 static/extjstrix/Barchart.js.py:161
-#: static/extjstrix/TopicView.js:96 static/extjstrix/profilestats.js:61
-#: static/extjstrix/profilestats.js:72
+#: static/extjstrix/TopicView.js:95 static/extjstrix/profilestats.js:61
+#: static/extjstrix/profilestats.js:72 static/extjstrix/page/Header.js:29
 msgid "Exercises"
 msgstr "Oppgaver"
 
@@ -61,7 +61,7 @@ msgid " exercises done"
 msgstr " oppgaver gjort"
 
 #: static/extjstrix/Barchart.js:151 static/extjstrix/Barchart.js.py:162
-#: static/extjstrix/Periodgrid.js:8 static/extjstrix/TopicView.js:87
+#: static/extjstrix/Periodgrid.js:8 static/extjstrix/TopicView.js:86
 #: static/extjstrix/Topicgrid.js:8 static/extjstrix/profilestats.js:62
 #: static/extjstrix/profilestats.js:73 static/extjstrix/profilestats.js:84
 #: static/extjstrix/profilestats.js:103 static/extjstrix/forms/Exercise.js:41
@@ -86,11 +86,15 @@ msgstr "Temaer"
 msgid "Topic"
 msgstr "Tema"
 
-#: static/extjstrix/GroupList.js:83
+#: static/extjstrix/GroupList.js:30
+msgid "Groups"
+msgstr "Grupper"
+
+#: static/extjstrix/GroupList.js:84
 msgid "Remove period group"
 msgstr "Fjern en periodegruppe"
 
-#: static/extjstrix/GroupList.js:93 static/extjstrix/GroupList.js.py:94
+#: static/extjstrix/GroupList.js:94 static/extjstrix/GroupList.js.py:95
 msgid "Add period group"
 msgstr "Følg periodegruppe"
 
@@ -108,33 +112,30 @@ msgstr "Nøkkeloppgaver"
 msgid "Overview"
 msgstr "Oversikt"
 
-#: static/extjstrix/TopicView.js:54
+#: static/extjstrix/TopicView.js:53
 msgid "Confirm removal"
 msgstr "Bekreft fjerning"
 
-#: static/extjstrix/TopicView.js:55
+#: static/extjstrix/TopicView.js:54
 msgid "Are you sure you want to remove this topic?"
 msgstr "Vil du fjerne dette temaet?"
 
-#: static/extjstrix/TopicView.js:77
+#: static/extjstrix/TopicView.js:76
 msgid "View exercise"
 msgstr "Vis oppgave"
 
-#: static/extjstrix/TopicView.js:85
+#: static/extjstrix/TopicView.js:84
 msgid "Title"
 msgstr "Tittel"
 
-#: static/extjstrix/forms/AddFollowing.js:22
 #: static/extjstrix/forms/AddGroup.js:22
 msgid "Period group"
 msgstr "Periodegruppe"
 
-#: static/extjstrix/forms/AddFollowing.js:25
 #: static/extjstrix/forms/AddGroup.js:25
 msgid "Select a period group"
 msgstr "Velg en periodegruppe"
 
-#: static/extjstrix/forms/AddFollowing.js:30
 #: static/extjstrix/forms/AddGroup.js:30
 msgid "<strong>Period group</strong> is the group you want to follow."
 msgstr "<strong>Periodegruppe</strong> er periodegruppen du vil følge."
@@ -220,6 +221,14 @@ msgstr "<strong>Oppgavetekst</strong> er selve oppgaven."
 msgid "Exercise"
 msgstr "Oppgave"
 
+#: static/extjstrix/forms/PeriodExercise.js:38
+msgid "Select an exercise"
+msgstr "Velg en oppgave"
+
+#: static/extjstrix/forms/PeriodExercise.js:40
+msgid "points"
+msgstr "poeng"
+
 #: static/extjstrix/forms/PeriodExercise.js:47
 msgid "Number"
 msgstr "Nummer"
@@ -281,4 +290,12 @@ msgstr "Eksempel: Rekker"
 #: static/extjstrix/forms/Topic.js:32
 msgid "<strong>Name</strong> the name of the topic."
 msgstr "<strong>Navn</strong> er temaets navn."
+
+#: static/extjstrix/page/Header.js:30
+msgid "My Statistics"
+msgstr "Statistikk"
+
+#: static/extjstrix/page/Header.js:31
+msgid "Administrator"
+msgstr "Administrator"
 
