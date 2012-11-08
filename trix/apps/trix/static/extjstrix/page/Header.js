@@ -26,9 +26,10 @@ Ext.define('trix.page.Header', {
         '    </div>',
         '    <div class="nav {navclass}">',
         '        <ul>',
-        '            <li class="student-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/">Trix</a></li>',
-        '            <li class="examiner-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/profile/">My Statistics</a></li>',
-        '            <li class="administrator-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/trixadmin/">Administrator</a></li>',
+        '            <li class="student-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/">' + gettext("Exercises") + '</a></li>',
+        '            <li class="examiner-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/profile/">' + gettext("My Statistics") + '</a></li>',
+        '            <li class="administrator-navitem"><a href="{DevilrySettings.DEVILRY_URLPATH_PREFIX}/trix/trixadmin/">' + gettext("Administrator") + '</a></li>',
+        '            <li class="externallink-navitem"><a href="{DevilrySettings.DEVILRY_HELP_URL}" target="_blank">Help</a></li>',
         '        </ul>',
         '    </div>',
         '</div>'
