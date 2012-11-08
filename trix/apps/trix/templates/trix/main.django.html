@@ -135,6 +135,16 @@
 {% endcomment %}
 
 ''
+{% if not exercises.items %}
++ '<div>' +
+(window.location.pathname.indexOf('topic') != -1 ?
+'{% trans "No exercises have been given for this topic." %} '
+: (window.location.pathname.indexOf('period') != -1 ?
+'{% trans "No exercises have been given in this period." %} '
+: '{% trans "There are no active periods." %} ')) +
+'{% trans 'Try searching for a period or topic in the bar above or click "browse" to see all of them.' %}' +
+'</div>'
+{% endif %}
 {% for p, p_excs in exercises.items %}
 + '<table class="exercises {% if p in followedperiods %}followed{% else %}unfollowed{% endif %}">' +
 '  <caption><div>{{ p.parentnode.long_name|escapejs }}</div><h2>{{ p.long_name|escapejs }}</h2></caption>{% comment %}' +
