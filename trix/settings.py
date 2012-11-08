@@ -57,7 +57,7 @@ DEVILRY_SYSTEM_ADMIN_EMAIL='devilry-support@example.com'
 DEVILRY_DELIVERY_STORE_BACKEND = 'devilry.apps.core.deliverystore.FsDeliveryStore'
 DELIVERY_STORE_ROOT = join(this_dir, 'deliverystore')
 
-
+DEVILRY_HELP_URL = 'https://www.uio.no/studier/emner/matnat/ifi/INF1000/h12/trix/bruksanvisning.html'
 
 MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + [
     'trix.logexceptionsmiddleware.TracebackLoggingMiddleware',
@@ -69,15 +69,26 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+#        'default': {
+#            'level':'DEBUG',
+#            'class':'logging.handlers.RotatingFileHandler',
+#            'filename': 'logs/mylog.log',
+#            'maxBytes': 1024*1024*5, # 5 MB
+#            'backupCount': 5
+#        },  
         'console': {
             'level':'DEBUG',
             'class':'logging.StreamHandler'
             }
         },
     'loggers': {
-        'trix.logexceptionsmiddleware': {
-            'handlers': ['console'],
-            'level': 'DEBUG'
-            }
+#        'trix.logexceptionsmiddleware': {
+#            'handlers': ['default'],
+#            'level': 'DEBUG'
+#            },
+#        'sauce': {
+#            'handlers': ['default'],
+#            'level': 'DEBUG'
+#            }
         }
     }
