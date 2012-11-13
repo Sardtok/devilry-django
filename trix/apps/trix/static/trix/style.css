@@ -32,7 +32,7 @@ a { font-size: 100% !important; }
     border-color: #D7D7D7;
 }
 
-.unfollowed { visibility: hidden; }
+/*.unfollowed { visibility: hidden; }*/
 
 .exercises { clear: both; margin-bottom: 2em; }
 .exercises th    { font-weight: bold; font-size: 100%; padding: 0.3em; }
