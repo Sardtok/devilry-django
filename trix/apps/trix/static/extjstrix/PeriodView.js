@@ -264,7 +264,7 @@ Ext.define('trix.PeriodView', {
 
         });
         
-        Ext.apply(this, { items: [ this.editButton, this.deleteButton, this.box, this.grid] });
+        Ext.apply(this, { items: [ this.editButton, this.deleteButton, this.box, this.grid], autoScroll: true });
         this.callParent(arguments);
     },
 

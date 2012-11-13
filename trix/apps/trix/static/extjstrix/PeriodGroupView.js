@@ -176,7 +176,7 @@ Ext.define('trix.PeriodGroupView', {
             }
         });
         
-        Ext.apply(this, {items: [this.editButton, this.deleteButton, this.grid]});
+        Ext.apply(this, {items: [this.editButton, this.deleteButton, this.grid], autoScroll: true});
         this.callParent(arguments);
     },
 
