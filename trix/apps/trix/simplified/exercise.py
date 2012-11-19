@@ -16,8 +16,8 @@ class SimplifiedExercise(AuthorizationMixin):
 
 #       editablefields = ('id', 'short_name', 'long_name', 'text', 'points')
         fake_editablefields = ('fake_topics', 'fake_prerequisites')
-        fake_real_map =  {'fake_topics': ('topics', Topic, 'pk', 'name')}
-                          #'fake_prerequisites': ('prerequisites', Topic, 'pk', 'name')}
+        fake_real_map =  {'fake_topics': ('topics', Topic, 'pk', 'name'),
+                          'fake_prerequisites': ('prerequisites', Topic, 'pk', 'name')}
         filters = FilterSpecs(FilterSpec('topics__id'))
         methods = ['create', 'read', 'update', 'delete', 'search']
 
