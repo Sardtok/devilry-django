@@ -24,6 +24,20 @@ pre   { border-color: #CCC;
 
 a { font-size: 100% !important; }
 
+.header > .nav li.maillink-navitem a {
+    background-color: #222;
+    color: #fff;
+    border-radius: 6px 14px 0 0;
+    background-image: url(icons/mail.png) !important;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    padding-left: 32px;
+}
+.header > .nav li.externallink-navitem a:hover {
+    color: white;
+    background-color: #333333 !important;
+}
+
 .x-btn {
     border-color: #9D9D9D;
 }
